@@ -1,4 +1,3 @@
-import os
 from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -6,6 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Series(models.Model):
+    """Database Model for Series"""
+
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -15,7 +16,7 @@ class Series(models.Model):
         verbose_name="creator",
     )
     series_name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     series_poster = models.ImageField(upload_to="series/posters/%Y/%m/%d/")
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -27,10 +28,14 @@ class Series(models.Model):
         return self.series_name
 
     class Meta:
+        """Meta class for Series Model"""
+
         verbose_name_plural = "Series"
 
 
 class EpidoseBase(models.Model):
+    """Database Model for Series"""
+
     series = models.ForeignKey(
         Series, on_delete=models.CASCADE, related_name="%(class)s_related"
     )
@@ -45,6 +50,8 @@ class EpidoseBase(models.Model):
     # views
 
     class Meta:
+        """Meta class to set this model as an abstract class"""
+
         abstract = True
 
     def __str__(self):
@@ -52,15 +59,21 @@ class EpidoseBase(models.Model):
 
 
 class Story(EpidoseBase):
+    """Database Model for Story"""
+
     thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/%d/", blank=True)
     content = models.TextField()
 
     class Meta:
+        """Meta class for Story Model"""
+
         verbose_name = "Story"
         verbose_name_plural = "Stories"
 
 
 class Anime(EpidoseBase):
+    """Database Model for Series"""
+
     thumbnail = models.ImageField(
         upload_to="animations/thumbnails/%Y/%m/%d", blank=True
     )
@@ -69,5 +82,7 @@ class Anime(EpidoseBase):
     )
 
     class Meta:
+        """Meta class for Anime Model"""
+
         verbose_name = "Animation"
         verbose_name_plural = "Animations"

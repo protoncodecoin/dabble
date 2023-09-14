@@ -6,6 +6,8 @@ from .models import Series, Story, Anime
 # Register your models here.
 @admin.register(Series)
 class SeriesAdmin(admin.ModelAdmin):
+    """Registger Series Model to Admin site"""
+
     list_display = ["creator", "series_name", "start_date"]
     list_filter = ["creator", "start_date", "end_date"]
     prepopulated_fields = {"slug": ("series_name",)}
@@ -14,6 +16,8 @@ class SeriesAdmin(admin.ModelAdmin):
 
 @admin.register(Story)
 class StoriesAdmin(admin.ModelAdmin):
+    """Registger Stories Model to Admin site"""
+
     list_display = ["episode_title", "episode_number", "episode_release_date"]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
@@ -21,6 +25,8 @@ class StoriesAdmin(admin.ModelAdmin):
 
 @admin.register(Anime)
 class AnimeAdmin(admin.ModelAdmin):
+    """Registger Anime Model to Admin site"""
+
     list_display = ["episode_title", "episode_number", "episode_release_date"]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]

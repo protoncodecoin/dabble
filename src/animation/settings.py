@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # local apps
     "anime_api.apps.AnimeApiConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
