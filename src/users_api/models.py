@@ -1,0 +1,65 @@
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.utils.translation import gettext as _
+
+from django.conf import settings
+
+from .managers import CustomUserManager
+
+
+class CustomUser(AbstractUser):
+    """Extends the AbstractUser Model of Django to Customize the User model"""
+
+    # username = None
+    email = models.EmailField(_("email address"), unique=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+
+
+class CreatorProfile(models.Model):
+    """Profile for Creators on the site"""
+
+    creator = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=200)
+    company_website = models.URLField()
+    company_description = models.CharField(max_length=500, blank=True, null=True)
+    creator_logo = models.ImageField(
+        upload_to="creatorProfile/%Y/%m/%d/",
+        blank=True,
+        default="default/creator_default.jpg",
+    )
+    is_creator = models.BooleanField(default=False)
+
+    def __str__(self):
+        """Human readable representation of the User Profile model"""
+        return f"Profile of {self.creator.email}"
+
+    class Meta:
+        """Meta class to set the User Profile plural title on the site"""
+
+        verbose_name_plural = "Creators Profile"
+
+
+class UserProfile(models.Model):
+    """Profile for 3rd level users on the site"""
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile_img = models.ImageField(
+        upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
+    )
+    # is_commonuser = models.BooleanField(default=True)
+
+    def __str__(self):
+        """Human readable representation of the User Profile model"""
+        return f"Profile of {self.user.email}"
+
+    class Meta:
+        """Meta class to set the User Profile plural title on the site"""
+
+        verbose_name_plural = "Users Profile"

@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
     # local apps
     "anime_api.apps.AnimeApiConfig",
+    "users_api.apps.UsersApiConfig",
+    # third party
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+AUTH_USER_MODEL = "users_api.CustomUser"
