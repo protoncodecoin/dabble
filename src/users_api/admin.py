@@ -17,13 +17,29 @@ class CustomUserAdmin(UserAdmin):
         "username",
         "email",
         "is_active",
+        "is_creator",
         "is_staff",
         "is_superuser",
         "last_login",
     )
-    list_filter = ("is_active", "is_staff", "is_superuser")
+    list_filter = (
+        "is_active",
+        "is_staff",
+        "is_superuser",
+        "is_creator",
+    )
     fieldsets = (
-        (None, {"fields": ("username", "email", "password")}),
+        (
+            None,
+            {
+                "fields": (
+                    "username",
+                    "email",
+                    "password",
+                    "is_creator",
+                )
+            },
+        ),
         (
             "Permissions",
             {
@@ -50,12 +66,16 @@ class CustomUserAdmin(UserAdmin):
                     "password2",
                     "is_staff",
                     "is_active",
+                    "is_creator",
                 ),
             },
         ),
     )
     search_fields = ("email",)
     ordering = ("email",)
+    list_display_links = [
+        "email",
+    ]
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

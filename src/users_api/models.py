@@ -12,6 +12,10 @@ class CustomUser(AbstractUser):
 
     # username = None
     email = models.EmailField(_("email address"), unique=True)
+    is_creator = models.BooleanField(
+        default=False,
+        help_text="Specify whether user is creator or not. Default is set to False",
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -34,7 +38,6 @@ class CreatorProfile(models.Model):
         blank=True,
         default="default/creator_default.jpg",
     )
-    is_creator = models.BooleanField(default=False)
 
     def __str__(self):
         """Human readable representation of the User Profile model"""
@@ -53,7 +56,6 @@ class UserProfile(models.Model):
     profile_img = models.ImageField(
         upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
     )
-    # is_commonuser = models.BooleanField(default=True)
 
     def __str__(self):
         """Human readable representation of the User Profile model"""

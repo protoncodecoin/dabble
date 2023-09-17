@@ -1,8 +1,27 @@
 from rest_framework import serializers
 
+from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import LoginSerializer
+
 from django.contrib.auth.models import User
+from django.db import transaction
 
 from .models import UserProfile, CreatorProfile
+
+
+class CustomRegisterSerializer(RegisterSerializer):
+    is_creator = serializers.BooleanField(default=False)
+
+    @transaction.atomic
+    def save(self, request):
+        user = super().save(request)
+        user.is_creator = self.data.get("is_creator")
+        user.email = self.data.get("email")
+        print(user.email)
+        user.save()
+        return user
+
+    # implement signal to create profile based on registration type
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -17,6 +36,7 @@ class UsersSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "is_creator",
         ]
 
 
