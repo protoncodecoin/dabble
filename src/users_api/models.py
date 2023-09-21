@@ -30,8 +30,8 @@ class CreatorProfile(models.Model):
     """Profile for Creators on the site"""
 
     creator = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=200)
-    company_website = models.URLField()
+    company_name = models.CharField(max_length=200, blank=True, null=True)
+    company_website = models.URLField(blank=True, null=True)
     company_description = models.CharField(max_length=500, blank=True, null=True)
     creator_logo = models.ImageField(
         upload_to="creatorProfile/%Y/%m/%d/",
@@ -40,7 +40,7 @@ class CreatorProfile(models.Model):
     )
 
     def __str__(self):
-        """Human readable representation of the User Profile model"""
+        """Readable representation of the User Profile model"""
         return f"Profile of {self.creator.email}"
 
     class Meta:

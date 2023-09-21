@@ -6,7 +6,7 @@ from dj_rest_auth.serializers import LoginSerializer
 from django.contrib.auth.models import User
 from django.db import transaction
 
-from .models import UserProfile, CreatorProfile
+from .models import UserProfile, CreatorProfile, CustomUser
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -17,11 +17,29 @@ class CustomRegisterSerializer(RegisterSerializer):
         user = super().save(request)
         user.is_creator = self.data.get("is_creator")
         user.email = self.data.get("email")
-        print(user.email)
         user.save()
+
+        is_creator = self.validated_data.get("is_creator")
+        print(is_creator)
+
+        # Create a Profile based on the is_creator field
+        if is_creator:
+            creator_profile = CreatorProfile(creator=user)
+            creator_profile.save()
+        else:
+            user_profile = UserProfile(user=user)
+            user_profile.save()
         return user
 
-    # implement signal to create profile based on registration type
+    class CustomUserDetailSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = CustomUser
+            fields = (
+                "pk",
+                "email",
+                "is_creator",
+            )
+            read_only_fields = ("is_creator",)
 
 
 class UsersSerializer(serializers.ModelSerializer):

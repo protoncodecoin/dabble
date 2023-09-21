@@ -73,7 +73,7 @@ ROOT_URLCONF = "animation.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "animation/templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -162,13 +162,19 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "users_api.serializers.CustomRegisterSerializer",
 }
 
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
+}
+
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
+# Sign-up with email verification
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_URL = "https://localhost:8000/rest-auth/login"
 
 AUTHENTICATION_BACKENDS = [
     # allauth specific authentication methods, such as login by email specific
@@ -178,3 +184,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+
+# Email Backend
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")

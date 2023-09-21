@@ -23,6 +23,9 @@ from anime_api.urls import urlpatterns as anime_api_url
 from users_api.urls import urlpatterns as users_api_url
 
 
+from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
+from dj_rest_auth.views import PasswordResetConfirmView
+
 api_url_patterns = [
     path("content/", include(anime_api_url)),
     path("users/", include(users_api_url)),
@@ -35,10 +38,24 @@ urlpatterns = [
         "api/v1/",
         include(api_url_patterns),
     ),
-    path("api-auth/", include("rest_framework.urls")),
+    path("api/v1/api-auth/", include("rest_framework.urls")),
     path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
+    path(
+        "rest-auth/registration/account-confirm-email/<str:key>/",
+        ConfirmEmailView.as_view(),
+    ),
     path("api/v1/rest-auth/registration/", include("dj_rest_auth.registration.urls")),
     # path("accounts/", include(("allauth.urls", "allauth"))),
+    path(
+        "rest-auth/account-confirm-email/",
+        VerifyEmailView.as_view(),
+        name="account_email_verification_sent",
+    ),
+    path(
+        "rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
+        PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
 ]
 
 if settings.DEBUG:

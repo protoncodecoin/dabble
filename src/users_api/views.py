@@ -13,6 +13,7 @@ from .serializers import (
     CustomRegisterSerializer,
 )
 
+
 User = get_user_model()
 
 
