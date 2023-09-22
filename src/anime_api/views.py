@@ -11,9 +11,25 @@ from django.utils.text import slugify
 from .models import Series, Story, Anime
 
 from .serializers import SeriesSerializer, StorySerializer, AnimeSerializer
+from .permissions import IsCreatorOrReaOnly
 
 
 # Create your views here.
+
+from django.conf import settings
+from django.http import HttpResponseRedirect
+
+
+def email_confirm_redirect(request, key):
+    return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+
+
+def password_reset_confirm_redirect(request, uidb64, token):
+    return HttpResponseRedirect(
+        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+    )
+
+
 class SeriesListAPI(generics.ListCreateAPIView):
     """Return all Series in DD to the endpoint"""
 
@@ -24,6 +40,7 @@ class SeriesListAPI(generics.ListCreateAPIView):
 class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """views for handling single instance of series model"""
 
+    permission_classes = (IsCreatorOrReaOnly,)
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
 
@@ -38,6 +55,7 @@ class StoryAPI(generics.ListCreateAPIView):
 class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """Provide Retrieve, Update and Delete functionality for Story Model"""
 
+    permission_classes = (IsCreatorOrReaOnly,)
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
@@ -52,5 +70,6 @@ class AnimeAPI(generics.ListCreateAPIView):
 class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """View for handling single instance of the Anime Model"""
 
+    # permission_classes = (IsCreatorOrReaOnly,)
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer

@@ -39,23 +39,23 @@ urlpatterns = [
         include(api_url_patterns),
     ),
     path("api/v1/api-auth/", include("rest_framework.urls")),
-    path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
-    path(
-        "rest-auth/registration/account-confirm-email/<str:key>/",
-        ConfirmEmailView.as_view(),
-    ),
-    path("api/v1/rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+    # path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
+    # path(
+    #     "rest-auth/registration/account-confirm-email/<str:key>/",
+    #     ConfirmEmailView.as_view(),
+    # ),
+    # path("api/v1/rest-auth/registration/", include("dj_rest_auth.registration.urls")),
     # path("accounts/", include(("allauth.urls", "allauth"))),
-    path(
-        "rest-auth/account-confirm-email/",
-        VerifyEmailView.as_view(),
-        name="account_email_verification_sent",
-    ),
-    path(
-        "rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
-        PasswordResetConfirmView.as_view(),
-        name="password_reset_confirm",
-    ),
+    # path(
+    #     "rest-auth/account-confirm-email/",
+    #     VerifyEmailView.as_view(),
+    #     name="account_email_verification_sent",
+    # ),
+    # path(
+    #     "rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
+    #     PasswordResetConfirmView.as_view(),
+    #     name="password_reset_confirm",
+    # ),
 ]
 
 if settings.DEBUG:

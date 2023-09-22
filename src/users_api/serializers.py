@@ -10,6 +10,8 @@ from .models import UserProfile, CreatorProfile, CustomUser
 
 
 class CustomRegisterSerializer(RegisterSerializer):
+    """Customize the dj-rest-auth registerSerializer to include custom user models"""
+
     is_creator = serializers.BooleanField(default=False)
 
     @transaction.atomic

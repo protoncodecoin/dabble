@@ -73,7 +73,9 @@ ROOT_URLCONF = "animation.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "animation/templates")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "animation/templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -153,6 +155,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ],
@@ -174,7 +177,15 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Sign-up with email verification
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "https://localhost:8000/rest-auth/login"
+LOGIN_URL = "http://127.0.0.1:8000/api/v1/api-auth/login/"
+# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
+EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:8000/api/v1/email/confirm/"
+
+# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
+    "http://localhost:8000/api/v1/users/password-reset/confirm/"
+)
+
 
 AUTHENTICATION_BACKENDS = [
     # allauth specific authentication methods, such as login by email specific

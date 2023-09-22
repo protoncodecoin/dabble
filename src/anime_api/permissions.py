@@ -6,5 +6,6 @@ class IsCreatorOrReaOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Write permisssions are only allowed to the author of the post
+        # Write permisssions are only allowed to the author of the
+        print("creator is: ", obj.creator)
         return obj.creator == request.user
