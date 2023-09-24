@@ -1,9 +1,15 @@
 from django.http import Http404
 from django.shortcuts import render
+from django.conf import settings
+from django.http import HttpResponseRedirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
+
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
 from django.utils.text import slugify
 
@@ -15,9 +21,10 @@ from .permissions import IsCreatorOrReaOnly
 
 
 # Create your views here.
-
-from django.conf import settings
-from django.http import HttpResponseRedirect
+class GoogleLogin(SocialLoginView):
+    adapter = GoogleOAuth2Adapter
+    callback_url = "http://127.0.0.1:8000/api/v1/content/series/"
+    client_class = OAuth2Client
 
 
 def email_confirm_redirect(request, key):

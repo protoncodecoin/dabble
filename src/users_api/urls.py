@@ -14,6 +14,10 @@ from users_api.views import email_confirm_redirect, password_reset_confirm_redir
 from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView
 
+from allauth.socialaccount.views import signup
+from anime_api.views import GoogleLogin
+
+
 from . import views
 
 urlpatterns = [
@@ -50,4 +54,7 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
+    # google social auth
+    path("signup/", signup, name="socialaccount_signup"),
+    path("google/", GoogleLogin.as_view(), name="google_login"),
 ]
