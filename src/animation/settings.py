@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # local apps
     "anime_api.apps.AnimeApiConfig",
     "users_api.apps.UsersApiConfig",
+    "comment_system.apps.CommentSystemConfig",
     #
     # third party apps
     "rest_framework",

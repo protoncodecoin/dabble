@@ -29,7 +29,11 @@ class CustomUser(AbstractUser):
 class CreatorProfile(models.Model):
     """Profile for Creators on the site"""
 
-    creator = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    creator = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        related_name="creator_profile",
+        on_delete=models.CASCADE,
+    )
     company_name = models.CharField(max_length=200, blank=True, null=True)
     company_website = models.URLField(blank=True, null=True)
     company_description = models.CharField(max_length=500, blank=True, null=True)

@@ -16,7 +16,14 @@ from django.utils.text import slugify
 
 from .models import Series, Story, Anime
 
-from .serializers import SeriesSerializer, StorySerializer, AnimeSerializer
+from .serializers import (
+    SeriesSerializer,
+    SeriesDetailSerializer,
+    StorySerializer,
+    StoryDetailSerializer,
+    AnimeSerializer,
+    AnimeDetailSerializer,
+)
 from .permissions import IsCreatorOrReaOnly
 
 
@@ -49,7 +56,7 @@ class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (IsCreatorOrReaOnly,)
     queryset = Series.objects.all()
-    serializer_class = SeriesSerializer
+    serializer_class = SeriesDetailSerializer
 
 
 class StoryAPI(generics.ListCreateAPIView):
@@ -62,9 +69,9 @@ class StoryAPI(generics.ListCreateAPIView):
 class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """Provide Retrieve, Update and Delete functionality for Story Model"""
 
-    permission_classes = (IsCreatorOrReaOnly,)
+    # permission_classes = (IsCreatorOrReaOnly,)
     queryset = Story.objects.all()
-    serializer_class = StorySerializer
+    serializer_class = StoryDetailSerializer
 
 
 class AnimeAPI(generics.ListCreateAPIView):
@@ -79,4 +86,4 @@ class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
     # permission_classes = (IsCreatorOrReaOnly,)
     queryset = Anime.objects.all()
-    serializer_class = AnimeSerializer
+    serializer_class = AnimeDetailSerializer

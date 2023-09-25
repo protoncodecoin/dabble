@@ -8,7 +8,7 @@ from .models import Series, Story, Anime
 class SeriesAdmin(admin.ModelAdmin):
     """Registger Series Model to Admin site"""
 
-    list_display = ["creator", "series_name", "start_date"]
+    list_display = ["creator", "series_name", "id", "start_date"]
     list_filter = ["creator", "start_date", "end_date"]
     prepopulated_fields = {"slug": ("series_name",)}
     list_display_links = ["series_name"]
