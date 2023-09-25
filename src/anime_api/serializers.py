@@ -6,12 +6,20 @@ from .models import Series, Story, Anime
 from comment_system.serializers import CommentSerializer
 
 
-class CreatorRelSerializer(serializers.Serializer):
+class CreatorInlineSerializer(serializers.Serializer):
     "Serialize data related to creator profile"
     company_name = serializers.CharField(read_only=True)
     company_description = serializers.CharField(read_only=True)
     company_website = serializers.URLField(read_only=True)
     creator_logo = serializers.ImageField(read_only=True)
+
+
+class CommentInlineSerializer(serializers.Serializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name="comment-detail", lookup_field="pk", read_only=True
+    )
+    comment = serializers.TimeField(read_only=True)
+    created = serializers.DateTimeField(read_only=True)
 
 
 class SeriesSerializer(serializers.ModelSerializer):
@@ -21,7 +29,8 @@ class SeriesSerializer(serializers.ModelSerializer):
         view_name="series-detail", lookup_field="pk"
     )
     slug = serializers.SerializerMethodField()
-    # owner = CreatorRelSerializer(source="creator.user_created")
+    # owner = CreatorInlineSerializer(source="creator.user_created")
+    creator = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
         """Meta class for Series Serializer"""
@@ -36,8 +45,6 @@ class SeriesSerializer(serializers.ModelSerializer):
             "slug",
             "series_poster",
             "synopsis",
-            # "start_date",
-            # "end_date",
         ]
         extra_kwargs = {
             "slug": {"write_only": True},
@@ -49,7 +56,11 @@ class SeriesSerializer(serializers.ModelSerializer):
 
 
 class SeriesDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorRelSerializer(source="creator.creator_profile")
+    owner = CreatorInlineSerializer(source="creator.creator_profile")
+    creator = serializers.ReadOnlyField(source="creator.username")
+    comments = CommentInlineSerializer(
+        source="creator.comments.all", many=True, read_only=True
+    )
 
     class Meta:
         model = Series
@@ -61,7 +72,7 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "start_date",
             "end_date",
             "owner",
-            # "comment",
+            "comments",
         ]
 
 
@@ -71,6 +82,7 @@ class StorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="story-detail", lookup_field="pk"
     )
+    series = serializers.ReadOnlyField(source="series.series_name")
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -90,7 +102,11 @@ class StorySerializer(serializers.ModelSerializer):
 
 
 class StoryDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorRelSerializer(source="series.creator.creator_profile")
+    owner = CreatorInlineSerializer(source="series.creator.creator_profile")
+    series = serializers.ReadOnlyField(source="series.series_name")
+    comments = CommentInlineSerializer(
+        source="series.creator.comments.all", many=True, read_only=True
+    )
 
     class Meta:
         model = Story
@@ -102,8 +118,8 @@ class StoryDetailSerializer(serializers.ModelSerializer):
             "description",
             "episode_release_date",
             "content",
-            "publish",
             "owner",
+            "comments",
         ]
 
 
@@ -114,6 +130,7 @@ class AnimeSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="anime-detail", lookup_field="pk"
     )
+    series = serializers.ReadOnlyField(source="series.series_name")
 
     class Meta:
         """Meta class for Anime Serializer"""
@@ -134,7 +151,11 @@ class AnimeSerializer(serializers.ModelSerializer):
 
 
 class AnimeDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorRelSerializer(source="series.creator.creator_profile")
+    owner = CreatorInlineSerializer(source="series.creator.creator_profile")
+    comments = CommentInlineSerializer(
+        source="series.creator.comments.all", many=True, read_only=True
+    )
+    series = serializers.ReadOnlyField(source="series.series_name")
 
     class Meta:
         model = Anime
@@ -148,4 +169,5 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
             "thumbnail",
             "file",
             "owner",
+            "comments",
         ]

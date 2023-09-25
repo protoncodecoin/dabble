@@ -211,8 +211,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": "286631465324-3ptiflvfrnbn5i6mmca60ibtj4143sir.apps.googleusercontent.com",
-            "secret": "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",
+            "client_id": os.environ.get("CLIENT_ID"),
+            "secret": os.environ.get("SECRET"),
             "key": "",
         },
         "SCOPE": [

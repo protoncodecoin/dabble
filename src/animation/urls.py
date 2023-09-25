@@ -29,8 +29,8 @@ from dj_rest_auth.views import PasswordResetConfirmView
 
 api_url_patterns = [
     path("content/", include(anime_api_url)),
+    path("content/comments/", include(comments_url)),
     path("users/", include(users_api_url)),
-    path("comments/", include(comments_url)),
 ]
 
 
