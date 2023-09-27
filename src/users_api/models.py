@@ -6,6 +6,8 @@ from django.conf import settings
 
 from .managers import CustomUserManager
 
+# from follow_system.models import Contact
+
 
 class CustomUser(AbstractUser):
     """Extends the AbstractUser Model of Django to Customize the User model"""
@@ -42,6 +44,12 @@ class CreatorProfile(models.Model):
         blank=True,
         default="default/creator_default.jpg",
     )
+    creator_following = models.ManyToManyField(
+        "self",
+        related_name="creator_followers",
+        symmetrical=False,
+        blank=True,
+    )
 
     def __str__(self):
         """Readable representation of the User Profile model"""
@@ -59,6 +67,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profile_img = models.ImageField(
         upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
+    )
+    following_creators = models.ManyToManyField(
+        CreatorProfile, blank=True, symmetrical=False, related_name="user_followers"
     )
 
     def __str__(self):

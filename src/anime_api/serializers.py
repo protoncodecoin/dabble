@@ -22,6 +22,13 @@ class CommentInlineSerializer(serializers.Serializer):
     created = serializers.DateTimeField(read_only=True)
 
 
+class ContactInlineSerializer(serializers.Serializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name="follow-detail",
+        lookup_field="pk",
+    )
+
+
 class SeriesSerializer(serializers.ModelSerializer):
     """Serialize the Series Model"""
 
@@ -29,8 +36,8 @@ class SeriesSerializer(serializers.ModelSerializer):
         view_name="series-detail", lookup_field="pk"
     )
     slug = serializers.SerializerMethodField()
-    # owner = CreatorInlineSerializer(source="creator.user_created")
     creator = serializers.ReadOnlyField(source="creator.username")
+    likes = serializers.ReadOnlyField(source="creator.")
 
     class Meta:
         """Meta class for Series Serializer"""
