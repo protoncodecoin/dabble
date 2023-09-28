@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     # google social auth
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
+    "allauth.socialaccount.providers.twitter",
+    "allauth.socialaccount.providers.github",
 ]
 
 MIDDLEWARE = [
@@ -179,7 +182,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 # Sign-up with email verification
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "http://127.0.0.1:8000/api/v1/api-auth/login/"
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
@@ -190,7 +193,6 @@ PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
     "http://localhost:8000/api/v1/users/password-reset/confirm/"
 )
 
-
 AUTHENTICATION_BACKENDS = [
     # allauth specific authentication methods, such as login by email specific
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -199,6 +201,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+# LOGIN_REDIRECT_URL = "http://127.0.0.1"
 
 # Email Backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

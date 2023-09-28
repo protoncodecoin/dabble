@@ -14,5 +14,8 @@ class CommentAdmin(admin.ModelAdmin):
         "is_approved",
     ]
 
-    list_filter = ["created"]
+    list_filter = [
+        "created",
+        "is_approved",
+    ]
     search_fields = ["comment"]

@@ -24,6 +24,12 @@ from users_api.urls import urlpatterns as users_api_url
 from comment_system.urls import urlpatterns as comments_url
 from follow_system.urls import urlpatterns as follow_url
 
+from users_api.views import (
+    FacebookLogin,
+    GithubLogin,
+    GoogleLoginView,
+    UserRedirectView,
+)
 
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import PasswordResetConfirmView
@@ -43,23 +49,14 @@ urlpatterns = [
         include(api_url_patterns),
     ),
     path("api/v1/api-auth/", include("rest_framework.urls")),
-    # path("api/v1/rest-auth/", include("dj_rest_auth.urls")),
-    # path(
-    #     "rest-auth/registration/account-confirm-email/<str:key>/",
-    #     ConfirmEmailView.as_view(),
-    # ),
-    # path("api/v1/rest-auth/registration/", include("dj_rest_auth.registration.urls")),
-    # path("accounts/", include(("allauth.urls", "allauth"))),
-    # path(
-    #     "rest-auth/account-confirm-email/",
-    #     VerifyEmailView.as_view(),
-    #     name="account_email_verification_sent",
-    # ),
-    # path(
-    #     "rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
-    #     PasswordResetConfirmView.as_view(),
-    #     name="password_reset_confirm",
-    # ),
+    path("api/v1/social-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
+    path("api/v1/social-auth/github/", GithubLogin.as_view(), name="github_login"),
+    path(
+        "api/v1/social-auth/google/login/",
+        GoogleLoginView.as_view(),
+        name="google_login",
+    ),
+    path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
 ]
 
 if settings.DEBUG:

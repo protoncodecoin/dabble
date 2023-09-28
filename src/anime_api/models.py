@@ -21,6 +21,9 @@ class Series(models.Model):
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="series_like", blank=True
+    )
     # comment
     # views
 
@@ -46,6 +49,9 @@ class EpidoseBase(models.Model):
     description = models.TextField(max_length=700, blank=True)
     episode_release_date = models.DateField(auto_now_add=True)
     publish = models.BooleanField(default=True)
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
+    )
     # comment
     # views
 

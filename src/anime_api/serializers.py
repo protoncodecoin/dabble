@@ -37,7 +37,7 @@ class SeriesSerializer(serializers.ModelSerializer):
     )
     slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
-    likes = serializers.ReadOnlyField(source="creator.")
+    # likes = serializers.ReadOnlyField(source="creator.")
 
     class Meta:
         """Meta class for Series Serializer"""

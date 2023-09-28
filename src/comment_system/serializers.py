@@ -16,7 +16,7 @@ class CommentSerializer(serializers.ModelSerializer):
             "user",
             "target_id",  # id of what you are comment on. Series, Anime, story
             "comment",
-            # "target_ct",
+            "target_ct",
             # "created",
         ]
 

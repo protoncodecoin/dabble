@@ -18,7 +18,7 @@ class SeriesAdmin(admin.ModelAdmin):
 class StoriesAdmin(admin.ModelAdmin):
     """Registger Stories Model to Admin site"""
 
-    list_display = ["episode_title", "episode_number", "episode_release_date"]
+    list_display = ["episode_title", "id", "episode_number", "episode_release_date"]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
 
@@ -27,6 +27,6 @@ class StoriesAdmin(admin.ModelAdmin):
 class AnimeAdmin(admin.ModelAdmin):
     """Registger Anime Model to Admin site"""
 
-    list_display = ["episode_title", "episode_number", "episode_release_date"]
+    list_display = ["episode_title", "id", "episode_number", "episode_release_date"]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
