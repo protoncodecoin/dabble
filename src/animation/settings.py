@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "anime_api.apps.AnimeApiConfig",
     "users_api.apps.UsersApiConfig",
     "comment_system.apps.CommentSystemConfig",
-    "follow_system.apps.FollowSystemConfig",
+    # "follow_system.apps.FollowSystemConfig",
     #
     # third party apps
     "rest_framework",
@@ -182,7 +182,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
 # Sign-up with email verification
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "http://127.0.0.1:8000/api/v1/api-auth/login/"
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>

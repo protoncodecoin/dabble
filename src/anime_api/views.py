@@ -1,17 +1,19 @@
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework import generics
+from rest_framework.decorators import api_view, permission_classes
 
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-
-from django.utils.text import slugify
 
 
 from .models import Series, Story, Anime
@@ -44,11 +46,92 @@ def password_reset_confirm_redirect(request, uidb64, token):
     )
 
 
+@api_view(["GET", "POST", "PUT"])
+@permission_classes([permissions.IsAuthenticated])
+def like_and_unlike(request, content_id, content_type):
+    user = request.user
+    if content_id:
+        if content_type == "series":
+            try:
+                series_instance = Series.objects.get(id=content_id)
+            except Series.DoesNotExist:
+                return Response(
+                    {"message": f"Series with id of {content_id} does not exist"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            if not series_instance.likes.filter(pk=user.id).exists():
+                series_instance.likes.add(user)
+                return Response(
+                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                )
+            else:
+                series_instance.likes.remove(user)
+                return Response(
+                    {"message": "UnLike was successful"},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+        elif content_type == "stories":
+            try:
+                stories_instance = Series.objects.get(id=content_id)
+            except Story.DoesNotExist:
+                return Response(
+                    {"message": f"Story with id of {content_id} does not exist"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            if not stories_instance.likes.filter(pk=user.id).exists():
+                stories_instance.likes.add(user)
+                return Response(
+                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                )
+            else:
+                stories_instance.likes.remove(user)
+                return Response(
+                    {"message": "UnLike was successful"},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+        elif content_type == "animes":
+            try:
+                anime_instance = Series.objects.get(id=content_id)
+            except Anime.DoesNotExist:
+                return Response(
+                    {"message": f"Anime with id of {content_id} does not exist"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            if not anime_instance.likes.filter(pk=user.id).exists():
+                anime_instance.likes.add(user)
+                return Response(
+                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                )
+            else:
+                anime_instance.likes.remove(user)
+                return Response(
+                    {"message": "UnLike was successful"},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+    return Response(
+        {"detail": "content_id missing"}, status=status.HTTP_400_BAD_REQUEST
+    )
+
+
 class SeriesListAPI(generics.ListCreateAPIView):
     """Return all Series in DD to the endpoint"""
 
-    queryset = Series.objects.all()
+    # queryset = Series.objects.all()
     serializer_class = SeriesSerializer
+    # lookup_field = "pk"
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        if not user.is_creator:
+            return Response(
+                {"detail": "Only creators can create a new series"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        else:
+            return serializer.save(creator=user)
+
+    def get_queryset(self):
+        return Series.objects.all()
 
 
 class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):

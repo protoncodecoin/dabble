@@ -6,8 +6,6 @@ from django.conf import settings
 
 from .managers import CustomUserManager
 
-# from follow_system.models import Contact
-
 
 class CustomUser(AbstractUser):
     """Extends the AbstractUser Model of Django to Customize the User model"""
@@ -44,12 +42,6 @@ class CreatorProfile(models.Model):
         blank=True,
         default="default/creator_default.jpg",
     )
-    creator_following = models.ManyToManyField(
-        "self",
-        related_name="creator_followers",
-        symmetrical=False,
-        blank=True,
-    )
 
     def __str__(self):
         """Readable representation of the User Profile model"""
@@ -68,8 +60,8 @@ class UserProfile(models.Model):
     profile_img = models.ImageField(
         upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
     )
-    following_creators = models.ManyToManyField(
-        CreatorProfile, blank=True, symmetrical=False, related_name="user_followers"
+    follows = models.ManyToManyField(
+        CreatorProfile, through="Follow", related_name="followers", blank=True
     )
 
     def __str__(self):
@@ -80,3 +72,24 @@ class UserProfile(models.Model):
         """Meta class to set the User Profile plural title on the site"""
 
         verbose_name_plural = "Users Profile"
+
+
+class Follow(models.Model):
+    user_from = models.ForeignKey(
+        UserProfile,
+        on_delete=models.CASCADE,
+        related_name="creator_following",
+        null=True,
+        blank=True,
+    )
+    creator_to = models.ForeignKey(
+        CreatorProfile, on_delete=models.CASCADE, related_name="user_followers"
+    )
+
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user_from} is following {self.creator_to}"
+
+    class Meta:
+        verbose_name_plural = "Follow"

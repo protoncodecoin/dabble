@@ -2,17 +2,17 @@ from django.shortcuts import render
 
 from rest_framework import generics
 
-from .models import Contact
-from .serializers import ContactSerializer, ContactDetailSerializer
+from .models import Follow
+from .serializers import FollowSerializer, FollowDetailSerializer
 
 # Create your views here.
 
 
-class ContactAPIView(generics.ListCreateAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = ContactSerializer
+class FollowAPIView(generics.ListCreateAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
 
 
-class ContactDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Contact.objects.all()
-    serializer_class = ContactDetailSerializer
+class FollowDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowDetailSerializer

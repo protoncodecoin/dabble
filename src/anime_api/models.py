@@ -36,7 +36,7 @@ class Series(models.Model):
         verbose_name_plural = "Series"
 
 
-class EpidoseBase(models.Model):
+class Base(models.Model):
     """Database Model for Series"""
 
     series = models.ForeignKey(
@@ -64,7 +64,7 @@ class EpidoseBase(models.Model):
         return f"{self.series.series_name}, Episode: {self.episode_number}"
 
 
-class Story(EpidoseBase):
+class Story(Base):
     """Database Model for Story"""
 
     thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/%d/", blank=True)
@@ -77,7 +77,7 @@ class Story(EpidoseBase):
         verbose_name_plural = "Stories"
 
 
-class Anime(EpidoseBase):
+class Anime(Base):
     """Database Model for Series"""
 
     thumbnail = models.ImageField(

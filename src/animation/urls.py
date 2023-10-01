@@ -22,7 +22,8 @@ from django.conf import settings
 from anime_api.urls import urlpatterns as anime_api_url
 from users_api.urls import urlpatterns as users_api_url
 from comment_system.urls import urlpatterns as comments_url
-from follow_system.urls import urlpatterns as follow_url
+
+# from follow_system.urls import urlpatterns as follow_url
 
 from users_api.views import (
     FacebookLogin,
@@ -31,14 +32,11 @@ from users_api.views import (
     UserRedirectView,
 )
 
-from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import PasswordResetConfirmView
-
 api_url_patterns = [
     path("content/", include(anime_api_url)),
     path("content/comments/", include(comments_url)),
     path("users/", include(users_api_url)),
-    path("follow/", include(follow_url)),
+    # path("follow/", include(follow_url)),
 ]
 
 

@@ -37,6 +37,7 @@ class SeriesSerializer(serializers.ModelSerializer):
     )
     slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
+    likes = serializers.ReadOnlyField(source="likes.count")
     # likes = serializers.ReadOnlyField(source="creator.")
 
     class Meta:
@@ -52,6 +53,7 @@ class SeriesSerializer(serializers.ModelSerializer):
             "slug",
             "series_poster",
             "synopsis",
+            "likes",
         ]
         extra_kwargs = {
             "slug": {"write_only": True},
@@ -63,11 +65,15 @@ class SeriesSerializer(serializers.ModelSerializer):
 
 
 class SeriesDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="creator.creator_profile")
+    owner = CreatorInlineSerializer(source="creator.creator_profile", read_only=True)
     creator = serializers.ReadOnlyField(source="creator.username")
     comments = CommentInlineSerializer(
-        source="creator.comments.all", many=True, read_only=True
+        source="Comment",
+        many=True,
+        read_only=True,
     )
+    total_likes = serializers.ReadOnlyField(source="likes.count")
+    user_has_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Series
@@ -78,9 +84,16 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "synopsis",
             "start_date",
             "end_date",
+            "user_has_liked",
+            "total_likes",
+            "likes",
             "owner",
             "comments",
         ]
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
 
 
 class StorySerializer(serializers.ModelSerializer):
@@ -90,6 +103,7 @@ class StorySerializer(serializers.ModelSerializer):
         view_name="story-detail", lookup_field="pk"
     )
     series = serializers.ReadOnlyField(source="series.series_name")
+    likes = serializers.ReadOnlyField(source="likes.count")
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -101,6 +115,7 @@ class StorySerializer(serializers.ModelSerializer):
             "series",
             "episode_number",
             "episode_title",
+            "likes",
             # "description",
             # "episode_release_date",
             # "content",
@@ -111,9 +126,12 @@ class StorySerializer(serializers.ModelSerializer):
 class StoryDetailSerializer(serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator.creator_profile")
     series = serializers.ReadOnlyField(source="series.series_name")
+    user_has_liked = serializers.SerializerMethodField()
+    likes = serializers.ReadOnlyField(source="likes.count")
     comments = CommentInlineSerializer(
         source="series.creator.comments.all", many=True, read_only=True
     )
+    user_has_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Story
@@ -125,9 +143,15 @@ class StoryDetailSerializer(serializers.ModelSerializer):
             "description",
             "episode_release_date",
             "content",
+            "user_has_liked",
+            "likes",
             "owner",
             "comments",
         ]
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
 
 
 class AnimeSerializer(serializers.ModelSerializer):
@@ -138,6 +162,7 @@ class AnimeSerializer(serializers.ModelSerializer):
         view_name="anime-detail", lookup_field="pk"
     )
     series = serializers.ReadOnlyField(source="series.series_name")
+    likes = serializers.ReadOnlyField(source="likes.count")
 
     class Meta:
         """Meta class for Anime Serializer"""
@@ -153,6 +178,7 @@ class AnimeSerializer(serializers.ModelSerializer):
             # "publish",
             "thumbnail",
             "file",
+            "likes",
             "creator",
         ]
 
@@ -163,6 +189,8 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
         source="series.creator.comments.all", many=True, read_only=True
     )
     series = serializers.ReadOnlyField(source="series.series_name")
+    likes = serializers.ReadOnlyField(source="likes.count")
+    user_has_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Anime
@@ -175,6 +203,12 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
             "publish",
             "thumbnail",
             "file",
+            "user_has_liked",
+            "likes",
             "owner",
             "comments",
         ]
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()

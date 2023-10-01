@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from .models import Contact
+from .models import Follow
 
 # Register your models here.
 
 
-@admin.register(Contact)
+@admin.register(Follow)
 class ContactAdmin(admin.ModelAdmin):
     list_display = [
-        "user_from",
-        "user_to",
+        # "user_from",
+        # "user_to",
         "created",
     ]
 

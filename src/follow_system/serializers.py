@@ -1,20 +1,20 @@
 from rest_framework import serializers
 
-from .models import Contact
+from .models import Follow
 
 
-class ContactSerializer(serializers.ModelSerializer):
+class FollowSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Contact
+        model = Follow
         fields = [
             "user_from",
             "user_to",
         ]
 
 
-class ContactDetailSerializer(serializers.ModelSerializer):
+class FollowDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Contact
+        model = Follow
         fields = [
             "user_from",
             "user_to",

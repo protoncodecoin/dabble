@@ -1,29 +1,26 @@
 from django.db import models
 from django.conf import settings
 
-from users_api.models import CreatorProfile
+from users_api.models import CreatorProfile, UserProfile
 
 
 # Create your models here.
-class Contact(models.Model):
+class Follow(models.Model):
     user_from = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        UserProfile,
         on_delete=models.CASCADE,
-        related_name="rel_user",
+        related_name="creator_following",
         null=True,
         blank=True,
     )
     user_to = models.ForeignKey(
-        CreatorProfile,
-        on_delete=models.CASCADE,
-        related_name="rel_creator",
-        blank=True,
-        null=True,
+        CreatorProfile, on_delete=models.CASCADE, related_name="user_followers"
     )
+
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user_from} is following {self.user_to}"
 
     class Meta:
-        verbose_name_plural = "Contacts"
+        verbose_name_plural = "Follow"

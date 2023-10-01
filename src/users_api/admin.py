@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, CreatorProfile, UserProfile
+from .models import CustomUser, CreatorProfile, UserProfile, Follow
 
 
 class CustomUserAdmin(UserAdmin):
@@ -88,8 +88,10 @@ class CreatorProfileAdmin(admin.ModelAdmin):
     list_display = [
         "creator",
         "creator_logo",
+        "id",
     ]
     list_display_links = [
+        "id",
         "creator",
         "creator_logo",
     ]
@@ -102,4 +104,17 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = [
         "user",
         "profile_img",
+    ]
+
+
+@admin.register(Follow)
+class FollowAdmin(admin.ModelAdmin):
+    list_display = [
+        "user_from",
+        "creator_to",
+        "created",
+    ]
+    list_display_links = [
+        "user_from",
+        "creator_to",
     ]

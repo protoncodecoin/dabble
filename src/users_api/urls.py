@@ -26,6 +26,11 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="rest_login"),
     path("logout/", LogoutView.as_view(), name="rest_logout"),
     path("user/", UserDetailsView.as_view(), name="rest_user_details"),
+    path(
+        "follow/<int:creator_id>/",
+        views.follow_and_unfollow,
+        name="follow_and_unfollow",
+    ),
     # email verification
     path("register/verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
     path(
