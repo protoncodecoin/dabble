@@ -4,11 +4,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # likes/<str:content_id>/<int:pk>/
     path(
         "likes/<str:content_type>/<str:content_id>/",
         views.like_and_unlike,
         name="like_and_unlike",
+    ),
+    path(
+        "comments/<str:content_type>/<int:content_id>", views.comments, name="comments"
     ),
     path("series/", views.SeriesListAPI.as_view(), name="series-list"),
     path("series/<int:pk>/", views.SeriesDetailAPI.as_view(), name="series-detail"),

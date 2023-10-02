@@ -162,9 +162,10 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
+        # "rest_framework.authentication.BasicAuthentication",
     ],
 }
 
@@ -172,8 +173,9 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "users_api.serializers.CustomRegisterSerializer",
 }
 
-REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
 }
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -184,9 +186,10 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Sign-up with email verification
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "http://127.0.0.1:8000/api/v1/api-auth/login/"
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
-EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:8000/api/v1/email/confirm/"
+EMAIL_CONFIRM_REDIRECT_BASE_URL = (
+    "http://localhost:8000/api/v1/users/account-confirm-email/"
+)
 
 # <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
 PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
@@ -200,8 +203,11 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 
+
 SITE_ID = 1
-# LOGIN_REDIRECT_URL = "http://127.0.0.1"
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = "anime_api_key"
+LOGIN_URL = "http://localhost:8000"
 
 # Email Backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

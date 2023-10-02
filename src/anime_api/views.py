@@ -4,6 +4,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -17,6 +18,8 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
 
 from .models import Series, Story, Anime
+
+from comment_system.models import Comment
 
 from .serializers import (
     SeriesSerializer,
@@ -113,10 +116,70 @@ def like_and_unlike(request, content_id, content_type):
     )
 
 
+@api_view(["GET", "POST", "PUT", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
+def comments(request, content_type, content_id):
+    user = request.user
+    print(request.GET.get("comment"), "=============================")
+    if request.method == "POST":
+        if content_type == "series":
+            target_content_type = ContentType.objects.get_for_model(Series)
+            if not Comment.objects.filter(
+                user=user, target_ct=target_content_type, target_id=content_id
+            ).exists():
+                Comment.objects.create(
+                    user=user,
+                    target_ct=target_content_type,
+                    target_id=content_id,
+                    comment=request.POST.get("comment"),
+                )
+                return Response(
+                    {"message": "Comment was successfuly added"},
+                    status=status.HTTP_201_CREATED,
+                )
+        if content_type == "story":
+            target_content_type = ContentType.objects.get_for_model(Story)
+            if not Comment.objects.filter(
+                user=user, target_ct=target_content_type, target_id=content_id
+            ).exists():
+                Comment.objects.create(
+                    user=user,
+                    target_ct=target_content_type,
+                    target_id=content_id,
+                    comment=request.POST.get("comment"),
+                )
+                return Response(
+                    {"message": "Comment was successfuly added"},
+                    status=status.HTTP_201_CREATED,
+                )
+        if content_type == "anime":
+            target_content_type = ContentType.objects.get_for_model(Anime)
+            if not Comment.objects.filter(
+                user=user, target_ct=target_content_type, target_id=content_id
+            ).exists():
+                Comment.objects.create(
+                    user=user,
+                    target_ct=target_content_type,
+                    target_id=content_id,
+                    comment=request.GET.get("comment"),
+                )
+                return Response(
+                    {"message": "Comment was successfuly added"},
+                    status=status.HTTP_201_CREATED,
+                )
+
+    if request.method == "PUT":
+        return Response({"message": "This is a put request"}, status=status.HTTP_200_OK)
+    if request.method == "DELETE":
+        return Response({"message": "This is a delete request"}, status=status.HTTP_204)
+
+    return Response({"message": "Allowed Methods include (POST, PUT, DELETE)"})
+
+
 class SeriesListAPI(generics.ListCreateAPIView):
     """Return all Series in DD to the endpoint"""
 
-    # queryset = Series.objects.all()
+    queryset = Series.objects.all()
     serializer_class = SeriesSerializer
     # lookup_field = "pk"
 
