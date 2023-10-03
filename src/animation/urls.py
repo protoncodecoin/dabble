@@ -29,8 +29,11 @@ from users_api.views import (
     FacebookLogin,
     GithubLogin,
     GoogleLoginView,
-    UserRedirectView,
+    # UserRedirectView,
 )
+
+from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
+from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 api_url_patterns = [
     path("content/", include(anime_api_url)),
@@ -54,7 +57,13 @@ urlpatterns = [
         GoogleLoginView.as_view(),
         name="google_login",
     ),
-    path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
+    # path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
+    path("api/v1/password-reset/", PasswordResetView.as_view()),
+    path(
+        "api/v1/password-reset-confirm/<uidb64>/<token>/",
+        PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
 ]
 
 if settings.DEBUG:

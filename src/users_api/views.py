@@ -35,25 +35,25 @@ User = get_user_model()
 # Create your views here.
 
 
-class UserRedirectView(LoginRequiredMixin, RedirectView):
-    """
-    This view is needed by the dj-rest-auth-library in order to work the google login. It's a bug
-    """
+# class UserRedirectView(LoginRequiredMixin, RedirectView):
+#     """
+#     This view is needed by the dj-rest-auth-library in order to work the google login. It's a bug
+#     """
 
-    permanent = False
+#     permanent = False
 
-    def get_redirect_url(self):
-        return "redirect-url"
-
-
-def email_confirm_redirect(request, key):
-    return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+#     def get_redirect_url(self):
+#         return "redirect-url"
 
 
-def password_reset_confirm_redirect(request, uidb64, token):
-    return HttpResponseRedirect(
-        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
-    )
+# def email_confirm_redirect(request, key):
+#     return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+
+
+# def password_reset_confirm_redirect(request, uidb64, token):
+#     return HttpResponseRedirect(
+#         f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+#     )
 
 
 class FacebookLogin(SocialLoginView):

@@ -50,11 +50,11 @@ INSTALLED_APPS = [
     # "follow_system.apps.FollowSystemConfig",
     #
     # third party apps
+    "dj_rest_auth",
+    "allauth.account",
     "rest_framework",
     "rest_framework.authtoken",
-    "dj_rest_auth",
     "allauth",
-    "allauth.account",
     "allauth.socialaccount",
     "dj_rest_auth.registration",
     # google social auth
@@ -81,7 +81,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "animation/templates"),
+            # os.path.join(BASE_DIR, "animation/templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -162,12 +162,22 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        # "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
         # "rest_framework.authentication.BasicAuthentication",
     ],
 }
+
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = "anime_api_key"
+
+AUTHENTICATION_BACKENDS = [
+    # allauth specific authentication methods, such as login by email specific
+    "allauth.account.auth_backends.AuthenticationBackend",
+    # Needed to login by username and email in Django admin, regardless of allauth
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users_api.serializers.CustomRegisterSerializer",
@@ -182,32 +192,25 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-
-# Sign-up with email verification
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_URL = "http://localhost:8000/api/v1/users/login"
+
+# Sign-up with email verification
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
-EMAIL_CONFIRM_REDIRECT_BASE_URL = (
-    "http://localhost:8000/api/v1/users/account-confirm-email/"
-)
+# EMAIL_CONFIRM_REDIRECT_BASE_URL = (
+#     "http://localhost:8000/api/v1/users/account-confirm-email/"
+# )
 
 # <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
-PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
-    "http://localhost:8000/api/v1/users/password-reset/confirm/"
-)
-
-AUTHENTICATION_BACKENDS = [
-    # allauth specific authentication methods, such as login by email specific
-    "allauth.account.auth_backends.AuthenticationBackend",
-    # Needed to login by username and email in Django admin, regardless of allauth
-    "django.contrib.auth.backends.ModelBackend",
-]
+# PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
+#     "http://localhost:8000/api/v1/users/password-reset/confirm/"
+# )
 
 
 SITE_ID = 1
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = "anime_api_key"
-LOGIN_URL = "http://localhost:8000"
+
+# LOGIN_URL = "http://localhost:8000"
 
 # Email Backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
