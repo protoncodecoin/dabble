@@ -5,6 +5,11 @@ from django.utils.text import slugify
 from .models import Series, Story, Anime
 from comment_system.serializers import CommentSerializer
 
+from django.contrib.contenttypes.models import ContentType
+
+from .models import Series, Season
+from comment_system.models import Comment
+
 
 class CreatorInlineSerializer(serializers.Serializer):
     "Serialize data related to creator profile"
@@ -12,14 +17,6 @@ class CreatorInlineSerializer(serializers.Serializer):
     company_description = serializers.CharField(read_only=True)
     company_website = serializers.URLField(read_only=True)
     creator_logo = serializers.ImageField(read_only=True)
-
-
-class CommentInlineSerializer(serializers.Serializer):
-    url = serializers.HyperlinkedIdentityField(
-        view_name="comment-detail", lookup_field="pk", read_only=True
-    )
-    comment = serializers.TimeField(read_only=True)
-    created = serializers.DateTimeField(read_only=True)
 
 
 class ContactInlineSerializer(serializers.Serializer):
@@ -38,7 +35,6 @@ class SeriesSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
     likes = serializers.ReadOnlyField(source="likes.count")
-    # likes = serializers.ReadOnlyField(source="creator.")
 
     class Meta:
         """Meta class for Series Serializer"""
@@ -64,15 +60,12 @@ class SeriesSerializer(serializers.ModelSerializer):
 
 
 class SeriesDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="creator.creator_profile", read_only=True)
+    owner = CreatorInlineSerializer(source="creator", read_only=True)
     creator = serializers.ReadOnlyField(source="creator.username")
-    comments = CommentInlineSerializer(
-        source="Comment",
-        many=True,
-        read_only=True,
-    )
+    comments = serializers.SerializerMethodField()
     total_likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
+    liked_user_names = serializers.SerializerMethodField()
 
     class Meta:
         model = Series
@@ -86,6 +79,7 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "user_has_liked",
             "total_likes",
             "likes",
+            "liked_user_names",
             "owner",
             "comments",
         ]
@@ -93,6 +87,21 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
+
+    def get_liked_user_names(self, obj):
+        liked_users = obj.likes.all()
+        liked_usernames = [user.username for user in liked_users]
+        return liked_usernames
+
+    def get_comments(self, obj):
+        target_content_type = ContentType.objects.get_for_model(Series)
+        comments = Comment.objects.filter(
+            target_ct=target_content_type, target_id=obj.id
+        )
+
+        all_comments = {comment.comment: comment.user.email for comment in comments}
+
+        return all_comments
 
 
 class StorySerializer(serializers.ModelSerializer):
@@ -125,10 +134,9 @@ class StoryDetailSerializer(serializers.ModelSerializer):
     series = serializers.ReadOnlyField(source="series.series_name")
     user_has_liked = serializers.SerializerMethodField()
     likes = serializers.ReadOnlyField(source="likes.count")
-    comments = CommentInlineSerializer(
-        source="series.creator.comments.all", many=True, read_only=True
-    )
+    comments = serializers.SerializerMethodField()
     user_has_liked = serializers.SerializerMethodField()
+    liked_user_names = serializers.SerializerMethodField()
     season = serializers.ReadOnlyField(source="season.season_number")
 
     class Meta:
@@ -139,11 +147,12 @@ class StoryDetailSerializer(serializers.ModelSerializer):
             "season",
             "episode_number",
             "episode_title",
-            "description",
             "episode_release_date",
-            "content",
             "user_has_liked",
             "likes",
+            "liked_user_names",
+            "description",
+            "content",
             "owner",
             "comments",
         ]
@@ -151,6 +160,20 @@ class StoryDetailSerializer(serializers.ModelSerializer):
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
+
+    def get_liked_user_names(self, obj):
+        liked_users = obj.likes.all()
+        liked_usernames = [user.username for user in liked_users]
+        return liked_usernames
+
+    def get_comments(self, obj):
+        target_content_type = ContentType.objects.get_for_model(Story)
+        comments = Comment.objects.filter(
+            target_ct=target_content_type, target_id=obj.id
+        )
+
+        all_comments = {comment.comment: comment.user.email for comment in comments}
+        return all_comments
 
 
 class AnimeSerializer(serializers.ModelSerializer):
@@ -181,12 +204,11 @@ class AnimeSerializer(serializers.ModelSerializer):
 
 class AnimeDetailSerializer(serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator")
-    comments = CommentInlineSerializer(
-        source="series.creator.comments.all", many=True, read_only=True
-    )
+    comments = serializers.SerializerMethodField()
     series = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
+    liked_user_names = serializers.SerializerMethodField()
 
     class Meta:
         model = Anime
@@ -200,6 +222,7 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
             "publish",
             "thumbnail",
             "likes",
+            "liked_user_names",
             "file",
             "comments",
             "owner",
@@ -208,3 +231,18 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
+
+    def get_liked_user_names(self, obj):
+        liked_users = obj.likes.all()
+        liked_usernames = [user.username for user in liked_users]
+        return liked_usernames
+
+    def get_comments(self, obj):
+        target_content_type = ContentType.objects.get_for_model(Anime)
+        comments = Comment.objects.filter(
+            target_ct=target_content_type, target_id=obj.id
+        )
+
+        # all_comments = [comment.comment for comment in comments]
+        all_comments = {comment.comment: comment.user.email for comment in comments}
+        return all_comments

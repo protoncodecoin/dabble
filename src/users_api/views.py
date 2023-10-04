@@ -107,7 +107,6 @@ class CreatorList(generics.ListAPIView):
 def follow_and_unfollow(request, creator_id):
     # follow/<int:id>/
     user = request.user
-    print(user, "=================================")
     user_prof = UserProfile.objects.get(user=user)
     try:
         creator = CreatorProfile.objects.get(id=creator_id)

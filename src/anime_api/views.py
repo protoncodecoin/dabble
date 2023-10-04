@@ -12,10 +12,6 @@ from rest_framework import status, permissions
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 
-# from dj_rest_auth.registration.views import SocialLoginView
-# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-
 
 from .models import Series, Story, Anime
 
@@ -32,24 +28,7 @@ from .serializers import (
 from .permissions import IsCreatorOrReaOnly
 
 
-# Create your views here.
-# class GoogleLogin(SocialLoginView):
-#     adapter = GoogleOAuth2Adapter
-#     callback_url = "http://127.0.0.1:8000/api/v1/content/series/"
-#     client_class = OAuth2Client
-
-
-# def email_confirm_redirect(request, key):
-#     return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
-
-
-# def password_reset_confirm_redirect(request, uidb64, token):
-#     return HttpResponseRedirect(
-#         f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
-#     )
-
-
-@api_view(["GET", "POST", "PUT"])
+@api_view(["POST", "PUT"])
 @permission_classes([permissions.IsAuthenticated])
 def like_and_unlike(request, content_id, content_type):
     user = request.user
@@ -120,60 +99,105 @@ def like_and_unlike(request, content_id, content_type):
 @permission_classes([permissions.IsAuthenticated])
 def comments(request, content_type, content_id):
     user = request.user
-    print(request.GET.get("comment"), "=============================")
     if request.method == "POST":
         if content_type == "series":
             target_content_type = ContentType.objects.get_for_model(Series)
-            if not Comment.objects.filter(
-                user=user, target_ct=target_content_type, target_id=content_id
-            ).exists():
-                Comment.objects.create(
-                    user=user,
-                    target_ct=target_content_type,
-                    target_id=content_id,
-                    comment=request.POST.get("comment"),
-                )
-                return Response(
-                    {"message": "Comment was successfuly added"},
-                    status=status.HTTP_201_CREATED,
-                )
-        if content_type == "story":
-            target_content_type = ContentType.objects.get_for_model(Story)
-            if not Comment.objects.filter(
-                user=user, target_ct=target_content_type, target_id=content_id
-            ).exists():
-                Comment.objects.create(
-                    user=user,
-                    target_ct=target_content_type,
-                    target_id=content_id,
-                    comment=request.POST.get("comment"),
-                )
-                return Response(
-                    {"message": "Comment was successfuly added"},
-                    status=status.HTTP_201_CREATED,
-                )
+            Comment.objects.update_or_create(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            return Response(
+                {"message": "successful"},
+                status=status.HTTP_201_CREATED,
+            )
+
         if content_type == "anime":
             target_content_type = ContentType.objects.get_for_model(Anime)
-            if not Comment.objects.filter(
-                user=user, target_ct=target_content_type, target_id=content_id
-            ).exists():
-                Comment.objects.create(
-                    user=user,
-                    target_ct=target_content_type,
-                    target_id=content_id,
-                    comment=request.GET.get("comment"),
-                )
-                return Response(
-                    {"message": "Comment was successfuly added"},
-                    status=status.HTTP_201_CREATED,
-                )
 
-    if request.method == "PUT":
-        return Response({"message": "This is a put request"}, status=status.HTTP_200_OK)
+            Comment.objects.create(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            return Response(
+                {"message": "Comment was successfuly added"},
+                status=status.HTTP_201_CREATED,
+            )
+
+        if content_type == "story":
+            target_content_type = ContentType.objects.get_for_model(Story)
+
+            Comment.objects.create(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            return Response(
+                {"message": "Comment was successfuly added"},
+                status=status.HTTP_201_CREATED,
+            )
+
     if request.method == "DELETE":
-        return Response({"message": "This is a delete request"}, status=status.HTTP_204)
+        if content_type == "series":
+            target_content_type = ContentType.objects.get_for_model(Series)
+            existing_commnet = Comment.objects.filter(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            if existing_commnet:
+                existing_commnet.delete()
+                return Response(
+                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                )
+            return Response(
+                {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
+            )
 
-    return Response({"message": "Allowed Methods include (POST, PUT, DELETE)"})
+        if content_type == "story":
+            target_content_type = ContentType.objects.get_for_model(Story)
+            existing_comment = Comment.objects.filter(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            if existing_comment:
+                existing_comment.delete()
+                return Response(
+                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                )
+            return Response(
+                {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        if content_type == "anime":
+            target_content_type = ContentType.objects.get_for_model(Anime)
+            existing_comment = Comment.objects.filter(
+                user=user,
+                target_ct=target_content_type,
+                target_id=content_id,
+                comment=request.POST.get("comment"),
+            )
+            if existing_comment:
+                existing_comment.delete()
+                return Response(
+                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                )
+            return Response(
+                {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+    return Response(
+        {
+            "message": "Hmm it seems an unplanned circumstance has finally occurred. Check the data you are providing."
+        }
+    )
 
 
 class SeriesListAPI(generics.ListCreateAPIView):
