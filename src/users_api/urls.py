@@ -5,13 +5,7 @@ from dj_rest_auth.registration.views import (
     VerifyEmailView,
     ConfirmEmailView,
 )
-from dj_rest_auth.views import LoginView, LogoutView
-
-# from users_api.views import email_confirm_redirect, password_reset_confirm_redirect
-# from dj_rest_auth.registration.views import RegisterView
-
-# from allauth.socialaccount.views import signup
-# from anime_api.views import GoogleLogin
+from dj_rest_auth.views import LogoutView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -22,7 +16,6 @@ from rest_framework_simplejwt.views import (
 from . import views
 
 urlpatterns = [
-    # path("account-confirm-email/<str:key>/", ConfirmEmailView.as_view()),
     path("creators/", views.CreatorList.as_view()),
     path("account-confirm-email/<str:key>/", ConfirmEmailView.as_view()),
     path("register/", RegisterView.as_view(), name="account_signup"),
@@ -46,7 +39,4 @@ urlpatterns = [
         views.follow_and_unfollow,
         name="follow_and_unfollow",
     ),
-    # email verification
-    # path("signup/", signup, name="socialaccount_signup"),
-    # path("google/", GoogleLogin.as_view(), name="google_login"),
 ]
