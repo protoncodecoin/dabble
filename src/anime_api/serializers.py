@@ -124,7 +124,7 @@ class StorySerializer(serializers.ModelSerializer):
 
 
 class StoryDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="series.creator.creator_profile")
+    owner = CreatorInlineSerializer(source="series.creator")
     series = serializers.ReadOnlyField(source="series.series_name")
     user_has_liked = serializers.SerializerMethodField()
     likes = serializers.ReadOnlyField(source="likes.count")
@@ -157,7 +157,7 @@ class StoryDetailSerializer(serializers.ModelSerializer):
 class AnimeSerializer(serializers.ModelSerializer):
     """A Model Serializer for Anime Model"""
 
-    creator = serializers.ReadOnlyField(source="series.creator.username")
+    creator = serializers.ReadOnlyField(source="series.creator")
     url = serializers.HyperlinkedIdentityField(
         view_name="anime-detail", lookup_field="pk"
     )
@@ -184,7 +184,7 @@ class AnimeSerializer(serializers.ModelSerializer):
 
 
 class AnimeDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="series.creator.creator_profile")
+    owner = CreatorInlineSerializer(source="series.creator")
     comments = CommentInlineSerializer(
         source="series.creator.comments.all", many=True, read_only=True
     )

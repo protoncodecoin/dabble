@@ -2,13 +2,15 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from users_api.models import CreatorProfile
+
 
 # Create your models here.
 class Series(models.Model):
     """Database Model for Series"""
 
     creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        CreatorProfile,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
