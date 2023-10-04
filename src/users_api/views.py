@@ -16,18 +16,24 @@ from .serializers import (
     UsersSerializer,
     CreatorProfileSerializer,
     CustomRegisterSerializer,
+    MyTokenObtainPairSerializer,
 )
 
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+# from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+# from allauth.socialaccount.providers.github.views import GitHubOAuth2Adapter
+# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
-from dj_rest_auth.registration.views import SocialLoginView
+# from dj_rest_auth.registration.views import SocialLoginView
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions, status
 from rest_framework.response import Response
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 User = get_user_model()
 
@@ -56,27 +62,31 @@ User = get_user_model()
 #     )
 
 
-class FacebookLogin(SocialLoginView):
-    adapter_class = FacebookOAuth2Adapter
+# class FacebookLogin(SocialLoginView):
+#     adapter_class = FacebookOAuth2Adapter
 
 
-class GithubLogin(SocialLoginView):
-    adapter_class = GitHubOAuth2Adapter
-    callback_url = "http://127.0.0.1:8000/accounts/github/login/callback/"
-    client_class = OAuth2Client
+# class GithubLogin(SocialLoginView):
+#     adapter_class = GitHubOAuth2Adapter
+#     callback_url = "http://127.0.0.1:8000/accounts/github/login/callback/"
+#     client_class = OAuth2Client
 
 
-class GoogleLoginView(SocialLoginView):
-    adapter_class = GoogleOAuth2Adapter
-    callback_url = "http://127.0.0.1:8000/api/v1/content/stories/"
-    # callback_url = "http://localhost:8000"
-    client_class = OAuth2Client
+# class GoogleLoginView(SocialLoginView):
+#     adapter_class = GoogleOAuth2Adapter
+#     callback_url = "http://127.0.0.1:8000/api/v1/content/stories/"
+#     # callback_url = "http://localhost:8000"
+#     client_class = OAuth2Client
 
 
 # class CustomRegisterView(RegisterView):
 #     """Custom view to override the dj_rest_auth registration views"""
 
 #     serializer_class = CustomRegisterSerializer
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 class CreatorList(generics.ListAPIView):

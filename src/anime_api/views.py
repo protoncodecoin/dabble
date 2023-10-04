@@ -12,9 +12,9 @@ from rest_framework import status, permissions
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 
-from dj_rest_auth.registration.views import SocialLoginView
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+# from dj_rest_auth.registration.views import SocialLoginView
+# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
 
 from .models import Series, Story, Anime
@@ -33,20 +33,20 @@ from .permissions import IsCreatorOrReaOnly
 
 
 # Create your views here.
-class GoogleLogin(SocialLoginView):
-    adapter = GoogleOAuth2Adapter
-    callback_url = "http://127.0.0.1:8000/api/v1/content/series/"
-    client_class = OAuth2Client
+# class GoogleLogin(SocialLoginView):
+#     adapter = GoogleOAuth2Adapter
+#     callback_url = "http://127.0.0.1:8000/api/v1/content/series/"
+#     client_class = OAuth2Client
 
 
-def email_confirm_redirect(request, key):
-    return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+# def email_confirm_redirect(request, key):
+#     return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
 
 
-def password_reset_confirm_redirect(request, uidb64, token):
-    return HttpResponseRedirect(
-        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
-    )
+# def password_reset_confirm_redirect(request, uidb64, token):
+#     return HttpResponseRedirect(
+#         f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+#     )
 
 
 @api_view(["GET", "POST", "PUT"])

@@ -8,6 +8,21 @@ from django.db import transaction
 
 from .models import UserProfile, CreatorProfile, CustomUser
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token["is_creator"] = user.is_creator
+        token["email"] = user.email
+        print("token was issued ===================================")
+
+        return token
+
 
 class CustomRegisterSerializer(RegisterSerializer):
     """Customize the dj-rest-auth registerSerializer to include custom user models"""
@@ -22,7 +37,6 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.save()
 
         is_creator = self.validated_data.get("is_creator")
-        print(is_creator)
 
         # Create a Profile based on the is_creator field
         if is_creator:
