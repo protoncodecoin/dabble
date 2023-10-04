@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Series, Story, Anime
+from .models import Series, Story, Anime, Season
 
 
 # Register your models here.
@@ -18,7 +18,13 @@ class SeriesAdmin(admin.ModelAdmin):
 class StoriesAdmin(admin.ModelAdmin):
     """Registger Stories Model to Admin site"""
 
-    list_display = ["episode_title", "id", "episode_number", "episode_release_date"]
+    list_display = [
+        "season",
+        "episode_title",
+        "id",
+        "episode_number",
+        "episode_release_date",
+    ]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
 
@@ -27,6 +33,20 @@ class StoriesAdmin(admin.ModelAdmin):
 class AnimeAdmin(admin.ModelAdmin):
     """Registger Anime Model to Admin site"""
 
-    list_display = ["episode_title", "id", "episode_number", "episode_release_date"]
+    list_display = [
+        "season",
+        "episode_title",
+        "id",
+        "episode_number",
+        "episode_release_date",
+    ]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
+
+
+@admin.register(Season)
+class SeasonAdmin(admin.ModelAdmin):
+    """Register Seasom Model to Admin site"""
+
+    list_display = ["series", "season_number", "release_date"]
+    list_display_links = ["series"]

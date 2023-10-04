@@ -45,7 +45,6 @@ class SeriesSerializer(serializers.ModelSerializer):
 
         model = Series
         fields = [
-            # "owner",
             "url",
             "pk",
             "creator",
@@ -104,6 +103,7 @@ class StorySerializer(serializers.ModelSerializer):
     )
     series = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
+    season = serializers.ReadOnlyField(source="season.season_number")
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -116,10 +116,7 @@ class StorySerializer(serializers.ModelSerializer):
             "episode_number",
             "episode_title",
             "likes",
-            # "description",
-            # "episode_release_date",
-            # "content",
-            # "publish",
+            "season",
         ]
 
 
@@ -132,12 +129,14 @@ class StoryDetailSerializer(serializers.ModelSerializer):
         source="series.creator.comments.all", many=True, read_only=True
     )
     user_has_liked = serializers.SerializerMethodField()
+    season = serializers.ReadOnlyField(source="season.season_number")
 
     class Meta:
         model = Story
         fields = [
             "pk",
             "series",
+            "season",
             "episode_number",
             "episode_title",
             "description",
@@ -157,7 +156,7 @@ class StoryDetailSerializer(serializers.ModelSerializer):
 class AnimeSerializer(serializers.ModelSerializer):
     """A Model Serializer for Anime Model"""
 
-    creator = serializers.ReadOnlyField(source="series.creator")
+    creator = serializers.ReadOnlyField(source="series.creator.company_name")
     url = serializers.HyperlinkedIdentityField(
         view_name="anime-detail", lookup_field="pk"
     )
@@ -172,13 +171,10 @@ class AnimeSerializer(serializers.ModelSerializer):
             "pk",
             "url",
             "series",
-            "episode_number",
             "episode_title",
-            # "episode_release_date",
-            # "publish",
-            "thumbnail",
-            "file",
+            "episode_number",
             "likes",
+            "thumbnail",
             "creator",
         ]
 
@@ -200,13 +196,13 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
             "episode_number",
             "episode_title",
             "episode_release_date",
+            "user_has_liked",
             "publish",
             "thumbnail",
-            "file",
-            "user_has_liked",
             "likes",
-            "owner",
+            "file",
             "comments",
+            "owner",
         ]
 
     def get_user_has_liked(self, obj):

@@ -38,12 +38,29 @@ class Series(models.Model):
         verbose_name_plural = "Series"
 
 
+class Season(models.Model):
+    series = models.ForeignKey(Series, on_delete=models.CASCADE, related_name="season")
+    season_number = models.IntegerField()
+    release_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.series.series_name} season {self.season_number}"
+
+    class Meta:
+        verbose_name_plural = "Season"
+
+
 class Base(models.Model):
     """Database Model for Series"""
 
     series = models.ForeignKey(
-        Series, on_delete=models.CASCADE, related_name="%(class)s_related"
+        Series,
+        on_delete=models.CASCADE,
+        related_name="%(class)s_related",
+        blank=True,
+        null=True,
     )
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
     episode_number = models.IntegerField(
         null=False, validators=[MinValueValidator(1), MaxValueValidator(20)]
     )
