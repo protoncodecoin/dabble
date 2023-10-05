@@ -242,7 +242,5 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
         comments = Comment.objects.filter(
             target_ct=target_content_type, target_id=obj.id
         )
-
-        # all_comments = [comment.comment for comment in comments]
         all_comments = {comment.comment: comment.user.email for comment in comments}
         return all_comments

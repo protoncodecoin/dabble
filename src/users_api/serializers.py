@@ -16,10 +16,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
         token["is_creator"] = user.is_creator
         token["email"] = user.email
-        print("token was issued ===================================")
 
         return token
 
@@ -47,15 +45,16 @@ class CustomRegisterSerializer(RegisterSerializer):
             user_profile.save()
         return user
 
-    class CustomUserDetailSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = CustomUser
-            fields = (
-                "pk",
-                "email",
-                "is_creator",
-            )
-            read_only_fields = ("is_creator",)
+
+class CustomUserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = (
+            "pk",
+            "email",
+            "is_creator",
+        )
+        read_only_fields = ("is_creator",)
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -87,8 +86,20 @@ class CreatorProfileSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializer for the User Profile"""
 
+    names_of_follows = serializers.SerializerMethodField()
+
     class Meta:
         """Meta class for the User Profile"""
 
         model = UserProfile
-        fields = "__all__"
+        fields = [
+            "pk",
+            "follows",
+            "profile_img",
+            "names_of_follows",
+        ]
+
+    def get_names_of_follows(self, obj):
+        all_follows = obj.follows.all()
+        follower_names = list(map(lambda name: name.company_name, all_follows))
+        return follower_names

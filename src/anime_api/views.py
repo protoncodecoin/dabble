@@ -1,14 +1,8 @@
-from django.http import Http404, JsonResponse
-from django.shortcuts import render
-from django.conf import settings
-from django.http import HttpResponseRedirect
-from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 
@@ -25,11 +19,12 @@ from .serializers import (
     AnimeSerializer,
     AnimeDetailSerializer,
 )
-from .permissions import IsCreatorOrReaOnly
+
+from . import permissions
 
 
 @api_view(["POST", "PUT"])
-@permission_classes([permissions.IsAuthenticated])
+# @permission_classes([permissions.IsCommonUser])
 def like_and_unlike(request, content_id, content_type):
     user = request.user
     if content_id:
@@ -96,7 +91,7 @@ def like_and_unlike(request, content_id, content_type):
 
 
 @api_view(["GET", "POST", "PUT", "DELETE"])
-@permission_classes([permissions.IsAuthenticated])
+# @permission_classes([permissions.IsCommonUser])
 def comments(request, content_type, content_id):
     user = request.user
     if request.method == "POST":
@@ -203,6 +198,7 @@ def comments(request, content_type, content_id):
 class SeriesListAPI(generics.ListCreateAPIView):
     """Return all Series in DD to the endpoint"""
 
+    # permission_classes = [IsOwnerOrReadOnly]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
     # lookup_field = "pk"
@@ -224,7 +220,7 @@ class SeriesListAPI(generics.ListCreateAPIView):
 class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """views for handling single instance of series model"""
 
-    permission_classes = (IsCreatorOrReaOnly,)
+    # permission_classes = [IsOwnerOrReadOnly]
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
 
