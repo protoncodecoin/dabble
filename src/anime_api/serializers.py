@@ -35,6 +35,7 @@ class SeriesSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
     likes = serializers.ReadOnlyField(source="likes.count")
+    # tags = serializers.ReadOnlyField(source="tags.object.all")
 
     class Meta:
         """Meta class for Series Serializer"""
@@ -50,6 +51,7 @@ class SeriesSerializer(serializers.ModelSerializer):
             "synopsis",
             "likes",
         ]
+
         extra_kwargs = {
             "slug": {"write_only": True},
         }
@@ -57,6 +59,10 @@ class SeriesSerializer(serializers.ModelSerializer):
     def get_slug(self, obj):
         """Generate a method to generate the slug field"""
         return slugify(obj.series_name)
+
+    # def get_tags(self, obj):
+    #     tags = obj.tags.all()
+    #     return tags
 
 
 class SeriesDetailSerializer(serializers.ModelSerializer):
@@ -66,6 +72,7 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
     total_likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
+    # tags = serializers.ReadOnlyField(source="tags.object.all")
 
     class Meta:
         model = Series
@@ -102,6 +109,10 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
         all_comments = {comment.comment: comment.user.email for comment in comments}
 
         return all_comments
+
+    # def get_tags(self, obj):
+    #     tags = obj.tags.all()
+    #     return tags
 
 
 class StorySerializer(serializers.ModelSerializer):

@@ -16,6 +16,7 @@ from rest_framework_simplejwt.views import (
 from . import views
 
 urlpatterns = [
+    path("profile-search/", views.search_creators, name="search_creators"),
     path("creators-profile/", views.CreatorListAPIView.as_view()),
     path("users-profile/", views.UsersListAPIView.as_view()),
     path("all/", views.AllUserListAPI.as_view()),

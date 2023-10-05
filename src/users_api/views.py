@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 
 from rest_framework import generics
@@ -57,6 +58,23 @@ class AllUserListAPI(generics.ListAPIView):
     permission_classes = [permissions.EndPointRestrict]
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
+
+
+@api_view(["GET"])
+def search_creators(request):
+    if request.method == "GET":
+        query = request.GET.get("query")
+        if query == None:
+            query = ""
+
+        creator_result = CreatorProfile.objects.filter(
+            Q(company_name__icontains=query)
+            | (Q(company_website__icontains=query))
+            | (Q(company_description__icontains=query))
+        )
+
+        creator_serializer = CreatorProfileSerializer(creator_result, many=True)
+        return Response(creator_serializer.data)
 
 
 @api_view(["GET", "POST", "PUT"])

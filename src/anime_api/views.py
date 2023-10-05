@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,6 +22,39 @@ from .serializers import (
 )
 
 from . import permissions
+
+
+@api_view(["GET"])
+def search_contents(request):
+    if request.methjod == "GET":
+        query = request.GET.get("query")
+        if query == None:
+            query = ""
+
+        series_result = Series.objects.filter(Q(series_name__icontains=query))
+        series_serializer = SeriesSerializer(series_result, many=True)
+
+        anime_result = Anime.objects.filter(
+            Q(episode_title__icontains=query)
+            | (Q(episode_number__icontains=query))
+            | (Q(description__icontains=query))
+        )
+        anime_serializer = AnimeSerializer(anime_result, many=True)
+
+        story_result = Story.objects.filter(
+            Q(episode_title__icontains=query)
+            | (Q(episode_number__icontains=query))
+            | (Q(description__icontains=query))
+        )
+        story_serializer = StorySerializer(story_result, many=True)
+
+        query_result = {
+            "series": series_serializer.data,
+            "anime": anime_serializer.data,
+            "story": story_serializer.data,
+        }
+
+        return Response(query_result)
 
 
 @api_view(["POST", "PUT"])
@@ -203,7 +237,6 @@ class SeriesListAPI(generics.ListAPIView):
     ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
-    # lookup_field = "pk"
 
     def perform_create(self, serializer):
         user = self.request.user

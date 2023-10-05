@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "comment_system.apps.CommentSystemConfig",
     #
     # third party apps
+    "taggit",
     "rest_framework",
     "rest_framework.authtoken",
     "allauth",

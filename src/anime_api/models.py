@@ -4,8 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from users_api.models import CreatorProfile
 
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
+from taggit.managers import TaggableManager
 
 
 # Create your models here.
@@ -29,6 +28,7 @@ class Series(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="series_like", blank=True
     )
+    tags = TaggableManager()
     # views
 
     def __str__(self):
@@ -44,6 +44,7 @@ class Season(models.Model):
     series = models.ForeignKey(Series, on_delete=models.CASCADE, related_name="season")
     season_number = models.IntegerField()
     release_date = models.DateTimeField(auto_now_add=True)
+    tags = TaggableManager()
 
     def __str__(self):
         return f"{self.series.series_name} season {self.season_number}"
@@ -73,6 +74,7 @@ class Base(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
     )
+    tags = TaggableManager()
     # comment
     # views
 
