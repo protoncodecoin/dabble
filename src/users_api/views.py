@@ -11,7 +11,7 @@ from rest_framework.decorators import permission_classes
 
 from dj_rest_auth.registration.views import RegisterView
 
-from .models import UserProfile, CreatorProfile, Follow
+from .models import UserProfile, CreatorProfile, Follow, CustomUser
 from .serializers import (
     UserProfileSerializer,
     UsersSerializer,
@@ -52,6 +52,12 @@ class UsersListAPIView(generics.ListAPIView):
     "view for listing all users"
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+
+class AllUserListAPI(generics.ListAPIView):
+    permission_classes = [permissions.EndPointRestrict]
+    queryset = CustomUser.objects.all()
+    serializer_class = UsersSerializer
 
 
 @api_view(["GET", "POST", "PUT"])

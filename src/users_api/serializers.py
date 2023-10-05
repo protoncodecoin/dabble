@@ -1,3 +1,5 @@
+from django.contrib.auth.models import Group
+
 from rest_framework import serializers
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -32,11 +34,16 @@ class CustomRegisterSerializer(RegisterSerializer):
         user = super().save(request)
         user.is_creator = self.data.get("is_creator")
         user.email = self.data.get("email")
+        if user.is_creator:
+            creator_group = Group.objects.get(name="creator")
+            user.groups.add(creator_group)
+        else:
+            common_user_group = Group.objects.get(name="common_user")
+            user.groups.add(common_user_group)
         user.save()
 
         is_creator = self.validated_data.get("is_creator")
 
-        # Create a Profile based on the is_creator field
         if is_creator:
             creator_profile = CreatorProfile(creator=user)
             creator_profile.save()
@@ -46,15 +53,15 @@ class CustomRegisterSerializer(RegisterSerializer):
         return user
 
 
-class CustomUserDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = (
-            "pk",
-            "email",
-            "is_creator",
-        )
-        read_only_fields = ("is_creator",)
+# class CustomUserDetailSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = (
+#             "pk",
+#             "email",
+#             "is_creator",
+#         )
+#         read_only_fields = ("is_creator",)
 
 
 class UsersSerializer(serializers.ModelSerializer):
@@ -63,9 +70,9 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class for the Django user Model"""
 
-        model = User
+        model = CustomUser
         fields = [
-            "username",
+            # "username",
             "first_name",
             "last_name",
             "email",

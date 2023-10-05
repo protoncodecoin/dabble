@@ -18,6 +18,7 @@ from . import views
 urlpatterns = [
     path("creators-profile/", views.CreatorListAPIView.as_view()),
     path("users-profile/", views.UsersListAPIView.as_view()),
+    path("all/", views.AllUserListAPI.as_view()),
     path("account-confirm-email/<str:key>/", ConfirmEmailView.as_view()),
     path("register/", RegisterView.as_view(), name="account_signup"),
     # path("login/", LoginView.as_view()),
