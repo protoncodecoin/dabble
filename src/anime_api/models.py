@@ -4,6 +4,9 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from users_api.models import CreatorProfile
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
 
 # Create your models here.
 class Series(models.Model):
@@ -26,7 +29,6 @@ class Series(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="series_like", blank=True
     )
-    # comment
     # views
 
     def __str__(self):

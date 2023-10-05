@@ -3,6 +3,8 @@ from django.db import models
 from django.utils.translation import gettext as _
 
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 from .managers import CustomUserManager
 
@@ -63,6 +65,7 @@ class UserProfile(models.Model):
     follows = models.ManyToManyField(
         CreatorProfile, through="Follow", related_name="followers", blank=True
     )
+    favorites = GenericRelation("Favorite")
 
     def __str__(self):
         """Human readable representation of the User Profile model"""
@@ -93,3 +96,13 @@ class Follow(models.Model):
 
     class Meta:
         verbose_name_plural = "Follow"
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    def __str__(self):
+        return f"{self.user.user.email} added to favorite"
