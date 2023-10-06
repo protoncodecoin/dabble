@@ -57,14 +57,11 @@ INSTALLED_APPS = [
     "allauth.account",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    "allauth.socialaccount",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    # google social auth
+    # social auth
+    "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "allauth.socialaccount.providers.facebook",
-    "allauth.socialaccount.providers.twitter",
-    "allauth.socialaccount.providers.github",
 ]
 
 MIDDLEWARE = [

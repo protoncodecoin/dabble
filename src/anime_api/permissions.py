@@ -56,13 +56,16 @@ class CreatorAllStaffAllButEditOrReadOnly(permissions.BasePermission):
             return True
 
     def has_object_permission(self, request, view, obj):
+        # print(obj, "===========obj==============")
+        print(obj.series.creator.creator, "obj================================")
+        print(request.user, "===================user making request============")
         if request.user.is_superuser:
             return True
 
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        if obj.creator == request.user:
+        if obj.series.creator.creator == request.user:
             return True
 
         if request.user.is_staff and request.method not in self.edit_methods:

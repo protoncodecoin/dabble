@@ -48,5 +48,5 @@ class AnimeAdmin(admin.ModelAdmin):
 class SeasonAdmin(admin.ModelAdmin):
     """Register Seasom Model to Admin site"""
 
-    list_display = ["series", "season_number", "release_date"]
+    list_display = ["series", "season_number", "release_date", "id"]
     list_display_links = ["series"]

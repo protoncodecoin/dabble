@@ -121,9 +121,9 @@ class StorySerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="story-detail", lookup_field="pk"
     )
-    series = serializers.ReadOnlyField(source="series.series_name")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
-    season = serializers.ReadOnlyField(source="season.season_number")
+    season_number = serializers.ReadOnlyField(source="season.season_number")
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -133,28 +133,32 @@ class StorySerializer(serializers.ModelSerializer):
             "pk",
             "url",
             "series",
+            "series_name",
             "episode_number",
             "episode_title",
             "likes",
             "season",
+            "season_number",
         ]
 
 
 class StoryDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="series.creator")
-    series = serializers.ReadOnlyField(source="series.series_name")
+    owner = CreatorInlineSerializer(source="series.creator", read_only=True)
+    series_name = serializers.ReadOnlyField(source="series.series_name")
     user_has_liked = serializers.SerializerMethodField()
     likes = serializers.ReadOnlyField(source="likes.count")
     comments = serializers.SerializerMethodField()
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
-    season = serializers.ReadOnlyField(source="season.season_number")
+    season_number = serializers.ReadOnlyField(source="season.season_number")
 
     class Meta:
         model = Story
         fields = [
             "pk",
             "series",
+            "series_name",
+            "season_number",
             "season",
             "episode_number",
             "episode_title",
@@ -194,7 +198,7 @@ class AnimeSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="anime-detail", lookup_field="pk"
     )
-    series = serializers.ReadOnlyField(source="series.series_name")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
 
     class Meta:
@@ -204,19 +208,21 @@ class AnimeSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "url",
+            "series_name",
             "series",
             "episode_title",
             "episode_number",
             "likes",
             "thumbnail",
+            "season",
             "creator",
         ]
 
 
 class AnimeDetailSerializer(serializers.ModelSerializer):
-    owner = CreatorInlineSerializer(source="series.creator")
+    owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     comments = serializers.SerializerMethodField()
-    series = serializers.ReadOnlyField(source="series.series_name")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
@@ -226,6 +232,7 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "series",
+            "series_name",
             "episode_number",
             "episode_title",
             "episode_release_date",

@@ -26,27 +26,33 @@ from . import permissions
 
 @api_view(["GET"])
 def search_contents(request):
-    if request.methjod == "GET":
+    if request.method == "GET":
         query = request.GET.get("query")
         if query == None:
             query = ""
 
         series_result = Series.objects.filter(Q(series_name__icontains=query))
-        series_serializer = SeriesSerializer(series_result, many=True)
+        series_serializer = SeriesSerializer(
+            series_result, many=True, context={"request": request}
+        )
 
         anime_result = Anime.objects.filter(
             Q(episode_title__icontains=query)
             | (Q(episode_number__icontains=query))
             | (Q(description__icontains=query))
         )
-        anime_serializer = AnimeSerializer(anime_result, many=True)
+        anime_serializer = AnimeSerializer(
+            anime_result, many=True, context={"request": request}
+        )
 
         story_result = Story.objects.filter(
             Q(episode_title__icontains=query)
             | (Q(episode_number__icontains=query))
             | (Q(description__icontains=query))
         )
-        story_serializer = StorySerializer(story_result, many=True)
+        story_serializer = StorySerializer(
+            story_result, many=True, context={"request": request}
+        )
 
         query_result = {
             "series": series_serializer.data,
@@ -282,7 +288,14 @@ class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SeriesDetailSerializer
 
 
-class StoryAPI(generics.ListCreateAPIView):
+class StoryListAPI(generics.ListAPIView):
+    """Handles Story data from the Story Model"""
+
+    queryset = Story.objects.filter(publish=True)
+    serializer_class = StorySerializer
+
+
+class StoryCreateAPI(generics.ListCreateAPIView):
     """Handles Story data from the Story Model"""
 
     queryset = Story.objects.filter(publish=True)
@@ -297,7 +310,15 @@ class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StoryDetailSerializer
 
 
-class AnimeAPI(generics.ListCreateAPIView):
+class AnimeListAPI(generics.ListAPIView):
+    """View to serialize data from Anime model."""
+
+    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    queryset = Anime.objects.all()
+    serializer_class = AnimeSerializer
+
+
+class AnimeCreateAPI(generics.CreateAPIView):
     """View to serialize data from Anime model."""
 
     permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]

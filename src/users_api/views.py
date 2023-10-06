@@ -1,6 +1,7 @@
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import RedirectView
 
 
 from rest_framework import generics
@@ -25,7 +26,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .models import Favorite
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
+
 from .utility import create_favorite
 
 from anime_api import permissions
@@ -35,6 +39,23 @@ User = get_user_model()
 
 
 # Create your views here.
+
+
+class GoogleLoginView(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "http://127.0.0.1"
+    client_class = OAuth2Client
+
+
+class UserRedirectView(LoginRequiredMixin, RedirectView):
+    """
+    This view is needed by the dj-rest-auth-library in order for google login to work. It's a bug.
+    """
+
+    permanent = False
+
+    def get_redirect_url(self):
+        return "redirect-url"
 
 
 class MyTokenObtainPairView(TokenObtainPairView):

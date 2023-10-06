@@ -16,7 +16,7 @@ from rest_framework_simplejwt.views import (
 from . import views
 
 urlpatterns = [
-    path("profile-search/", views.search_creators, name="search_creators"),
+    path("profile-search", views.search_creators, name="search_creators"),
     path("creators-profile/", views.CreatorListAPIView.as_view()),
     path("users-profile/", views.UsersListAPIView.as_view()),
     path("all/", views.AllUserListAPI.as_view()),
@@ -47,4 +47,10 @@ urlpatterns = [
         views.add_remove_favorite,
         name="add_remove_fav",
     ),
+    path(
+        "dj-rest-auth/google/login/",
+        views.GoogleLoginView.as_view(),
+        name="google_login",
+    ),
+    path("~redirect/", view=views.UserRedirectView.as_view(), name="redirect"),
 ]
