@@ -32,7 +32,7 @@ class SeriesSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="series-detail", lookup_field="pk"
     )
-    slug = serializers.SerializerMethodField()
+    # slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
     likes = serializers.ReadOnlyField(source="likes.count")
     # tags = serializers.ReadOnlyField(source="tags.object.all")
@@ -46,7 +46,7 @@ class SeriesSerializer(serializers.ModelSerializer):
             "pk",
             "creator",
             "series_name",
-            "slug",
+            # "slug",
             "series_poster",
             "synopsis",
             "likes",
@@ -56,9 +56,27 @@ class SeriesSerializer(serializers.ModelSerializer):
             "slug": {"write_only": True},
         }
 
-    def get_slug(self, obj):
-        """Generate a method to generate the slug field"""
-        return slugify(obj.series_name)
+    def create(self, validated_data):
+        request = self.context.get("request")
+        user = request.user.creator_profile
+        series_name = self.validated_data["series_name"]
+        series_poster = self.validated_data["series_poster"]
+        synopsis = self.validated_data["synopsis"]
+
+        return Series.objects.create(
+            creator=user,
+            series_name=series_name,
+            synopsis=synopsis,
+            series_poster=series_poster,
+        )
+
+    def update(self, instance, validate_data):
+        return super().update(instance, validate_data, partial=True)
+        # serializer = CommentSerializer(comment, data={'content': 'foo bar'}, partial=True)
+
+    # def get_slug(self, obj):
+    #     """Generate a method to generate the slug field"""
+    #     return slugify(obj.series_name)
 
     # def get_tags(self, obj):
     #     tags = obj.tags.all()
@@ -81,6 +99,7 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "creator",
             "series_name",
             "synopsis",
+            "series_poster",
             "start_date",
             "end_date",
             "user_has_liked",
@@ -90,6 +109,20 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "owner",
             "comments",
         ]
+
+    # def create(self, validated_data):
+    #     request = self.context.get("request")
+    #     user = request.user.creator_profile
+    #     print(user, "=======================")
+    #     series_name = self.validate_data["series_name"]
+    #     series_poster = self.validated_data["series_poster"]
+    #     synopsis = self.validated_data["synopsis"]
+    #     return Series.objects.create(
+    #         creator=user,
+    #         series_name=series_name,
+    #         synopsis=synopsis,
+    #         series_poster=series_poster,
+    #     )
 
     def get_user_has_liked(self, obj):
         user = self.context["request"].user

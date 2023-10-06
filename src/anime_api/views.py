@@ -238,9 +238,9 @@ def comments(request, content_type, content_id):
 class SeriesListAPI(generics.ListAPIView):
     """Return all Series in DD to the endpoint"""
 
-    permission_classes = [
-        permissions.CreatorAllStaffAllButEditOrReadOnly,
-    ]
+    # permission_classes = [
+    #     permissions.CreatorAllStaffAllButEditOrReadOnly,
+    # ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
 
@@ -261,20 +261,9 @@ class SeriesListAPI(generics.ListAPIView):
 class SeriesCreateAPI(generics.CreateAPIView):
     """Return all Series in DD to the endpoint"""
 
-    permission_classes = [permissions.IsCreatorMember]
+    # permission_classes = [permissions.IsCreatorMember]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
-    # lookup_field = "pk"
-
-    def perform_create(self, serializer):
-        user = self.request.user
-        if not user.is_creator:
-            return Response(
-                {"detail": "Only creators can create a new series"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
-        else:
-            return serializer.save(creator=user)
 
     def get_queryset(self):
         return Series.objects.all()
@@ -283,7 +272,7 @@ class SeriesCreateAPI(generics.CreateAPIView):
 class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """views for handling single instance of series model"""
 
-    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
 
@@ -305,7 +294,7 @@ class StoryCreateAPI(generics.ListCreateAPIView):
 class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """Provide Retrieve, Update and Delete functionality for Story Model"""
 
-    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Story.objects.all()
     serializer_class = StoryDetailSerializer
 
@@ -313,7 +302,7 @@ class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 class AnimeListAPI(generics.ListAPIView):
     """View to serialize data from Anime model."""
 
-    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer
 
@@ -321,7 +310,7 @@ class AnimeListAPI(generics.ListAPIView):
 class AnimeCreateAPI(generics.CreateAPIView):
     """View to serialize data from Anime model."""
 
-    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer
 
@@ -329,6 +318,6 @@ class AnimeCreateAPI(generics.CreateAPIView):
 class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """View for handling single instance of the Anime Model"""
 
-    permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeDetailSerializer

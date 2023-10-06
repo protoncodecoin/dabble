@@ -13,15 +13,13 @@ class Series(models.Model):
 
     creator = models.ForeignKey(
         CreatorProfile,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete=models.CASCADE,
         related_name="series_created",
         verbose_name="creator",
     )
-    series_name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, blank=True, null=True)
-    series_poster = models.ImageField(upload_to="series/posters/%Y/%m/%d/")
+    series_name = models.CharField(max_length=200, unique=True)
+    # slug = models.SlugField(unique=True, blank=True, null=True)
+    series_poster = models.ImageField(upload_to="series/posters/%Y/%m/")
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
@@ -60,22 +58,19 @@ class Base(models.Model):
         Series,
         on_delete=models.CASCADE,
         related_name="%(class)s_related",
-        blank=True,
-        null=True,
     )
     season = models.ForeignKey(Season, on_delete=models.CASCADE)
     episode_number = models.IntegerField(
         null=False, validators=[MinValueValidator(1), MaxValueValidator(20)]
     )
     episode_title = models.CharField(max_length=500)
-    description = models.TextField(max_length=700, blank=True)
+    description = models.TextField(max_length=700, blank=True, null=True)
     episode_release_date = models.DateField(auto_now_add=True)
     publish = models.BooleanField(default=True)
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
     )
     tags = TaggableManager()
-    # comment
     # views
 
     class Meta:
@@ -90,8 +85,8 @@ class Base(models.Model):
 class Story(Base):
     """Database Model for Story"""
 
-    thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/%d/", blank=True)
-    content = models.TextField()
+    thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/", blank=True)
+    content = models.TextField(blank=False)
 
     class Meta:
         """Meta class for Story Model"""
@@ -103,11 +98,9 @@ class Story(Base):
 class Anime(Base):
     """Database Model for Series"""
 
-    thumbnail = models.ImageField(
-        upload_to="animations/thumbnails/%Y/%m/%d", blank=True
-    )
+    thumbnail = models.ImageField(upload_to="animations/thumbnails/%Y/%m/", blank=True)
     file = models.FileField(
-        upload_to="animations/video/%Y/%m/%d/", verbose_name="video file"
+        upload_to="animations/video/%Y/%m/", verbose_name="video file", blank=False
     )
 
     class Meta:
