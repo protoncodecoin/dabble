@@ -8,7 +8,7 @@ from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 
 
-from .models import Series, Story, Anime
+from .models import Series, Story, Anime, Season
 
 from comment_system.models import Comment
 
@@ -19,6 +19,9 @@ from .serializers import (
     StoryDetailSerializer,
     AnimeSerializer,
     AnimeDetailSerializer,
+    AnimeCreateSerializer,
+    SeasonSerializer,
+    SeasonCreateSerializer,
 )
 
 from . import permissions
@@ -312,7 +315,7 @@ class AnimeCreateAPI(generics.CreateAPIView):
 
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
-    serializer_class = AnimeSerializer
+    serializer_class = AnimeCreateSerializer
 
 
 class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
@@ -321,3 +324,24 @@ class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeDetailSerializer
+
+
+class SeasonListAPI(generics.ListAPIView):
+    """View for listing all season instances"""
+
+    queryset = Season.objects.all()
+    serializer_class = SeasonSerializer
+
+
+class SeasonCreateAPI(generics.CreateAPIView):
+    """View for creating new season object"""
+
+    queryset = Season.objects.all()
+    serializer_class = SeasonCreateSerializer
+
+
+class SeasonDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """View for retrieving, updating and deleting instance of season model"""
+
+    queryset = Season.objects.all()
+    serializer_class = SeasonSerializer

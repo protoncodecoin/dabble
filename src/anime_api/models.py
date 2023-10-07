@@ -18,7 +18,6 @@ class Series(models.Model):
         verbose_name="creator",
     )
     series_name = models.CharField(max_length=200, unique=True)
-    # slug = models.SlugField(unique=True, blank=True, null=True)
     series_poster = models.ImageField(upload_to="series/posters/%Y/%m/")
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -99,9 +98,7 @@ class Anime(Base):
     """Database Model for Series"""
 
     thumbnail = models.ImageField(upload_to="animations/thumbnails/%Y/%m/", blank=True)
-    file = models.FileField(
-        upload_to="animations/video/%Y/%m/", verbose_name="video file", blank=False
-    )
+    file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
 
     class Meta:
         """Meta class for Anime Model"""
