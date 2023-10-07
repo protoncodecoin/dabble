@@ -16,6 +16,7 @@ from .serializers import (
     SeriesSerializer,
     SeriesDetailSerializer,
     StorySerializer,
+    StoryCreateSerializer,
     StoryDetailSerializer,
     AnimeSerializer,
     AnimeDetailSerializer,
@@ -291,7 +292,7 @@ class StoryCreateAPI(generics.ListCreateAPIView):
     """Handles Story data from the Story Model"""
 
     queryset = Story.objects.filter(publish=True)
-    serializer_class = StorySerializer
+    serializer_class = StoryCreateSerializer
 
 
 class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):

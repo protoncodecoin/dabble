@@ -151,6 +151,83 @@ class StorySerializer(serializers.ModelSerializer):
         ]
 
 
+class StoryCreateSerializer(serializers.ModelSerializer):
+    """A class serializer to serialize data from Story Model"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="story-detail", lookup_field="pk"
+    )
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+    likes = serializers.ReadOnlyField(source="likes.count")
+    season_number = serializers.ReadOnlyField(source="season.season_number")
+
+    class Meta:
+        """Meta class of Story Serializer"""
+
+        model = Story
+        fields = [
+            "pk",
+            "url",
+            "series",
+            "series_name",
+            "episode_number",
+            "episode_title",
+            "thumbnail",
+            "description",
+            "content",
+            "likes",
+            "season",
+            "season_number",
+        ]
+
+    def validate(self, data):
+        request = self.context.get("request")
+        user = request.user.creator_profile
+        creator = data["series"].creator
+
+        if user == creator:
+            if data["series"] == data["season"].series:
+                qs = Story.objects.filter(
+                    series=data["series"],
+                    season=data["season"],
+                    episode_title=data["episode_title"],
+                    episode_number=data["episode_number"],
+                )
+                if qs.exists():
+                    total_num_episodes = Story.objects.filter(
+                        series=data["series"], season=data["season"]
+                    ).count()
+                    data["episode_number"] += (
+                        total_num_episodes if total_num_episodes else 1
+                    )
+                    return data
+
+                return data
+            raise serializers.ValidationError(
+                "ID of series does not match season_series"
+            )
+        raise serializers.ValidationError("You don't have permission")
+
+    def create(self, validated_data):
+        series_id = validated_data["series"]
+        season_id = validated_data["season"]
+        episode_number = validated_data["episode_number"]
+        episode_title = validated_data["episode_title"]
+        description = validated_data["description"]
+        thumbnail = validated_data["thumbnail"]
+        content = validated_data["content"]
+
+        return Story.objects.create(
+            series=series_id,
+            season=season_id,
+            episode_number=episode_number,
+            episode_title=episode_title,
+            content=content,
+            description=description,
+            thumbnail=thumbnail,
+        )
+
+
 class StoryDetailSerializer(serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     series_name = serializers.ReadOnlyField(source="series.series_name")
@@ -180,6 +257,24 @@ class StoryDetailSerializer(serializers.ModelSerializer):
             "owner",
             "comments",
         ]
+
+    def validate(self, data):
+        request = self.context.get("request")
+        user = request.user.creator_profile
+        creator = data["series"].creator
+
+        if user == creator:
+            if data["series"] == data["season"].series:
+                return data
+            raise serializers.ValidationError(
+                "ID of selected series do not match with season_series"
+            )
+        raise serializers.ValidationError(
+            "You don't have permission to modity story obj"
+        )
+
+    def update(self, instance, validated_data):
+        return super().update(instance=instance, validated_data=validated_data)
 
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
@@ -392,6 +487,7 @@ class SeasonCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Season
         fields = [
+            "pk",
             "series",
             "season_number",
             "release_date",
