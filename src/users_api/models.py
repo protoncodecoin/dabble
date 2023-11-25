@@ -28,6 +28,16 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+class Favorite(models.Model):
+    user = models.ForeignKey("UserProfile", on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    def __str__(self):
+        return f"{self.user.user.email} added {self.content_object} to their favorite"
+
+
 class CreatorProfile(models.Model):
     """Profile for Creators on the site"""
 
@@ -58,14 +68,16 @@ class CreatorProfile(models.Model):
 class UserProfile(models.Model):
     """Profile for 3rd level users on the site"""
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_profile"
+    )
     profile_img = models.ImageField(
         upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
     )
     follows = models.ManyToManyField(
         CreatorProfile, through="Follow", related_name="followers", blank=True
     )
-    favorites = GenericRelation("Favorite")
+    favorites = GenericRelation(Favorite)
 
     def __str__(self):
         """Human readable representation of the User Profile model"""
@@ -96,13 +108,3 @@ class Follow(models.Model):
 
     class Meta:
         verbose_name_plural = "Follow"
-
-
-class Favorite(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-
-    def __str__(self):
-        return f"{self.user.user.email} added to favorite"

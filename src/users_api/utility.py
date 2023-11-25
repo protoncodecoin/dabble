@@ -1,5 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from .models import Favorite
+from .serializers import FavoriteSerializer
+from anime_api.serializers import AnimeCreateSerializer
 
 
 def create_favorite(request_user, content_id: int, target_model):
@@ -17,7 +19,8 @@ def create_favorite(request_user, content_id: int, target_model):
         user_fav.delete()
         return False
     else:
-        Favorite.objects.create(
+        fav = Favorite.objects.create(
             user=request_user, content_type=target_ct, object_id=content_id
         )
-        return True
+        serializer = FavoriteSerializer(fav, many=False)
+        return serializer

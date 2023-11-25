@@ -1,9 +1,6 @@
 from rest_framework import serializers
 
-from django.utils.text import slugify
-
 from .models import Series, Story, Anime
-from comment_system.serializers import CommentSerializer
 
 from django.contrib.contenttypes.models import ContentType
 

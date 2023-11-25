@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "comment_system.apps.CommentSystemConfig",
     #
     # third party apps
-    "taggit",
+    # "taggit",
     "rest_framework",
     "rest_framework.authtoken",
     "allauth",
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "corsheaders",
     # social auth
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -159,7 +161,8 @@ AUTH_USER_MODEL = "users_api.CustomUser"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        # "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -218,18 +221,6 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "http://localhost:8000/api/v1/users/login"
 
-# Sign-up with email verification
-# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
-# EMAIL_CONFIRM_REDIRECT_BASE_URL = (
-#     "http://localhost:8000/api/v1/users/account-confirm-email/"
-# )
-
-# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
-# PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
-#     "http://localhost:8000/api/v1/users/password-reset/confirm/"
-# )
-
-
 SITE_ID = 1
 
 # LOGIN_URL = "http://localhost:8000"
@@ -260,3 +251,11 @@ SOCIALACCOUNT_PROVIDERS = {
         "VERIFIED_EMAIL": True,
     }
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:5500",
+    "http://127.0.0.1:5501",
+]
