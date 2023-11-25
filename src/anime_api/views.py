@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework import filters
 
 
 from .models import Series, Story, Anime, Season
@@ -247,6 +248,8 @@ class SeriesListAPI(generics.ListAPIView):
     # ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
     def perform_create(self, serializer):
         user = self.request.user
