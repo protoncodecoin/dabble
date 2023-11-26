@@ -1,8 +1,17 @@
+from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
-from .models import Series, Story, Anime
+from taggit.serializers import (
+    TaggitSerializer,
+    TagListSerializerField,
+)
+from taggit.models import Tag
 
-from django.contrib.contenttypes.models import ContentType
+from .models import (
+    Series,
+    Story,
+    Anime,
+)
 
 from .models import Series, Season
 from comment_system.models import Comment
@@ -23,13 +32,13 @@ class ContactInlineSerializer(serializers.Serializer):
     )
 
 
-class SeriesSerializer(serializers.ModelSerializer):
+class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Serialize the Series Model"""
 
+    tags = TagListSerializerField()
     url = serializers.HyperlinkedIdentityField(
         view_name="series-detail", lookup_field="pk"
     )
-    # slug = serializers.SerializerMethodField()
     creator = serializers.ReadOnlyField(source="creator.username")
     likes = serializers.ReadOnlyField(source="likes.count")
 
@@ -45,6 +54,7 @@ class SeriesSerializer(serializers.ModelSerializer):
             "series_poster",
             "synopsis",
             "likes",
+            "tags",
         ]
 
         extra_kwargs = {
@@ -58,26 +68,39 @@ class SeriesSerializer(serializers.ModelSerializer):
         series_poster = self.validated_data["series_poster"]
         synopsis = self.validated_data["synopsis"]
 
-        return Series.objects.create(
+        tags = self.validated_data["tags"][0]  # expected data ["pen,pencil,book"]
+
+        tags = tags.split(",")
+        tags = [tag.strip() for tag in tags]
+
+        tag_list = []  # creating or getting tags from names
+        for tag_name in tags:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            tag_list.append(tag)
+
+        new_series = Series.objects.create(
             creator=user,
             series_name=series_name,
             synopsis=synopsis,
             series_poster=series_poster,
         )
+        new_series.tags.add(*tags)
 
-    def update(self, instance, validate_data):
-        return super().update(instance, validate_data)
-        # serializer = CommentSerializer(comment, data={'content': 'foo bar'}, partial=True)
+        return new_series
+
+    # def update(self, instance, validate_data):
+    #     # return super().update(instance, validate_data)
+    #     return super().update(instance, validate_data)
 
 
-class SeriesDetailSerializer(serializers.ModelSerializer):
+class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="creator", read_only=True)
     creator = serializers.ReadOnlyField(source="creator.username")
     comments = serializers.SerializerMethodField()
     total_likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
-    # tags = serializers.ReadOnlyField(source="tags.object.all")
+    tags = TagListSerializerField()
 
     class Meta:
         model = Series
@@ -95,7 +118,25 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
             "liked_user_names",
             "owner",
             "comments",
+            "tags",
         ]
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop("tags", None)
+        if tags_data:
+            tags_list = tags_data[0].split(
+                ","
+            )  # Assuming tags are sent as ["pen,pencil,book"]
+            tags_list = [tag.strip() for tag in tags_list]
+
+            tag_instances = []  # To hold the tag instances
+            for tag_name in tags_list:
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                tag_instances.append(tag)
+
+            instance.tags.set(tag_instances)
+
+        return super().update(instance, validated_data)
 
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
@@ -116,12 +157,8 @@ class SeriesDetailSerializer(serializers.ModelSerializer):
 
         return all_comments
 
-    # def get_tags(self, obj):
-    #     tags = obj.tags.all()
-    #     return tags
 
-
-class StorySerializer(serializers.ModelSerializer):
+class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
     """A class serializer to serialize data from Story Model"""
 
     url = serializers.HyperlinkedIdentityField(
@@ -130,6 +167,7 @@ class StorySerializer(serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     season_number = serializers.ReadOnlyField(source="season.season_number")
+    tags = TagListSerializerField()
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -145,10 +183,11 @@ class StorySerializer(serializers.ModelSerializer):
             "likes",
             "season",
             "season_number",
+            "tags",
         ]
 
 
-class StoryCreateSerializer(serializers.ModelSerializer):
+class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     """A class serializer to serialize data from Story Model"""
 
     url = serializers.HyperlinkedIdentityField(
@@ -225,7 +264,7 @@ class StoryCreateSerializer(serializers.ModelSerializer):
         )
 
 
-class StoryDetailSerializer(serializers.ModelSerializer):
+class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     series_name = serializers.ReadOnlyField(source="series.series_name")
     user_has_liked = serializers.SerializerMethodField()
@@ -234,6 +273,7 @@ class StoryDetailSerializer(serializers.ModelSerializer):
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
     season_number = serializers.ReadOnlyField(source="season.season_number")
+    tags = TagListSerializerField()
 
     class Meta:
         model = Story
@@ -253,6 +293,7 @@ class StoryDetailSerializer(serializers.ModelSerializer):
             "content",
             "owner",
             "comments",
+            "tags",
         ]
 
     def validate(self, data):
@@ -292,7 +333,7 @@ class StoryDetailSerializer(serializers.ModelSerializer):
         return all_comments
 
 
-class AnimeSerializer(serializers.ModelSerializer):
+class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
     """A Model Serializer for Anime Model"""
 
     creator = serializers.ReadOnlyField(source="series.creator.company_name")
@@ -304,6 +345,7 @@ class AnimeSerializer(serializers.ModelSerializer):
     season_number = serializers.ReadOnlyField(
         source="season.season_number", read_only=True
     )
+    tags = TagListSerializerField()
 
     class Meta:
         """Meta class for Anime Serializer"""
@@ -322,6 +364,7 @@ class AnimeSerializer(serializers.ModelSerializer):
             "season",
             "season_number",
             "creator",
+            "tags",
         ]
 
 
@@ -388,13 +431,14 @@ class AnimeCreateSerializer(serializers.ModelSerializer):
         )
 
 
-class AnimeDetailSerializer(serializers.ModelSerializer):
+class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     comments = serializers.SerializerMethodField()
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
+    tags = TagListSerializerField()
 
     class Meta:
         model = Anime
@@ -408,6 +452,7 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
             "episode_release_date",
             "user_has_liked",
             "publish",
+            "tags",
             "thumbnail",
             "likes",
             "liked_user_names",
@@ -450,8 +495,9 @@ class AnimeDetailSerializer(serializers.ModelSerializer):
         return all_comments
 
 
-class SeasonSerializer(serializers.ModelSerializer):
+class SeasonSerializer(TaggitSerializer, serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
+    tags = TagListSerializerField()
 
     class Meta:
         model = Season
@@ -461,6 +507,7 @@ class SeasonSerializer(serializers.ModelSerializer):
             "series",
             "season_number",
             "release_date",
+            "tags",
         ]
 
     def validate(self, data):

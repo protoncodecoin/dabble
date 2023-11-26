@@ -8,6 +8,9 @@ from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import filters
 
+from taggit.models import Tag
+
+from .renderers import CustomJSONRenderer
 
 from .models import Series, Story, Anime, Season
 
@@ -248,25 +251,26 @@ class SeriesListAPI(generics.ListAPIView):
     # ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
+    renderer_classes = [CustomJSONRenderer]
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
-    def perform_create(self, serializer):
-        user = self.request.user
-        if not user.is_creator:
-            return Response(
-                {"detail": "Only creators can create a new series"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
-        else:
-            return serializer.save(creator=user)
+    # def perform_create(self, serializer):
+    #     user = self.request.user
+    #     if not user.is_creator:
+    #         return Response(
+    #             {"detail": "Only creators can create a new series"},
+    #             status=status.HTTP_403_FORBIDDEN,
+    #         )
+    #     else:
+    #         return serializer.save(creator=user)
 
     def get_queryset(self):
         return Series.objects.all()
 
 
 class SeriesCreateAPI(generics.CreateAPIView):
-    """Return all Series in DD to the endpoint"""
+    """Return all Series in Database to the endpoint"""
 
     # permission_classes = [permissions.IsCreatorMember]
     queryset = Series.objects.all()
@@ -276,12 +280,37 @@ class SeriesCreateAPI(generics.CreateAPIView):
         return Series.objects.all()
 
 
-class SeriesDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+class SeriesDetailAPI(generics.RetrieveUpdateAPIView):
     """views for handling single instance of series model"""
 
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
+
+
+@api_view(["PATCH"])
+def update_series(request, series_id):
+    try:
+        series = Series.objects.get(pk=series_id)
+    except Series.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    tags_str = request.data.get("tags")
+    if tags_str is not None:
+        tags = tags_str.split(",")
+        series.tags.clear()  # Clear existing tags first
+        for tag_name in tags:
+            tag_name = tag_name.strip()
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            series.tags.add(tag)
+
+    serializer = SeriesSerializer(
+        series, data=request.data, partial=True, context={"request": request}
+    )
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StoryListAPI(generics.ListAPIView):

@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "comment_system.apps.CommentSystemConfig",
     #
     # third party apps
-    # "taggit",
+    "taggit",
     "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
@@ -168,7 +168,11 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
 }
 
 SIMPLE_JWT = {

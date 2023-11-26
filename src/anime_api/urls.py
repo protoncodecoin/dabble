@@ -23,7 +23,7 @@ urlpatterns = [
     # anime url path
     path("animes/", views.AnimeListAPI.as_view(), name="animes-list"),
     path("anime/create/", views.AnimeCreateAPI.as_view(), name="animes-create"),
-    path("anime/<int:pk>", views.AnimeDetailAPI.as_view(), name="anime-detail"),
+    path("animes/<int:pk>", views.AnimeDetailAPI.as_view(), name="anime-detail"),
     # seasons url path
     path("seasons/", views.SeasonListAPI.as_view()),
     path("season/create/", views.SeasonCreateAPI.as_view()),

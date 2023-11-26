@@ -2,9 +2,9 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from taggit.managers import TaggableManager
+
 from users_api.models import CreatorProfile
-
-
 
 # Create your models here.
 class Series(models.Model):
@@ -24,6 +24,7 @@ class Series(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="series_like", blank=True
     )
+    tags = TaggableManager()
 
 
     def __str__(self):
@@ -83,6 +84,7 @@ class Story(Base):
 
     thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/", blank=True)
     content = models.TextField(blank=False)
+    tags = TaggableManager()
 
     class Meta:
         """Meta class for Story Model"""
@@ -96,6 +98,7 @@ class Anime(Base):
 
     thumbnail = models.ImageField(upload_to="animations/thumbnails/%Y/%m/", blank=True)
     file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
+    tags = TaggableManager()
 
     class Meta:
         """Meta class for Anime Model"""
