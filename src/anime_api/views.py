@@ -254,16 +254,6 @@ class SeriesListAPI(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
-    # def perform_create(self, serializer):
-    #     user = self.request.user
-    #     if not user.is_creator:
-    #         return Response(
-    #             {"detail": "Only creators can create a new series"},
-    #             status=status.HTTP_403_FORBIDDEN,
-    #         )
-    #     else:
-    #         return serializer.save(creator=user)
-
     def get_queryset(self):
         return Series.objects.all()
 
@@ -292,6 +282,8 @@ class StoryListAPI(generics.ListAPIView):
 
     queryset = Story.objects.filter(publish=True)
     serializer_class = StorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["^series__series_name", "^episode_title", "^description"]
 
 
 class StoryCreateAPI(generics.ListCreateAPIView):

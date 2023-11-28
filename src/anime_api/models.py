@@ -6,6 +6,7 @@ from taggit.managers import TaggableManager
 
 from users_api.models import CreatorProfile
 
+
 # Create your models here.
 class Series(models.Model):
     """Database Model for Series"""
@@ -25,7 +26,6 @@ class Series(models.Model):
         settings.AUTH_USER_MODEL, related_name="series_like", blank=True
     )
     tags = TaggableManager()
-
 
     def __str__(self):
         return self.series_name
@@ -67,6 +67,7 @@ class Base(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
     )
+    tags = TaggableManager()
 
     # views
 
@@ -84,7 +85,6 @@ class Story(Base):
 
     thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/", blank=True)
     content = models.TextField(blank=False)
-    tags = TaggableManager()
 
     class Meta:
         """Meta class for Story Model"""
@@ -98,7 +98,6 @@ class Anime(Base):
 
     thumbnail = models.ImageField(upload_to="animations/thumbnails/%Y/%m/", blank=True)
     file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
-    tags = TaggableManager()
 
     class Meta:
         """Meta class for Anime Model"""

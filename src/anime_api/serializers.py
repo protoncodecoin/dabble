@@ -11,10 +11,11 @@ from .models import (
     Series,
     Story,
     Anime,
+    Season,
 )
 
-from .models import Series, Season
 from comment_system.models import Comment
+from users_api.models import CreatorProfile
 
 
 class CreatorInlineSerializer(serializers.Serializer):
@@ -63,6 +64,7 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
+        print(request.user.is_creator, "===================")
         if request.user.is_creator:
             user = request.user.creator_profile
             series_name = self.validated_data["series_name"]
@@ -124,21 +126,32 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         ]
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop("tags", None)
-        if tags_data:
-            tags_list = tags_data[0].split(
-                ","
-            )  # Assuming tags are sent as ["pen,pencil,book"]
-            tags_list = [tag.strip() for tag in tags_list]
+        request = self.context.get("request")
 
-            tag_instances = []  # To hold the tag instances
-            for tag_name in tags_list:
-                tag, created = Tag.objects.get_or_create(name=tag_name)
-                tag_instances.append(tag)
+        if request.user.is_creator:
+            if request.user == instance.creator:
+                tags_data = validated_data.pop("tags", None)
+                if tags_data:
+                    tags_list = tags_data[0].split(
+                        ","
+                    )  # Assuming tags are sent as ["pen,pencil,book"]
+                    tags_list = [tag.strip() for tag in tags_list]
 
-            instance.tags.set(tag_instances)
+                    tag_instances = []  # To hold the tag instances
+                    for tag_name in tags_list:
+                        tag, created = Tag.objects.get_or_create(name=tag_name)
+                        tag_instances.append(tag)
 
-        return super().update(instance, validated_data)
+                    instance.tags.set(tag_instances)
+
+                return super().update(instance, validated_data)
+
+            raise serializers.ValidationError(
+                "You do not have the permission to modify this resources."
+            )
+        raise serializers.ValidationError(
+            "You do not have required permission to take modify this resources."
+        )
 
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
@@ -169,6 +182,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     season_number = serializers.ReadOnlyField(source="season.season_number")
+    season_id = serializers.ReadOnlyField(source="season.id")
     tags = TagListSerializerField()
 
     class Meta:
@@ -183,7 +197,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
             "episode_number",
             "episode_title",
             "likes",
-            "season",
+            "season_id",
             "season_number",
             "tags",
         ]
@@ -198,6 +212,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     season_number = serializers.ReadOnlyField(source="season.season_number")
+    tags = TagListSerializerField()
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -213,6 +228,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "description",
             "content",
+            "tags",
             "likes",
             "season",
             "season_number",
@@ -251,11 +267,19 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         season_id = validated_data["season"]
         episode_number = validated_data["episode_number"]
         episode_title = validated_data["episode_title"]
-        description = validated_data["description"]
-        thumbnail = validated_data["thumbnail"]
+        description = validated_data.get("description", "")
+        thumbnail = validated_data.get("thumbnail")
         content = validated_data["content"]
+        tags = self.validated_data["tags"]
+        split_tags = tags[0].split(",")
+        strip_tags = [tag.strip() for tag in split_tags]
 
-        return Story.objects.create(
+        tag_list = []
+        for tag_name in strip_tags:
+            tag, created = Tag.objects.get_or_create(name=tag_name)
+            tag_list.append(tag)
+
+        new_story_obj = Story.objects.create(
             series=series_id,
             season=season_id,
             episode_number=episode_number,
@@ -264,6 +288,8 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             description=description,
             thumbnail=thumbnail,
         )
+        new_story_obj.tags.add(*tag_list)
+        return new_story_obj
 
 
 class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -298,23 +324,32 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "tags",
         ]
 
-    def validate(self, data):
-        request = self.context.get("request")
-        user = request.user.creator_profile
-        creator = data["series"].creator
-
-        if user == creator:
-            if data["series"] == data["season"].series:
-                return data
-            raise serializers.ValidationError(
-                "ID of selected series do not match with season_series"
-            )
-        raise serializers.ValidationError(
-            "You don't have permission to modity story obj"
-        )
-
     def update(self, instance, validated_data):
-        return super().update(instance=instance, validated_data=validated_data)
+        request = self.context.get("request")
+
+        if request.user.is_creator:
+            user_profile = CreatorProfile.objects.get(creator=request.user)
+            if user_profile == instance.series.creator:
+                tags_data = validated_data.pop("tags", None)
+                if tags_data:
+                    tags_list = tags_data[0].split(
+                        ","
+                    )  # Assuming tags are sent as ["pen,pencil,book"]
+                    tags_list = [tag.strip() for tag in tags_list]
+
+                    tag_instances = []  # To hold the tag instances
+                    for tag_name in tags_list:
+                        tag, created = Tag.objects.get_or_create(name=tag_name)
+                        tag_instances.append(tag)
+
+                    instance.tags.set(tag_instances)
+
+                return super().update(instance, validated_data)
+
+            raise serializers.ValidationError(
+                "You do not have the required permission to modify this resources."
+            )
+        raise serializers.ValidationError("You are not the creator of this file.")
 
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
@@ -497,9 +532,8 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         return all_comments
 
 
-class SeasonSerializer(TaggitSerializer, serializers.ModelSerializer):
+class SeasonSerializer(serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    tags = TagListSerializerField()
 
     class Meta:
         model = Season
@@ -509,7 +543,6 @@ class SeasonSerializer(TaggitSerializer, serializers.ModelSerializer):
             "series",
             "season_number",
             "release_date",
-            "tags",
         ]
 
     def validate(self, data):
@@ -518,6 +551,7 @@ class SeasonSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = request.user.creator_profile
 
         if user == creator:
+            # if request.user.is_creator:
             qs = Season.objects.filter(
                 season_number=data["season_number"], series=data["series"]
             ).exists()
@@ -541,21 +575,23 @@ class SeasonCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         request = self.context.get("request")
-        creator = data["series"].creator
-        user = request.user.creator_profile
 
-        if creator == user:
-            qs = Season.objects.filter(
-                series=data["series"], season_number=data["season_number"]
-            ).exists()
-            if qs:
-                raise serializers.ValidationError(
-                    f"Season object with of {data['season_number']} exists"
-                )
+        # if creator == user:
+        if request.user.is_creator:
+            creator = data["series"].creator
+            user = request.user.creator_profile
+            if creator == user:
+                qs = Season.objects.filter(
+                    series=data["series"], season_number=data["season_number"]
+                ).exists()
+                if qs:
+                    raise serializers.ValidationError(
+                        f"Season object with of {data['season_number']} exists"
+                    )
+                else:
+                    return data
             else:
-                return data
-        else:
-            raise serializers.ValidationError("You can edit this object")
+                raise serializers.ValidationError("You can edit this object")
 
     def create(self, validated_data):
         series_id = validated_data["series"]
