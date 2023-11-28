@@ -63,30 +63,32 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
-        user = request.user.creator_profile
-        series_name = self.validated_data["series_name"]
-        series_poster = self.validated_data["series_poster"]
-        synopsis = self.validated_data["synopsis"]
+        if request.user.is_creator:
+            user = request.user.creator_profile
+            series_name = self.validated_data["series_name"]
+            series_poster = self.validated_data["series_poster"]
+            synopsis = self.validated_data["synopsis"]
 
-        tags = self.validated_data["tags"][0]  # expected data ["pen,pencil,book"]
+            tags = self.validated_data["tags"][0]  # expected data ["pen,pencil,book"]
 
-        tags = tags.split(",")
-        tags = [tag.strip() for tag in tags]
+            tags = tags.split(",")
+            tags = [tag.strip() for tag in tags]
 
-        tag_list = []  # creating or getting tags from names
-        for tag_name in tags:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-            tag_list.append(tag)
+            tag_list = []  # creating or getting tags from names
+            for tag_name in tags:
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                tag_list.append(tag)
 
-        new_series = Series.objects.create(
-            creator=user,
-            series_name=series_name,
-            synopsis=synopsis,
-            series_poster=series_poster,
-        )
-        new_series.tags.add(*tags)
+            new_series = Series.objects.create(
+                creator=user,
+                series_name=series_name,
+                synopsis=synopsis,
+                series_poster=series_poster,
+            )
+            new_series.tags.add(*tags)
 
-        return new_series
+            return new_series
+        raise serializers.ValidationError("You do not have the permission to create")
 
     # def update(self, instance, validate_data):
     #     # return super().update(instance, validate_data)

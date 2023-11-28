@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
@@ -286,31 +285,6 @@ class SeriesDetailAPI(generics.RetrieveUpdateAPIView):
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
-
-
-@api_view(["PATCH"])
-def update_series(request, series_id):
-    try:
-        series = Series.objects.get(pk=series_id)
-    except Series.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    tags_str = request.data.get("tags")
-    if tags_str is not None:
-        tags = tags_str.split(",")
-        series.tags.clear()  # Clear existing tags first
-        for tag_name in tags:
-            tag_name = tag_name.strip()
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-            series.tags.add(tag)
-
-    serializer = SeriesSerializer(
-        series, data=request.data, partial=True, context={"request": request}
-    )
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StoryListAPI(generics.ListAPIView):
