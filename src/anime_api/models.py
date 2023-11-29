@@ -96,8 +96,10 @@ class Story(Base):
 class Anime(Base):
     """Database Model for Series"""
 
-    thumbnail = models.ImageField(upload_to="animations/thumbnails/%Y/%m/", blank=True)
-    file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
+    anime_thumbnail = models.ImageField(
+        upload_to="animations/thumbnails/%Y/%m/", blank=True
+    )
+    video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
 
     class Meta:
         """Meta class for Anime Model"""

@@ -4,14 +4,22 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    permission_classes,
+)
 from rest_framework import filters
 
 from taggit.models import Tag
 
 from .renderers import CustomJSONRenderer
 
-from .models import Series, Story, Anime, Season
+from .models import (
+    Series,
+    Story,
+    Anime,
+    Season,
+)
 
 from comment_system.models import Comment
 
