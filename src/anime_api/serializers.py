@@ -92,10 +92,6 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
             return new_series
         raise serializers.ValidationError("You do not have the permission to create")
 
-    # def update(self, instance, validate_data):
-    #     # return super().update(instance, validate_data)
-    #     return super().update(instance, validate_data)
-
 
 class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="creator", read_only=True)
@@ -528,19 +524,6 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "comments",
             "owner",
         ]
-
-    # def validate(self, data):
-    #     request = self.context.get("request")
-    #     user = request.user.creator_profile
-    #     creator = data["series"].creator
-
-    #     if creator == user:
-    #         if data["series"] != data["season"].series:
-    #             raise serializers.ValidationError(
-    #                 "ID of series and season_series do not match."
-    #             )
-    #         return data
-    #     raise serializers.ValidationError("You don't have permission")
 
     def update(self, instance, validated_data):
         request = self.context.get("request")
