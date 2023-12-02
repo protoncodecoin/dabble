@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "django.contrib.postgres",
     "corsheaders",
     # social auth
     "allauth.socialaccount",
@@ -106,8 +107,10 @@ WSGI_APPLICATION = "animation.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
     }
 }
 
