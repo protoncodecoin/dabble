@@ -1,4 +1,3 @@
-from re import search
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
@@ -10,8 +9,6 @@ from rest_framework.decorators import (
     permission_classes,
 )
 from rest_framework import filters
-
-# from taggit.models import Tag
 
 from .renderers import CustomJSONRenderer
 
@@ -43,6 +40,10 @@ from anime_api import models
 
 @api_view(["GET"])
 def search_contents(request, contenttype):
+    """
+    Search database by using contenttype(models) and the query provided.
+    contenttype/models include: series, story, anime.
+    """
     content_type_mapping = {
         "series": models.Series,
         "anime": models.Anime,
@@ -51,80 +52,76 @@ def search_contents(request, contenttype):
 
     target_content = content_type_mapping.get(contenttype)
 
-    if request.method == "GET":
-        if target_content:
-            if "query" in request.GET:
-                query = request.GET.get("query")
-                if query is None:
-                    query = ""
+    if target_content:
+        if "query" in request.GET:
+            query = request.GET.get("query")
+            if query is None:
+                query = ""
 
-                if target_content == models.Anime:
-                    search_vector = SearchVector(
-                        "episode_title", "description", "series__series_name"
+            if target_content == models.Anime:
+                search_vector = SearchVector(
+                    "episode_title", "description", "series__series_name"
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Anime.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
                     )
-                    search_query = SearchQuery(query)
-                    results = (
-                        Anime.objects.annotate(
-                            search=search_vector,
-                            rank=SearchRank(search_vector, search_query),
-                        )
-                        .filter(search=search_query)
-                        .order_by("-rank")
-                    )
-                    anime_serializer = AnimeSerializer(
-                        results, many=True, context={"request": request}
-                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                anime_serializer = AnimeSerializer(
+                    results, many=True, context={"request": request}
+                )
 
-                    return Response(anime_serializer.data)
+                return Response(anime_serializer.data)
 
-                if target_content == models.Story:
-                    search_vector = SearchVector(
-                        "episode_title",
-                        "description",
-                        "series__series_name",
-                        "content",
+            if target_content == models.Story:
+                search_vector = SearchVector(
+                    "episode_title",
+                    "description",
+                    "series__series_name",
+                    "content",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Story.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
                     )
-                    search_query = SearchQuery(query)
-                    results = (
-                        Story.objects.annotate(
-                            search=search_vector,
-                            rank=SearchRank(search_vector, search_query),
-                        )
-                        .filter(search=search_query)
-                        .order_by("-rank")
-                    )
-                    story_serializer = StorySerializer(
-                        results, many=True, context={"request": request}
-                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                story_serializer = StorySerializer(
+                    results, many=True, context={"request": request}
+                )
 
-                    return Response(story_serializer.data)
+                return Response(story_serializer.data)
 
-                if target_content == models.Series:
-                    search_vector = SearchVector(
-                        "series_name",
-                        "synopsis",
+            if target_content == models.Series:
+                search_vector = SearchVector(
+                    "series_name",
+                    "synopsis",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Series.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
                     )
-                    search_query = SearchQuery(query)
-                    results = (
-                        Series.objects.annotate(
-                            search=search_vector,
-                            rank=SearchRank(search_vector, search_query),
-                        )
-                        .filter(search=search_query)
-                        .order_by("-rank")
-                    )
-                    series_serializer = SeriesSerializer(
-                        results, many=True, context={"request": request}
-                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                series_serializer = SeriesSerializer(
+                    results, many=True, context={"request": request}
+                )
 
-                    return Response(series_serializer.data)
+                return Response(series_serializer.data)
 
-        return Response(
-            {"message": "contenttype is incorrect."},
-            status=status.HTTP_308_PERMANENT_REDIRECT,
-        )
     return Response(
-        {"message": "Method not Allowed"}, status=status.HTTP_401_UNAUTHORIZED
+        {"message": "contenttype is incorrect."},
+        status=status.HTTP_308_PERMANENT_REDIRECT,
     )
 
 

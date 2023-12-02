@@ -64,12 +64,11 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
-        print(request.user.is_creator, "===================")
         if request.user.is_creator:
             user = request.user.creator_profile
-            series_name = self.validated_data["series_name"]
-            series_poster = self.validated_data["series_poster"]
-            synopsis = self.validated_data["synopsis"]
+            series_name = self.validated_data.get("series_name")
+            series_poster = self.validated_data.get("series_poster")
+            synopsis = self.validated_data.get("synopsis")
 
             tags = self.validated_data["tags"][0]  # expected data ["pen,pencil,book"]
 
@@ -450,7 +449,16 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
                             "Episode number already exist."
                         )
 
-                    return data
+                    video_format = [
+                        "mp4",
+                    ]
+                    sent_video = data.get("video_file")
+                    sent_type = sent_video.name.split(".")[1]
+
+                    if sent_type in video_format:
+                        return data
+
+                    raise serializers.ValidationError("File Format not supported.")
 
                 raise serializers.ValidationError("Episode number is required.")
 
@@ -461,25 +469,32 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         raise serializers.ValidationError("You don't have permission to create")
 
     def create(self, validated_data):
-        print(validated_data)
         series_id = validated_data.get("series")
         season_id = validated_data.get("season")
         episode_title = validated_data.get("episode_title")
         episode_number = validated_data.get("episode_number")
         description = validated_data.get("description")
-        thumbnail = validated_data["anime_thumbnail"]
+        thumbnail = validated_data.get("anime_thumbnail")
         file = validated_data.get("video_file")
         tags = validated_data.get("tags")
         split_tags = tags[0].split(",")
         strip_tags = [tag.strip() for tag in split_tags]
-
-        print("thumbnail is: ", thumbnail)
 
         tag_objs = []
 
         for tag_name in strip_tags:
             tag, created = Tag.objects.get_or_create(name=tag_name)
             tag_objs.append(tag)
+
+        # Rename file name to series name + season number+ episode number
+        req_series_name = validated_data.get("series")
+        req_season_number = validated_data.get("season")
+        req_episode_number = validated_data.get("episode_number")
+
+        file_name = f"{req_series_name.series_name}_season {req_season_number.season_number}_episode {req_episode_number}"
+
+        file_type = file.name.split(".")[-1]
+        file.name = f"{file_name}.{file_type}"
 
         new_anime_obj = Anime.objects.create(
             series=series_id,
@@ -542,6 +557,25 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                     for tag_name in tags_list:
                         tag, created = Tag.objects.get_or_create(name=tag_name)
                         tag_instances.append(tag)
+
+                    # name file name to series name, season number and episode number
+
+                    # if validated_data.get("video_file"):
+                    #     file = validated_data.get("video_file")
+                    #     video_format = [
+                    #         "mp4",
+                    #     ]
+                    #     sent_video = validated_data.get("video_file")
+                    #     sent_type = sent_video.name.split(".")[1]
+
+                    #     req_series_name = validated_data.get("series")
+                    #     req_season_number = validated_data.get("season")
+                    #     req_episode_number = validated_data.get("episode_number")
+
+                    #     file_name = f"{req_series_name.series_name}_season {req_season_number.season_number}_episode {req_episode_number}"
+
+                    #     file_type = file.name.split(".")[-1]
+                    #     file.name = f"{file_name}.{file_type}"
 
                     instance.tags.set(tag_instances)
 
