@@ -4,7 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("search", views.search_contents, name="search"),
+    path("search/<str:contenttype>/", views.search_contents, name="search"),
     path(
         "likes/<str:content_type>/<str:content_id>/",
         views.like_and_unlike,

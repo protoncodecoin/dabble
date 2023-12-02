@@ -18,7 +18,10 @@ class Series(models.Model):
         verbose_name="creator",
     )
     series_name = models.CharField(max_length=200, unique=True)
-    series_poster = models.ImageField(upload_to="series/posters/%Y/%m/", default="default/series.jpg",)
+    series_poster = models.ImageField(
+        upload_to="series/posters/%Y/%m/",
+        default="default/series.jpg",
+    )
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
@@ -34,6 +37,7 @@ class Series(models.Model):
         """Meta class for Series Model"""
 
         verbose_name_plural = "Series"
+        ordering = ["-start_date"]
 
 
 class Season(models.Model):
@@ -46,6 +50,7 @@ class Season(models.Model):
 
     class Meta:
         verbose_name_plural = "Season"
+        ordering = ["-release_date"]
 
 
 class Base(models.Model):
@@ -75,6 +80,7 @@ class Base(models.Model):
         """Meta class to set this model as an abstract class"""
 
         abstract = True
+        ordering = ["-episode_release_date"]
 
     def __str__(self):
         return f"{self.series.series_name}, Episode: {self.episode_number}"
@@ -83,7 +89,9 @@ class Base(models.Model):
 class Story(Base):
     """Database Model for Story"""
 
-    thumbnail = models.ImageField(upload_to="stories/thumbnails/%Y/%m/", default="default/story.jpg", blank=True)
+    thumbnail = models.ImageField(
+        upload_to="stories/thumbnails/%Y/%m/", default="default/story.jpg", blank=True
+    )
     content = models.TextField(blank=False)
 
     class Meta:
@@ -97,7 +105,9 @@ class Anime(Base):
     """Database Model for Series"""
 
     anime_thumbnail = models.ImageField(
-        upload_to="animations/thumbnails/%Y/%m/", default="default/anime.jpg", blank=True
+        upload_to="animations/thumbnails/%Y/%m/",
+        default="default/anime.jpg",
+        blank=True,
     )
     video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
 

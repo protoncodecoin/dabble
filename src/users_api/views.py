@@ -87,7 +87,7 @@ class AllUserListAPI(generics.ListAPIView):
 def search_creators(request):
     if request.method == "GET":
         query = request.GET.get("query")
-        if query == None:
+        if query is None:
             query = ""
 
         creator_result = CreatorProfile.objects.filter(
@@ -115,7 +115,7 @@ def follow_and_unfollow(request, creator_id):
     if not user_prof.follows.filter(pk=creator.id).exists():
         Follow.objects.create(user_from=user_prof, creator_to=creator)
         return Response(
-            {"message": f"Successfully Following"}, status=status.HTTP_201_CREATED
+            {"message": "Successfully Following"}, status=status.HTTP_201_CREATED
         )
     else:
         try:
@@ -129,7 +129,7 @@ def follow_and_unfollow(request, creator_id):
             )
         follow_relationship.delete()
         return Response(
-            {"message": f"Unfollow was successful"}, status=status.HTTP_204_NO_CONTENT
+            {"message": "Unfollow was successful"}, status=status.HTTP_204_NO_CONTENT
         )
 
 

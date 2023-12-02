@@ -1,5 +1,6 @@
+from re import search
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,7 +11,7 @@ from rest_framework.decorators import (
 )
 from rest_framework import filters
 
-from taggit.models import Tag
+# from taggit.models import Tag
 
 from .renderers import CustomJSONRenderer
 
@@ -37,45 +38,94 @@ from .serializers import (
 )
 
 from . import permissions
+from anime_api import models
 
 
 @api_view(["GET"])
-def search_contents(request):
+def search_contents(request, contenttype):
+    content_type_mapping = {
+        "series": models.Series,
+        "anime": models.Anime,
+        "story": models.Story,
+    }
+
+    target_content = content_type_mapping.get(contenttype)
+
     if request.method == "GET":
-        query = request.GET.get("query")
-        if query == None:
-            query = ""
+        if target_content:
+            if "query" in request.GET:
+                query = request.GET.get("query")
+                if query is None:
+                    query = ""
 
-        series_result = Series.objects.filter(Q(series_name__icontains=query))
-        series_serializer = SeriesSerializer(
-            series_result, many=True, context={"request": request}
-        )
+                if target_content == models.Anime:
+                    search_vector = SearchVector(
+                        "episode_title", "description", "series__series_name"
+                    )
+                    search_query = SearchQuery(query)
+                    results = (
+                        Anime.objects.annotate(
+                            search=search_vector,
+                            rank=SearchRank(search_vector, search_query),
+                        )
+                        .filter(search=search_query)
+                        .order_by("-rank")
+                    )
+                    anime_serializer = AnimeSerializer(
+                        results, many=True, context={"request": request}
+                    )
 
-        anime_result = Anime.objects.filter(
-            Q(episode_title__icontains=query)
-            | (Q(episode_number__icontains=query))
-            | (Q(description__icontains=query))
-        )
-        anime_serializer = AnimeSerializer(
-            anime_result, many=True, context={"request": request}
-        )
+                    return Response(anime_serializer.data)
 
-        story_result = Story.objects.filter(
-            Q(episode_title__icontains=query)
-            | (Q(episode_number__icontains=query))
-            | (Q(description__icontains=query))
-        )
-        story_serializer = StorySerializer(
-            story_result, many=True, context={"request": request}
-        )
+                if target_content == models.Story:
+                    search_vector = SearchVector(
+                        "episode_title",
+                        "description",
+                        "series__series_name",
+                        "content",
+                    )
+                    search_query = SearchQuery(query)
+                    results = (
+                        Story.objects.annotate(
+                            search=search_vector,
+                            rank=SearchRank(search_vector, search_query),
+                        )
+                        .filter(search=search_query)
+                        .order_by("-rank")
+                    )
+                    story_serializer = StorySerializer(
+                        results, many=True, context={"request": request}
+                    )
 
-        query_result = {
-            "series": series_serializer.data,
-            "anime": anime_serializer.data,
-            "story": story_serializer.data,
-        }
+                    return Response(story_serializer.data)
 
-        return Response(query_result)
+                if target_content == models.Series:
+                    search_vector = SearchVector(
+                        "series_name",
+                        "synopsis",
+                    )
+                    search_query = SearchQuery(query)
+                    results = (
+                        Series.objects.annotate(
+                            search=search_vector,
+                            rank=SearchRank(search_vector, search_query),
+                        )
+                        .filter(search=search_query)
+                        .order_by("-rank")
+                    )
+                    series_serializer = SeriesSerializer(
+                        results, many=True, context={"request": request}
+                    )
+
+                    return Response(series_serializer.data)
+
+        return Response(
+            {"message": "contenttype is incorrect."},
+            status=status.HTTP_308_PERMANENT_REDIRECT,
+        )
+    return Response(
+        {"message": "Method not Allowed"}, status=status.HTTP_401_UNAUTHORIZED
+    )
 
 
 @api_view(["POST", "PUT"])
@@ -244,9 +294,7 @@ def comments(request, content_type, content_id):
             )
 
     return Response(
-        {
-            "message": "Hmm it seems an unplanned circumstance has finally occurred. Check the data you are providing."
-        }
+        {"message": "Method not Allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED
     )
 
 
