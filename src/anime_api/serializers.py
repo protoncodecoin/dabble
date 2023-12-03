@@ -451,9 +451,10 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
                     video_format = [
                         "mp4",
+                        "mkv",
                     ]
                     sent_video = data.get("video_file")
-                    sent_type = sent_video.name.split(".")[1]
+                    sent_type = sent_video.name.split(".")[-1]
 
                     if sent_type in video_format:
                         return data
@@ -558,26 +559,36 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                         tag, created = Tag.objects.get_or_create(name=tag_name)
                         tag_instances.append(tag)
 
-                    # name file name to series name, season number and episode number
-
-                    # if validated_data.get("video_file"):
-                    #     file = validated_data.get("video_file")
-                    #     video_format = [
-                    #         "mp4",
-                    #     ]
-                    #     sent_video = validated_data.get("video_file")
-                    #     sent_type = sent_video.name.split(".")[1]
-
-                    #     req_series_name = validated_data.get("series")
-                    #     req_season_number = validated_data.get("season")
-                    #     req_episode_number = validated_data.get("episode_number")
-
-                    #     file_name = f"{req_series_name.series_name}_season {req_season_number.season_number}_episode {req_episode_number}"
-
-                    #     file_type = file.name.split(".")[-1]
-                    #     file.name = f"{file_name}.{file_type}"
-
                     instance.tags.set(tag_instances)
+
+                    # name file name to series name + season number + episode number
+
+                if validated_data.get("video_file"):
+                    video_format = [
+                        "mp4",
+                        "mkv",
+                    ]
+                    sent_video = validated_data.get("video_file")
+                    sent_type = sent_video.name.split(".")[-1]
+                    print("file type: ", sent_type, len(sent_type))
+
+                    if sent_type in video_format:
+                        print(True)
+                        req_series_name = instance.series.series_name
+                        req_season_number = instance.season.season_number
+                        req_episode_number = instance.episode_number
+
+                        file_name = f"{req_series_name}_season_{req_season_number}_episode_{req_episode_number}"
+                        print("This is the new file name", file_name)
+
+                        validated_data.get(
+                            "video_file"
+                        ).name = f"{file_name}.{sent_type}"
+
+                        print(
+                            "This is the current name to be saved",
+                            validated_data.get("video_file").name,
+                        )
 
                 return super().update(instance, validated_data)
 
