@@ -2,6 +2,11 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
+from django.contrib.postgres.search import (
+    SearchVector,
+    SearchQuery,
+    SearchRank,
+)
 
 
 from rest_framework import generics
@@ -71,33 +76,28 @@ class CreatorListAPIView(generics.ListAPIView):
     serializer_class = CreatorProfileSerializer
 
 
-class UsersListAPIView(generics.ListAPIView):
-    "view for listing all users"
+class UsersProfileListAPIView(generics.ListAPIView):
+    """view for listing all users Profile"""
+
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
 
-class AllUserListAPI(generics.ListAPIView):
+class AllUsersListAPIView(generics.ListAPIView):
+    """Listing all users"""
+
     permission_classes = [permissions.EndPointRestrict]
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
 
 
-@api_view(["GET"])
-def search_creators(request):
-    if request.method == "GET":
-        query = request.GET.get("query")
-        if query is None:
-            query = ""
-
-        creator_result = CreatorProfile.objects.filter(
-            Q(company_name__icontains=query)
-            | (Q(company_website__icontains=query))
-            | (Q(company_description__icontains=query))
-        )
-
-        creator_serializer = CreatorProfileSerializer(creator_result, many=True)
-        return Response(creator_serializer.data)
+# @api_view(["GET"])
+# def search_creators(request):
+#     if request.method == "GET":
+#         query = request.GET.get("query")
+#         if query is None:
+#             query = ""
+#         search_query = SearchQuery(query)
 
 
 @api_view(["GET", "POST", "PUT"])
