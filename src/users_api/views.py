@@ -2,6 +2,11 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
+from django.contrib.postgres.search import (
+    SearchVector,
+    SearchQuery,
+    SearchRank,
+)
 
 
 from rest_framework import generics
@@ -71,33 +76,33 @@ class CreatorListAPIView(generics.ListAPIView):
     serializer_class = CreatorProfileSerializer
 
 
-class UsersListAPIView(generics.ListAPIView):
-    "view for listing all users"
+class CreatorDetailAPIView(generics.RetrieveAPIView):
+    """View for showing details of creator."""
+
+    queryset = CreatorProfile.objects.all()
+    serializer_class = CreatorProfileSerializer
+
+
+class UsersProfileListAPIView(generics.ListAPIView):
+    """view for listing all users Profile"""
+
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
 
-class AllUserListAPI(generics.ListAPIView):
+class UserProfileDetailAPIView(generics.RetrieveAPIView):
+    """Views for showing details of common user."""
+
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class AllUsersListAPIView(generics.ListAPIView):
+    """Listing all users"""
+
     permission_classes = [permissions.EndPointRestrict]
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
-
-
-@api_view(["GET"])
-def search_creators(request):
-    if request.method == "GET":
-        query = request.GET.get("query")
-        if query is None:
-            query = ""
-
-        creator_result = CreatorProfile.objects.filter(
-            Q(company_name__icontains=query)
-            | (Q(company_website__icontains=query))
-            | (Q(company_description__icontains=query))
-        )
-
-        creator_serializer = CreatorProfileSerializer(creator_result, many=True)
-        return Response(creator_serializer.data)
 
 
 @api_view(["GET", "POST", "PUT"])
@@ -224,3 +229,12 @@ def add_remove_favorite(request, content_type, content_id):
 class FavoriteAPIView(generics.ListAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
+
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        print(len(queryset))
+        for q in queryset.all():
+            print(q)
+        serializer = FavoriteSerializer(queryset, many=True)
+        return Response(serializer.data)

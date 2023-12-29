@@ -16,7 +16,7 @@ urlpatterns = [
         "comments/<str:content_type>/<int:content_id>", views.comments, name="comments"
     ),
     path("series/", views.SeriesListAPI.as_view(), name="series-list"),
-    path("series/create/", views.SeriesCreateAPI.as_view()),
+    path("series/create/", views.SeriesCreateAPI.as_view(), name="series_create"),
     path("series/<int:pk>/", views.SeriesDetailAPI.as_view(), name="series-detail"),
     # series url path
     path("stories/", views.StoryListAPI.as_view(), name="stories-list"),

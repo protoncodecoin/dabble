@@ -77,6 +77,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "DjangoRangeMiddleware.middleware.RangesMiddleware",
 ]
 
 ROOT_URLCONF = "animation.urls"
@@ -264,4 +265,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:5500",
     "http://127.0.0.1:5501",
+    "http://127.0.0.1:5502",
 ]

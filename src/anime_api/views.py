@@ -37,6 +37,9 @@ from .serializers import (
 from . import permissions
 from anime_api import models
 
+from users_api.models import CreatorProfile
+from users_api.serializers import CreatorProfileSerializer
+
 
 @api_view(["GET"])
 def search_contents(request, contenttype):
@@ -48,6 +51,7 @@ def search_contents(request, contenttype):
         "series": models.Series,
         "anime": models.Anime,
         "story": models.Story,
+        "creator": CreatorProfile,
     }
 
     target_content = content_type_mapping.get(contenttype)
@@ -118,6 +122,27 @@ def search_contents(request, contenttype):
                 )
 
                 return Response(series_serializer.data)
+
+            if target_content == CreatorProfile:
+                search_vector = SearchVector(
+                    "company_name",
+                    "company_website",
+                    "company_descripiton",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    CreatorProfile.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
+                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                creator_serializer = CreatorProfileSerializer(
+                    results, many=True, context={"request": request}
+                )
+
+                return Response(creator_serializer.data)
 
     return Response(
         {"message": "contenttype is incorrect."},

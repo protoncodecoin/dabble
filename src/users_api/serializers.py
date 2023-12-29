@@ -14,6 +14,9 @@ from .models import UserProfile, CreatorProfile, CustomUser, Favorite
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
+from anime_api.models import Anime
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -81,9 +84,18 @@ class CreatorProfileSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
     class Meta:
         model = Favorite
         fields = "__all__"
+
+    def get_user(self, obj):
+        print(obj.content_type, "This is the obj")
+        print(type(obj))
+        print(obj.object_id)
+        # fav_instance = Anime.objects.get(obj.object_id)
+        return obj.user.user
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -115,7 +127,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     def get_all_favorites(self, obj):
         all_fav = obj.favorites.filter(user=obj.user.user_profile)
+        all_fav = obj.favorites.all()
         favs = ContentType.objects.get_for_model(UserProfile)
-        # print(favs)
+        print(all_fav)
         print("all_fav", favs)
         return []
