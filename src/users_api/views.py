@@ -76,8 +76,22 @@ class CreatorListAPIView(generics.ListAPIView):
     serializer_class = CreatorProfileSerializer
 
 
+class CreatorDetailAPIView(generics.RetrieveAPIView):
+    """View for showing details of creator."""
+
+    queryset = CreatorProfile.objects.all()
+    serializer_class = CreatorProfileSerializer
+
+
 class UsersProfileListAPIView(generics.ListAPIView):
     """view for listing all users Profile"""
+
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class UserProfileDetailAPIView(generics.RetrieveAPIView):
+    """Views for showing details of common user."""
 
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -89,15 +103,6 @@ class AllUsersListAPIView(generics.ListAPIView):
     permission_classes = [permissions.EndPointRestrict]
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
-
-
-# @api_view(["GET"])
-# def search_creators(request):
-#     if request.method == "GET":
-#         query = request.GET.get("query")
-#         if query is None:
-#             query = ""
-#         search_query = SearchQuery(query)
 
 
 @api_view(["GET", "POST", "PUT"])
@@ -224,3 +229,12 @@ def add_remove_favorite(request, content_type, content_id):
 class FavoriteAPIView(generics.ListAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
+
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`
+        queryset = self.get_queryset()
+        print(len(queryset))
+        for q in queryset.all():
+            print(q)
+        serializer = FavoriteSerializer(queryset, many=True)
+        return Response(serializer.data)
