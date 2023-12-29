@@ -23,22 +23,14 @@ from anime_api.urls import urlpatterns as anime_api_url
 from users_api.urls import urlpatterns as users_api_url
 from comment_system.urls import urlpatterns as comments_url
 
-# from follow_system.urls import urlpatterns as follow_url
-
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
-# from users_api.views import (
-#     FacebookLogin,
-#     GithubLogin,
-#     GoogleLoginView,
-#     # UserRedirectView,
-# )
 
 from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 
 api_url_patterns = [
-    path("content/", include(anime_api_url)),
-    path("content/comments/", include(comments_url)),
+    # path("content/", include(anime_api_url)),
+    # path("content/comments/", include(comments_url)),
     path("users/", include(users_api_url)),
     # path("follow/", include(follow_url)),
 ]
@@ -51,22 +43,15 @@ urlpatterns = [
         include(api_url_patterns),
     ),
     path("api/v1/api-auth/", include("rest_framework.urls")),
-    # path("api/v1/social-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
-    # path("api/v1/social-auth/github/", GithubLogin.as_view(), name="github_login"),
-    # path(
-    #     "api/v1/social-auth/google/login/",
-    #     GoogleLoginView.as_view(),
-    #     name="google_login",
-    # ),
-    # path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
     path("password-reset/", PasswordResetView.as_view()),
     path(
         "password-reset-confirm/<uidb64>/<token>/",
         PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
-    #     path("api/v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    #     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("content/", include("anime_api.urls", namespace="animes")),
+    path("comments/", include("comment_system.urls", namespace="comments")),
+    path("users/", include("users_api.urls", namespace="users")),
 ]
 
 if settings.DEBUG:

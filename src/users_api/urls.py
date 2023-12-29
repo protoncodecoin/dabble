@@ -15,6 +15,8 @@ from rest_framework_simplejwt.views import (
 
 from . import views
 
+app_name = "users"
+
 urlpatterns = [
     path("favorites/", views.FavoriteAPIView.as_view()),
     path("profile-search", views.search_creators, name="search_creators"),

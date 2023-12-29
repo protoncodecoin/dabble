@@ -3,6 +3,8 @@ from django.urls import path
 
 from . import views
 
+app_name = "animes"
+
 urlpatterns = [
     path("search/<str:contenttype>/", views.search_contents, name="search"),
     path(
