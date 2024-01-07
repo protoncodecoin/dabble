@@ -1,3 +1,4 @@
+from wsgiref import validate
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
@@ -16,6 +17,8 @@ from .models import (
 
 from comment_system.models import Comment
 from users_api.models import CreatorProfile
+
+from .utils import media_renamer, media_renamer, video_file_checker
 
 
 class CreatorInlineSerializer(serializers.Serializer):
@@ -258,9 +261,9 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         raise serializers.ValidationError("You don't have permission")
 
     def create(self, validated_data):
-        series_id = validated_data["series"]
-        season_id = validated_data["season"]
-        episode_number = validated_data["episode_number"]
+        series_id = validated_data.get("series")
+        season_id = validated_data.get("season")
+        episode_number = validated_data.get("episode_number")
         episode_title = validated_data["episode_title"]
         description = validated_data.get("description", "")
         thumbnail = validated_data.get("thumbnail")
@@ -273,6 +276,17 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         for tag_name in strip_tags:
             tag, created = Tag.objects.get_or_create(name=tag_name)
             tag_list.append(tag)
+
+        if validated_data.get("thumbnail"):
+            series_name = validated_data.get("series").series_name
+            season_number = validated_data.get("season").season_number
+            file_type = validated_data.get("thumbnail").name.split(".")[-1]
+
+            generated_thumbnail_name = media_renamer(
+                series_name, season_number, episode_number, file_type
+            )
+
+            thumbnail.name = generated_thumbnail_name
 
         new_story_obj = Story.objects.create(
             series=series_id,
@@ -314,6 +328,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "liked_user_names",
             "description",
             "content",
+            "thumbnail",
             "owner",
             "comments",
             "tags",
@@ -338,6 +353,20 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                         tag_instances.append(tag)
 
                     instance.tags.set(tag_instances)
+
+                req_thumbnail = validated_data.get("thumbnail")
+
+                if req_thumbnail:
+                    story_name = instance.series.series_name
+                    season = instance.season.season_number
+                    episode_number = instance.episode_number
+                    file_type = req_thumbnail.name.split(".")[-1]
+
+                    generated_thumbnail_name = media_renamer(
+                        story_name, season, episode_number, file_type
+                    )
+
+                    req_thumbnail.name = generated_thumbnail_name
 
                 return super().update(instance, validated_data)
 
@@ -449,14 +478,9 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
                             "Episode number already exist."
                         )
 
-                    video_format = [
-                        "mp4",
-                        "mkv",
-                    ]
-                    sent_video = data.get("video_file")
-                    sent_type = sent_video.name.split(".")[-1]
+                    sent_video_type = data.get("video_file").name.split(".")[-1]
 
-                    if sent_type in video_format:
+                    if video_file_checker(sent_video_type):
                         return data
 
                     raise serializers.ValidationError("File Format not supported.")
@@ -488,14 +512,24 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             tag_objs.append(tag)
 
         # Rename file name to series name + season number+ episode number
-        req_series_name = validated_data.get("series")
-        req_season_number = validated_data.get("season")
+        req_series_name = validated_data.get("series").series_name
+        req_season_number = validated_data.get("season").season_number
         req_episode_number = validated_data.get("episode_number")
 
-        file_name = f"{req_series_name.series_name}_season {req_season_number.season_number}_episode {req_episode_number}"
+        video_file_type = file.name.split(".")[-1]
 
-        file_type = file.name.split(".")[-1]
-        file.name = f"{file_name}.{file_type}"
+        if thumbnail:
+            thumbnail_type = thumbnail.name.split(".")[-1]
+
+            generated_thumbnail_name = media_renamer(
+                req_series_name, req_season_number, req_episode_number, thumbnail_type
+            )
+            thumbnail.name = generated_thumbnail_name
+
+        generated_file_name = media_renamer(
+            req_series_name, req_season_number, req_episode_number, video_file_type
+        )
+        file.name = generated_file_name
 
         new_anime_obj = Anime.objects.create(
             series=series_id,
@@ -539,6 +573,7 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "comments",
             "owner",
+            "description",
         ]
 
     def update(self, instance, validated_data):
@@ -561,34 +596,41 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
                     instance.tags.set(tag_instances)
 
-                    # name file name to series name + season number + episode number
-
                 if validated_data.get("video_file"):
-                    video_format = [
-                        "mp4",
-                        "mkv",
+                    sent_video_type = validated_data.get("video_file").name.split(".")[
+                        -1
                     ]
-                    sent_video = validated_data.get("video_file")
-                    sent_type = sent_video.name.split(".")[-1]
-                    print("file type: ", sent_type, len(sent_type))
 
-                    if sent_type in video_format:
-                        print(True)
+                    if video_file_checker(sent_video_type):
                         req_series_name = instance.series.series_name
                         req_season_number = instance.season.season_number
                         req_episode_number = instance.episode_number
 
-                        file_name = f"{req_series_name}_season_{req_season_number}_episode_{req_episode_number}"
-                        print("This is the new file name", file_name)
+                        generated_file_name = media_renamer(
+                            req_series_name,
+                            req_season_number,
+                            req_episode_number,
+                            sent_video_type,
+                        )
 
                         validated_data.get(
                             "video_file"
-                        ).name = f"{file_name}.{sent_type}"
+                        ).name = f"{generated_file_name}.{sent_video_type}"
 
-                        print(
-                            "This is the current name to be saved",
-                            validated_data.get("video_file").name,
-                        )
+                if validated_data.get("anime_thumbnail"):
+                    sent_thumbnail_type = validated_data.get(
+                        "anime_thumbnail"
+                    ).name.split(".")[-1]
+
+                    generated_file_name = media_renamer(
+                        req_series_name,
+                        req_season_number,
+                        req_episode_number,
+                        sent_thumbnail_type,
+                    )
+                    validated_data.get(
+                        "anime_thumbnail"
+                    ).name = f"{generated_file_name}.{sent_thumbnail_type}"
 
                 return super().update(instance, validated_data)
 
