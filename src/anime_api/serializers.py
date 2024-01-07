@@ -38,7 +38,7 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     tags = TagListSerializerField()
     url = serializers.HyperlinkedIdentityField(
-        view_name="series-detail", lookup_field="pk"
+        view_name="animes:series-detail", lookup_field="pk"
     )
     creator = serializers.ReadOnlyField(source="creator.username")
     likes = serializers.ReadOnlyField(source="likes.count")
@@ -172,7 +172,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
     """A class serializer to serialize data from Story Model"""
 
     url = serializers.HyperlinkedIdentityField(
-        view_name="story-detail", lookup_field="pk"
+        view_name="animes:story-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
@@ -202,7 +202,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     """A class serializer to serialize data from Story Model"""
 
     url = serializers.HyperlinkedIdentityField(
-        view_name="story-detail", lookup_field="pk"
+        view_name="animes:story-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
@@ -370,7 +370,7 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     creator = serializers.ReadOnlyField(source="series.creator.company_name")
     url = serializers.HyperlinkedIdentityField(
-        view_name="anime-detail", lookup_field="pk"
+        view_name="animes:anime-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
