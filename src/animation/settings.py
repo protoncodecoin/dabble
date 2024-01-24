@@ -65,6 +65,11 @@ INSTALLED_APPS = [
     # social auth
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+
+    # Rest Oauth2
+    "oauth2_provider",
+    "social_django",
+    "rest_framework_social_oauth2",
 ]
 
 MIDDLEWARE = [
@@ -95,6 +100,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -178,6 +186,8 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+        "rest_framework_social_oauth2.authentication.SocialAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
@@ -215,6 +225,7 @@ JWT_AUTH_COOKIE = "anime_api_key"
 
 AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
     "django.contrib.auth.backends.ModelBackend",
 ]
 

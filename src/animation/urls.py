@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -42,6 +42,7 @@ urlpatterns = [
     #     "api/v1/",
     #     include(api_url_patterns),
     # ),
+   
     path("api/v1/api-auth/", include("rest_framework.urls")),
     path("password-reset/", PasswordResetView.as_view()),
     path(
@@ -52,6 +53,7 @@ urlpatterns = [
     path("content/", include("anime_api.urls", namespace="animes")),
     path("comments/", include("comment_system.urls", namespace="comments")),
     path("users/", include("users_api.urls", namespace="users")),
+    path(r'^auth/', include('rest_framework_social_oauth2.urls', namespace="social")),
 ]
 
 if settings.DEBUG:
