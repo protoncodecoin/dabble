@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dabble Client</title>
+  </head>
+  <body>
+    <video class="video-player" controls src="" poster="" width="400"></video>
+  </body>
+  <script>
+    let sourceUrl = "http://127.0.0.1:8000/content";
+    let videoSrc = document.querySelector(".video-player").src;
+    console.log(videoSrc);
+    const res = fetch(`${sourceUrl}/animes/`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        document.querySelector(".video-player").src =
+          data.results[1].video_file;
+        document.querySelector(".video-player").poster =
+          data.results[1].anime_thumbnail;
+      });
+  </script>
+</html>
