@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "corsheaders",
     # social auth
+    'allauth.socialaccount',
     'oauth2_provider',
     'social_django',
     'drf_social_oauth2',
@@ -192,8 +193,9 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 
     # Facebook OAuth2
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    # 'social_core.backends.facebook.FacebookAppOAuth2',
+    # 'social_core.backends.facebook.FacebookOAuth2',
+    "users_api.backends.social_backends.FacebookOAuth2",
     # drf_social_oauth2
     'drf_social_oauth2.backends.DjangoOAuth2',
     # Django
@@ -210,7 +212,7 @@ CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 # Email is not sent by default, to get it, you must request the email permission.
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, email'
+    'fields': 'id, name, email'
 }
 
 SIMPLE_JWT = {

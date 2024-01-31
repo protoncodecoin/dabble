@@ -8,7 +8,8 @@ class CustomUserManager(BaseUserManager):
     for authentication instead of usernames.
     """
 
-    def create_user(self, email, password, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
+  
         """Method to create user making email field require"""
         if not email:
             raise ValueError(_("Users must have an email address"))
