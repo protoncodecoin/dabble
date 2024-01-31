@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -52,6 +52,7 @@ urlpatterns = [
     path("content/", include("anime_api.urls", namespace="animes")),
     path("comments/", include("comment_system.urls", namespace="comments")),
     path("users/", include("users_api.urls", namespace="users")),
+    re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf'))
 ]
 
 if settings.DEBUG:

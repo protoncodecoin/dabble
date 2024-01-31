@@ -63,8 +63,9 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "corsheaders",
     # social auth
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +96,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -178,9 +181,36 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        'drf_social_oauth2.authentication.SocialAuthentication',
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
+}
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    # drf_social_oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    # Django
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY=978233443232946
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("SOCIAL_AUTH_FACEBOOK_SECRET")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+
+# Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# Email is not sent by default, to get it, you must request the email permission.
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, email'
 }
 
 SIMPLE_JWT = {
@@ -212,11 +242,8 @@ SIMPLE_JWT = {
 
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = "anime_api_key"
+ACTIVATE_JWT = True
 
-AUTHENTICATION_BACKENDS = [
-    "allauth.account.auth_backends.AuthenticationBackend",
-    "django.contrib.auth.backends.ModelBackend",
-]
 
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users_api.serializers.CustomRegisterSerializer",
@@ -236,8 +263,6 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = "http://localhost:8000/api/v1/users/login"
 
 SITE_ID = 1
-
-# LOGIN_URL = "http://localhost:8000"
 
 # Email Backend
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

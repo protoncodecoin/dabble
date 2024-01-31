@@ -47,7 +47,7 @@ class Season(models.Model):
     series = models.ForeignKey(Series, on_delete=models.CASCADE, related_name="season")
     season_number = models.IntegerField()
     release_date = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=200,)
+    # type = models.CharField(max_length=200,)
 
     def __str__(self):
         return f"{self.series.series_name} season {self.season_number}"
