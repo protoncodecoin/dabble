@@ -24,13 +24,14 @@ urlpatterns = [
     path("creator/", views.CreatorDetailAPIView.as_view()),
     path("users-profile/", views.UsersProfileListAPIView.as_view()),
     path("all-users/", views.AllUsersListAPIView.as_view()),
+
+
     path("account-confirm-email/<str:key>/", ConfirmEmailView.as_view()),
-    path("register/", RegisterView.as_view(), name="account_signup"),
-    # path("login/", LoginView.as_view()),
+    path("register/", RegisterView.as_view()),
     path("login/", views.MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("logout/", LogoutView.as_view()),
-    path("verify-email", VerifyEmailView.as_view(), name="rest_verify_email"),
+
+    path("verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
     path(
         "account-confirm-email/",
         VerifyEmailView.as_view(),
@@ -41,6 +42,11 @@ urlpatterns = [
         VerifyEmailView.as_view(),
         name="account_confirm_email",
     ),
+    # path("login/", LoginView.as_view()),
+
+    path("login/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
+
     path(
         "follow/<int:creator_id>/",
         views.follow_and_unfollow,

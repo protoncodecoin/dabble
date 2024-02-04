@@ -106,6 +106,7 @@ env.bak/
 venv.bak/ 
 dabblevenv/
 dabble_env/
+dab_env/
 
 # mkdocs documentation 
 /site 
