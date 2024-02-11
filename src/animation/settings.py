@@ -233,14 +233,15 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "http://localhost:8000/api/v1/users/login"
-
+LOGIN_URL = "http://localhost:8000/api/v1/dj-rest-auth/login"
+USE_JWT = True
 SITE_ID = 1
 
 # LOGIN_URL = "http://localhost:8000"
 
 # Email Backend
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
@@ -274,3 +275,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5501",
     "http://127.0.0.1:5502",
 ]
+
+# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
+EMAIL_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost:8000/api/v1/dj-rest-auth/registration/account-confirm-email/"
+
+# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = \
+    "http://localhost:8000/password-reset/confirm/"
+# http://localhost:8000/api/v1/dj-rest-auth/login
