@@ -127,7 +127,9 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         request = self.context.get("request")
 
         if request.user.is_creator:
-            if request.user == instance.creator:
+            print(request.user, "=====================", instance.creator)
+            query_profile = CreatorProfile.objects.get(creator=request.user)
+            if query_profile == instance.creator:
                 tags_data = validated_data.pop("tags", None)
                 if tags_data:
                     tags_list = tags_data[0].split(
