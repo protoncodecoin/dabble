@@ -52,7 +52,7 @@ class CreatorProfile(models.Model):
     creator_logo = models.ImageField(
         upload_to="creatorProfile/%Y/%m/%d/",
         blank=True,
-        default="default/creator_default.jpg",
+        default="default/creator_default.jfif",
     )
 
     def __str__(self):
@@ -72,7 +72,9 @@ class UserProfile(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_profile"
     )
     profile_img = models.ImageField(
-        upload_to="userProfile/%Y/%m/%d/", blank=True, default="default/default.jpg"
+        upload_to="userProfile/%Y/%m/%d/",
+        blank=True,
+        default="default/user_default.jpg",
     )
     follows = models.ManyToManyField(
         CreatorProfile, through="Follow", related_name="followers", blank=True
