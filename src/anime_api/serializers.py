@@ -1,4 +1,3 @@
-from wsgiref import validate
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
@@ -127,7 +126,6 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         request = self.context.get("request")
 
         if request.user.is_creator:
-            print(request.user, "=====================", instance.creator)
             query_profile = CreatorProfile.objects.get(creator=request.user)
             if query_profile == instance.creator:
                 tags_data = validated_data.pop("tags", None)
