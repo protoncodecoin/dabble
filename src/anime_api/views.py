@@ -151,7 +151,7 @@ def search_contents(request, contenttype):
 
 
 @api_view(["POST", "PUT"])
-@permission_classes([permissions.IsCommonUser, permissions.IsStaff])
+# @permission_classes([permissions.IsCommonUser, permissions.IsStaff])
 def like_and_unlike(request, content_id, content_type):
     user = request.user
     if content_id:
@@ -176,7 +176,7 @@ def like_and_unlike(request, content_id, content_type):
                 )
         elif content_type == "stories":
             try:
-                stories_instance = Series.objects.get(id=content_id)
+                stories_instance = Story.objects.get(id=content_id)
             except Story.DoesNotExist:
                 return Response(
                     {"message": f"Story with id of {content_id} does not exist"},
@@ -195,7 +195,7 @@ def like_and_unlike(request, content_id, content_type):
                 )
         elif content_type == "animes":
             try:
-                anime_instance = Series.objects.get(id=content_id)
+                anime_instance = Anime.objects.get(id=content_id)
             except Anime.DoesNotExist:
                 return Response(
                     {"message": f"Anime with id of {content_id} does not exist"},
@@ -218,7 +218,7 @@ def like_and_unlike(request, content_id, content_type):
 
 
 @api_view(["GET", "POST", "PUT", "DELETE"])
-@permission_classes([permissions.IsCommonUser, permissions.IsStaff])
+# @permission_classes([permissions.IsCommonUser, permissions.IsStaff])
 def comments(request, content_type, content_id):
     user = request.user
     if request.method == "POST":

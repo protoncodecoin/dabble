@@ -154,6 +154,9 @@ class Media(models.Model):
         verbose_name = "Media"
         verbose_name_plural = "Media"
 
+    def __str__(self):
+        return self.title
+
 
 class Text(models.Model):
     """Model for single story content"""

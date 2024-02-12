@@ -46,19 +46,17 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 
 
-
 User = get_user_model()
 
 
 # Create your views here.
 def email_confirm_redirect(request, key):
-    return HttpResponseRedirect(
-        f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/"
-    )
+    return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+
 
 def password_reset_confirm_redirect(request, uidb64, token):
     return HttpResponseRedirect(
-        f'{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/'
+        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
     )
 
 
@@ -123,18 +121,26 @@ class AllUsersListAPIView(generics.ListAPIView):
 # @permission_classes([permissions.IsCommonUser])
 def follow_and_unfollow(request, creator_id):
     user = request.user
-    user_prof = UserProfile.objects.get(user=user)
     try:
+        user_prof = UserProfile.objects.get(user=user)
         creator = CreatorProfile.objects.get(id=creator_id)
     except CreatorProfile.DoesNotExist:
         return Response(
-            {"detail": f"Creator with the id of {creator_id} does not exists"}
+            {
+                "status": "error",
+                "detail": f"Creator with the id of {creator_id} does not exists",
+            }
+        )
+    except UserProfile.DoesNotExist:
+        return Response(
+            {"status": "error", "detail": "Sign up to perform this action."}
         )
 
     if not user_prof.follows.filter(pk=creator.id).exists():
         Follow.objects.create(user_from=user_prof, creator_to=creator)
         return Response(
-            {"message": "Successfully Following"}, status=status.HTTP_201_CREATED
+            {"status": "ok", "message": "Successfully Following"},
+            status=status.HTTP_201_CREATED,
         )
     else:
         try:
@@ -148,7 +154,8 @@ def follow_and_unfollow(request, creator_id):
             )
         follow_relationship.delete()
         return Response(
-            {"message": "Unfollow was successful"}, status=status.HTTP_204_NO_CONTENT
+            {"status": "ok", "message": "Unfollow was successful"},
+            status=status.HTTP_204_NO_CONTENT,
         )
 
 
