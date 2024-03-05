@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+
+# from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
-from django.contrib.postgres.search import (
-    SearchVector,
-    SearchQuery,
-    SearchRank,
-)
+
+# from django.contrib.postgres.search import (
+#     SearchVector,
+#     SearchQuery,
+#     SearchRank,
+# )
 
 
 from rest_framework import generics
@@ -18,7 +20,6 @@ from .serializers import (
     UserProfileSerializer,
     UsersSerializer,
     CreatorProfileSerializer,
-    CustomRegisterSerializer,
     MyTokenObtainPairSerializer,
 )
 
@@ -28,7 +29,6 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView,
 )
 
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
