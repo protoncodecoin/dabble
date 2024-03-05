@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.conf import settings
 
 from users_api.models import UserProfile
 
@@ -33,4 +32,4 @@ class Comment(models.Model):
         ordering = ["-created"]
 
     def __str__(self):
-        return f"{self.user.username} made a comment on {self.content_type}"
+        return f"{self.user.user.email} made a comment on {self.content_type}"

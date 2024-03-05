@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from users_api.serializers import UserProfileSerializer
 from .models import Comment
 
 

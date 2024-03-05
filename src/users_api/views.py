@@ -42,9 +42,6 @@ from .utility import create_favorite
 from anime_api import permissions
 from anime_api import models
 
-from django.conf import settings
-from django.http import HttpResponseRedirect
-
 
 User = get_user_model()
 

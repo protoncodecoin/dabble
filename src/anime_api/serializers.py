@@ -17,7 +17,7 @@ from .models import (
 from comment_system.models import Comment
 from users_api.models import CreatorProfile
 
-from .utils import media_renamer, media_renamer, video_file_checker
+from .utils import media_renamer, video_file_checker
 
 
 class CreatorInlineSerializer(serializers.Serializer):
@@ -567,13 +567,13 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "user_has_liked",
             "publish",
             "tags",
-            "anime_thumbnail",
             "likes",
             "liked_user_names",
+            "description",
+            "anime_thumbnail",
             "video_file",
             "comments",
             "owner",
-            "description",
         ]
 
     def update(self, instance, validated_data):
@@ -655,8 +655,17 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         comments = Comment.objects.filter(
             content_type=target_content_type, object_id=obj.id
         )
-        all_comments = {comment.comment: comment.user.email for comment in comments}
-        return all_comments
+
+        all_comments = {
+            comment.created.strftime("%m/%d/%Y, %H:%M:%S"): [
+                comment.user.user.email,
+                comment.text,
+            ]
+            for comment in comments
+            if comment.is_approved
+        }
+
+        return {"message": all_comments}
 
 
 class SeasonSerializer(serializers.ModelSerializer):
