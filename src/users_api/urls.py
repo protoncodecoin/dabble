@@ -7,11 +7,11 @@ app_name = "users"
 urlpatterns = [
     path("favorites/all/", views.FavoritedAPIView2.as_view()),
     # path("profile-search", views.search_creators, name="search_creators"),
-    path("creators-profile/", views.CreatorListAPIView.as_view()),
+    path("creators-profile/all/", views.CreatorListAPIView.as_view()),
     path(
         "creator/<int:pk>/", views.CreatorDetailAPIView.as_view(), name="creator-detail"
     ),
-    path("users-profile/", views.UsersProfileListAPIView.as_view()),
+    path("users-profile/all/", views.UsersProfileListAPIView.as_view()),
     path(
         "commonuser/<int:pk>/",
         views.UserProfileDetailAPIView.as_view(),

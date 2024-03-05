@@ -101,10 +101,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializer for the User Profile"""
 
-    # names_of_follows = serializers.SerializerMethodField()
-    # favorites = FavoriteSerializer(many=True, read_only=True)
     user_email = serializers.ReadOnlyField(source="user.email")
-    # all_favorites = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class for the User Profile"""
@@ -113,34 +110,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "user_email",
-            # "follows",
             "profile_img",
-            # "names_of_follows",
-            # "favorites",
-            # "all_favorites",
         ]
-
-    # def get_names_of_follows(self, obj):
-    #     all_follows = obj.follows.all()
-    #     follower_names = list(map(lambda name: name.company_name, all_follows))
-    #     return follower_names
-
-    # def get_all_favorites(self, obj):
-    #     all_fav = obj.favorites.filter(user=obj.user.user_profile)
-    #     all_fav = obj.favorites.all()
-    #     favs = ContentType.objects.get_for_model(UserProfile)
-    #     print(all_fav)
-    #     print("all_fav", favs)
-    #     return []
 
 
 class UserProfileDetailSerializer(serializers.ModelSerializer):
     """Serializer for the User Profile"""
 
-    # names_of_follows = serializers.SerializerMethodField()
-    # favorites = FavoriteSerializer(many=True, read_only=True)
     user_email = serializers.ReadOnlyField(source="user.email")
-    # all_favorites = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         """Meta class for the User Profile"""
@@ -149,21 +126,6 @@ class UserProfileDetailSerializer(serializers.ModelSerializer):
         fields = [
             "pk",
             "user_email",
-            # "follows",
             "profile_img",
             "names_of_follows",
-            # "favorites",
-            # "all_favorites",
         ]
-
-    # def get_names_of_follows(self, obj):
-    #     anime_fav = Anime.objects.favorite
-    #     pass
-
-    # def get_all_favorites(self, obj):
-    #     all_fav = obj.favorites.filter(user=obj.user.user_profile)
-    #     all_fav = obj.favorites.all()
-    #     favs = ContentType.objects.get_for_model(UserProfile)
-    #     print(all_fav)
-    #     print("all_fav", favs)
-    #     return []

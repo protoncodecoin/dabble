@@ -102,6 +102,15 @@ class UserProfileDetailAPIView(generics.RetrieveAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
+    def get(self, request, pk, format=None):
+
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+        user_serializer = UserProfileSerializer(
+            user_profile, context={"request": request}
+        )
+        return Response({"message": user_serializer.data}, status=status.HTTP_200_OK)
+
 
 class AllUsersListAPIView(generics.ListAPIView):
     """Listing all users"""
