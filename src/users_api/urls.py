@@ -5,12 +5,18 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
-
     path("favorites/", views.FavoriteAPIView.as_view()),
     # path("profile-search", views.search_creators, name="search_creators"),
     path("creators-profile/", views.CreatorListAPIView.as_view()),
-    path("creator/", views.CreatorDetailAPIView.as_view()),
+    path(
+        "creator/<int:pk>/", views.CreatorDetailAPIView.as_view(), name="creator-detail"
+    ),
     path("users-profile/", views.UsersProfileListAPIView.as_view()),
+    path(
+        "commonuser/<int:pk>/",
+        views.UserProfileDetailAPIView.as_view(),
+        name="commonuser-detail",
+    ),
     path("all-users/", views.AllUsersListAPIView.as_view()),
     path(
         "follow/<int:creator_id>/",
@@ -22,5 +28,4 @@ urlpatterns = [
         views.add_remove_favorite,
         name="add_remove_fav",
     ),
-    
 ]

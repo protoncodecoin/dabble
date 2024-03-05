@@ -163,7 +163,7 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Series)
         comments = Comment.objects.filter(
-            target_ct=target_content_type, target_id=obj.id
+            content_type=target_content_type, object_id=obj.id
         )
 
         all_comments = {comment.comment: comment.user.email for comment in comments}
@@ -613,9 +613,9 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                             sent_video_type,
                         )
 
-                        validated_data.get(
-                            "video_file"
-                        ).name = f"{generated_file_name}.{sent_video_type}"
+                        validated_data.get("video_file").name = (
+                            f"{generated_file_name}.{sent_video_type}"
+                        )
 
                 if validated_data.get("anime_thumbnail"):
                     sent_thumbnail_type = validated_data.get(
@@ -628,9 +628,9 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                         req_episode_number,
                         sent_thumbnail_type,
                     )
-                    validated_data.get(
-                        "anime_thumbnail"
-                    ).name = f"{generated_file_name}.{sent_thumbnail_type}"
+                    validated_data.get("anime_thumbnail").name = (
+                        f"{generated_file_name}.{sent_thumbnail_type}"
+                    )
 
                 return super().update(instance, validated_data)
 
@@ -653,7 +653,7 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Anime)
         comments = Comment.objects.filter(
-            target_ct=target_content_type, target_id=obj.id
+            content_type=target_content_type, object_id=obj.id
         )
         all_comments = {comment.comment: comment.user.email for comment in comments}
         return all_comments

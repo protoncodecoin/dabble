@@ -10,7 +10,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = [
         "user",
         "created",
-        "target",
         "is_approved",
     ]
 

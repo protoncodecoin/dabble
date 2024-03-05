@@ -20,6 +20,7 @@ from .models import (
 )
 
 from comment_system.models import Comment
+from comment_system.serializers import CommentSerializer
 
 from .serializers import (
     SeriesSerializer,
@@ -34,10 +35,9 @@ from .serializers import (
     SeasonCreateSerializer,
 )
 
-from . import permissions
 from anime_api import models
 
-from users_api.models import CreatorProfile
+from users_api.models import CreatorProfile, UserProfile
 from users_api.serializers import CreatorProfileSerializer
 
 
@@ -79,7 +79,9 @@ def search_contents(request, contenttype):
                     results, many=True, context={"request": request}
                 )
 
-                return Response(anime_serializer.data)
+                return Response(
+                    {"result": anime_serializer.data}, status=status.HTTP_200_OK
+                )
 
             if target_content == models.Story:
                 search_vector = SearchVector(
@@ -101,7 +103,9 @@ def search_contents(request, contenttype):
                     results, many=True, context={"request": request}
                 )
 
-                return Response(story_serializer.data)
+                return Response(
+                    {"result": story_serializer.data}, status=status.HTTP_200_OK
+                )
 
             if target_content == models.Series:
                 search_vector = SearchVector(
@@ -142,11 +146,14 @@ def search_contents(request, contenttype):
                     results, many=True, context={"request": request}
                 )
 
-                return Response(creator_serializer.data)
+                return Response(
+                    {"result": creator_serializer.data, status: status.HTTP_200_OK}
+                )
+        return Response({"message": "no query found"}, status=status.HTTP_404_NOT_FOUND)
 
     return Response(
         {"message": "contenttype is incorrect."},
-        status=status.HTTP_308_PERMANENT_REDIRECT,
+        status=status.HTTP_404_NOT_FOUND,
     )
 
 
@@ -191,7 +198,7 @@ def like_and_unlike(request, content_id, content_type):
                 stories_instance.likes.remove(user)
                 return Response(
                     {"message": "UnLike was successful"},
-                    status=status.HTTP_204_NO_CONTENT,
+                    status=status.HTTP_200_OK,
                 )
         elif content_type == "animes":
             try:
@@ -221,13 +228,48 @@ def like_and_unlike(request, content_id, content_type):
 # @permission_classes([permissions.IsCommonUser, permissions.IsStaff])
 def comments(request, content_type, content_id):
     user = request.user
-    if request.method == "POST":
+    if request.method == "GET":
+        if content_type == "series":
+            target_content_type = ContentType.objects.get_for_model(Series)
+            result = Comment.objects.filter(
+                content_type=target_content_type, object_id=content_id
+            )
+            comment_serializer = CommentSerializer(
+                result, many=True, context={"request": request}
+            )
+
+            return Response({comment_serializer.data}, status=status.HTTP_200_OK)
+
+        if content_type == "anime":
+            target_content_type = ContentType.objects.get_for_model(Anime)
+            result = Comment.objects.filter(
+                content_type=target_content_type, object_id=content_id
+            )
+            comment_serializer = CommentSerializer(
+                result, many=True, context={"request": request}
+            )
+
+            return Response(comment_serializer.data)
+
+        if content_type == "story":
+            target_content_type = ContentType.objects.get_for_model(Story)
+            result = Comment.objects.filter(
+                content_type=target_content_type, object_id=content_id
+            )
+            comment_serializer = CommentSerializer(
+                result, many=True, context={"request": request}
+            )
+
+            return Response(comment_serializer.data)
+
+    if request.method == "POST" or request.method == "PUT":
+        user_profile = UserProfile.objects.get(user=user)
         if content_type == "series":
             target_content_type = ContentType.objects.get_for_model(Series)
             Comment.objects.update_or_create(
-                user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
+                user=user_profile,
+                content_type=target_content_type,
+                object_id=content_id,
                 comment=request.POST.get("comment"),
             )
             return Response(
@@ -239,10 +281,10 @@ def comments(request, content_type, content_id):
             target_content_type = ContentType.objects.get_for_model(Anime)
 
             Comment.objects.create(
-                user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
-                comment=request.POST.get("comment"),
+                user=user_profile,
+                content_type=target_content_type,
+                object_id=content_id,
+                text=request.POST.get("comment"),
             )
             return Response(
                 {"message": "Comment was successfuly added"},
@@ -253,10 +295,10 @@ def comments(request, content_type, content_id):
             target_content_type = ContentType.objects.get_for_model(Story)
 
             Comment.objects.create(
-                user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
-                comment=request.POST.get("comment"),
+                user=user_profile,
+                content_type=target_content_type,
+                object_id=content_id,
+                text=request.POST.get("comment"),
             )
             return Response(
                 {"message": "Comment was successfuly added"},
@@ -266,16 +308,16 @@ def comments(request, content_type, content_id):
     if request.method == "DELETE":
         if content_type == "series":
             target_content_type = ContentType.objects.get_for_model(Series)
-            existing_commnet = Comment.objects.filter(
+            existing_comment = Comment.objects.filter(
                 user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
-                comment=request.POST.get("comment"),
+                content_type=target_content_type,
+                object_id=content_id,
+                text=request.POST.get("comment"),
             )
-            if existing_commnet:
-                existing_commnet.delete()
+            if existing_comment:
+                existing_comment.delete()
                 return Response(
-                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                    {"message": "Content deleted🚮"}, status=status.HTTP_204_NO_CONTENT
                 )
             return Response(
                 {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
@@ -285,14 +327,14 @@ def comments(request, content_type, content_id):
             target_content_type = ContentType.objects.get_for_model(Story)
             existing_comment = Comment.objects.filter(
                 user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
-                comment=request.POST.get("comment"),
+                content_type=target_content_type,
+                object_id=content_id,
+                text=request.POST.get("comment"),
             )
             if existing_comment:
                 existing_comment.delete()
                 return Response(
-                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                    {"message": "Content deleted🚮"}, status=status.HTTP_204_NO_CONTENT
                 )
             return Response(
                 {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
@@ -302,21 +344,22 @@ def comments(request, content_type, content_id):
             target_content_type = ContentType.objects.get_for_model(Anime)
             existing_comment = Comment.objects.filter(
                 user=user,
-                target_ct=target_content_type,
-                target_id=content_id,
-                comment=request.POST.get("comment"),
+                content_type=target_content_type,
+                object_id=content_id,
+                text=request.POST.get("comment"),
             )
             if existing_comment:
                 existing_comment.delete()
                 return Response(
-                    {"message": "Content deleted"}, status=status.HTTP_204_NO_CONTENT
+                    {"message": "Content deleted🚮"}, status=status.HTTP_204_NO_CONTENT
                 )
             return Response(
                 {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
     return Response(
-        {"message": "Method not Allowed."}, status=status.HTTP_405_METHOD_NOT_ALLOWED
+        {"message": "Something went wrong.😢🤦‍♂️"},
+        status=status.HTTP_405_METHOD_NOT_ALLOWED,
     )
 
 
