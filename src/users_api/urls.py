@@ -11,6 +11,9 @@ urlpatterns = [
     path(
         "creator/<int:pk>/", views.CreatorDetailAPIView.as_view(), name="creator-detail"
     ),
+    path(
+        "creators/<int:creator_pk>/followers/", views.CreatorFollowersAPIView.as_view()
+    ),
     path("users-profile/all/", views.UsersProfileListAPIView.as_view()),
     path(
         "commonuser/<int:pk>/",

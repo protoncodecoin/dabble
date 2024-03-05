@@ -24,6 +24,7 @@ from anime_api.serializers import (
 
 from .models import UserProfile, CreatorProfile, Follow, CustomUser
 from .serializers import (
+    CreatorFollowersSerializer,
     UserProfileSerializer,
     UsersSerializer,
     CreatorProfileSerializer,
@@ -87,6 +88,29 @@ class CreatorDetailAPIView(generics.RetrieveAPIView):
 
     queryset = CreatorProfile.objects.all()
     serializer_class = CreatorProfileSerializer
+
+
+class CreatorFollowersAPIView(APIView):
+    """
+    list of creator followers
+    """
+
+    def get(self, request, creator_pk, format=None):
+        """
+        return followers based on creator
+        """
+
+        creator_profile = CreatorProfile.objects.get(creator=creator_pk)
+        followers = creator_profile.followers.all()
+        no_of_followers = followers.count()
+
+        follower_serializer = CreatorFollowersSerializer(
+            followers, many=True, context={"request": request}
+        )
+        return Response(
+            {"result": follower_serializer.data, "total_followers": no_of_followers},
+            status=status.HTTP_200_OK,
+        )
 
 
 class UsersProfileListAPIView(generics.ListAPIView):

@@ -83,6 +83,21 @@ class CreatorProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CreatorFollowersSerializer(serializers.ModelSerializer):
+    """
+    list of creator followers
+    """
+
+    user = serializers.ReadOnlyField(source="user.email")
+    # number_of_follows = serializers.ReadOnlyField(source="")
+
+    class Meta:
+        model = UserProfile
+        fields = [
+            "user",
+        ]
+
+
 class FavoriteSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
 
