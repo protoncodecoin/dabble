@@ -24,9 +24,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class CommentDetailSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
-    post_url = serializers.HyperlinkedRelatedField(
-        view_name="animes:sveries-detail", lookup_field="pk", read_only=True
+    user = serializers.HyperlinkedRelatedField(
+        view_name="users:commonuser-detail", read_only=True
     )
 
     class Meta:
@@ -35,7 +34,6 @@ class CommentDetailSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "text",
-            "post_url",
             "object_id",
             "content_type",
             "created",
