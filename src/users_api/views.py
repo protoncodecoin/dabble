@@ -43,10 +43,6 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 
-from .models import Favorite
-from .serializers import FavoriteSerializer
-from .utility import create_favorite
-
 from anime_api import permissions
 from anime_api import models
 
@@ -227,47 +223,33 @@ def follow_and_unfollow(request, creator_id):
         )
 
 
-@api_view(["POST"])
-@permission_classes([permissions.IsCommonUser])
-def add_remove_favorite(request, content_type, content_id):
-    user = request.user
-    user_profile = UserProfile.objects.get(user=user)
+# @api_view(["POST"])
+# @permission_classes([permissions.IsCommonUser])
+# def add_remove_favorite(request, content_type, content_id):
+#     user = request.user
+#     user_profile = UserProfile.objects.get(user=user)
 
-    content_type_mapping = {
-        "series": models.Series,
-        "stories": models.Story,
-        "anime": models.Anime,
-    }
+#     content_type_mapping = {
+#         "series": models.Series,
+#         "stories": models.Story,
+#         "anime": models.Anime,
+#     }
 
-    target_model = content_type_mapping.get(content_type)
+#     target_model = content_type_mapping.get(content_type)
 
-    if not target_model:
-        return Response(
-            {"message": "Invalid content_type"}, status=status.HTTP_400_BAD_REQUEST
-        )
+#     if not target_model:
+#         return Response(
+#             {"message": "Invalid content_type"}, status=status.HTTP_400_BAD_REQUEST
+#         )
 
-    output = create_favorite(
-        request_user=user_profile, content_id=content_id, target_model=target_model
-    )
+#     output = create_favorite(
+#         request_user=user_profile, content_id=content_id, target_model=target_model
+#     )
 
-    if output:
-        return Response({"message": output.data}, status=status.HTTP_200_OK)
-    else:
-        return Response(
-            {"message": "Favorite was successfully removed"},
-            status=status.HTTP_204_NO_CONTENT,
-        )
-
-
-class FavoriteAPIView(generics.ListAPIView):
-    queryset = Favorite.objects.all()
-    serializer_class = FavoriteSerializer
-
-    def list(self, request):
-        # Note the use of `get_queryset()` instead of `self.queryset`
-        queryset = self.get_queryset()
-        print(len(queryset))
-        for q in queryset.all():
-            print(q)
-        serializer = FavoriteSerializer(queryset, many=True)
-        return Response(serializer.data)
+#     if output:
+#         return Response({"message": output.data}, status=status.HTTP_200_OK)
+#     else:
+#         return Response(
+#             {"message": "Favorite was successfully removed"},
+#             status=status.HTTP_204_NO_CONTENT,
+#         )

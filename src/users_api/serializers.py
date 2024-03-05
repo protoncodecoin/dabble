@@ -1,20 +1,14 @@
 from django.contrib.auth.models import Group
-from django.contrib.contenttypes.models import ContentType
 
 from rest_framework import serializers
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from dj_rest_auth.serializers import LoginSerializer
 
-from django.contrib.auth.models import User
 from django.db import transaction
 
-from .models import UserProfile, CreatorProfile, CustomUser, Favorite
+from .models import UserProfile, CreatorProfile, CustomUser
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-
-from anime_api.models import Anime
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -89,28 +83,12 @@ class CreatorFollowersSerializer(serializers.ModelSerializer):
     """
 
     user = serializers.ReadOnlyField(source="user.email")
-    # number_of_follows = serializers.ReadOnlyField(source="")
 
     class Meta:
         model = UserProfile
         fields = [
             "user",
         ]
-
-
-class FavoriteSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Favorite
-        fields = "__all__"
-
-    def get_user(self, obj):
-        print(obj.content_type, "This is the obj")
-        print(type(obj))
-        print(obj.object_id)
-        # fav_instance = Anime.objects.get(obj.object_id)
-        return obj.user.user
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

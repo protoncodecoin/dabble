@@ -26,9 +26,4 @@ urlpatterns = [
         views.follow_and_unfollow,
         name="follow_and_unfollow",
     ),
-    path(
-        "favorites/<str:content_type>/<int:content_id>/",
-        views.add_remove_favorite,
-        name="add_remove_fav",
-    ),
 ]

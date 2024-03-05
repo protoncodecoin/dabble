@@ -2,10 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, CreatorProfile, UserProfile, Follow, Favorite
-
-
-admin.site.register(Favorite)
+from .models import CustomUser, CreatorProfile, UserProfile, Follow
 
 
 class CustomUserAdmin(UserAdmin):
