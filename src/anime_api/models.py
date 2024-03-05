@@ -9,7 +9,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 
 from taggit.managers import TaggableManager
 
-from users_api.models import CreatorProfile
+from users_api.models import CreatorProfile, UserProfile
 
 
 # Create your models here.
@@ -34,6 +34,9 @@ class Series(models.Model):
         settings.AUTH_USER_MODEL, related_name="series_like", blank=True
     )
     tags = TaggableManager()
+    favorited_by = models.ManyToManyField(
+        UserProfile, blank=True, related_name="favorite_series"
+    )
 
     def __str__(self):
         return self.series_name
@@ -77,7 +80,7 @@ class Base(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
     )
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     # views
 
@@ -98,6 +101,9 @@ class Story(Base):
         upload_to="stories/thumbnails/%Y/%m/", default="default/story.jfif", blank=True
     )
     content = models.TextField(blank=False)
+    favorited_by = models.ManyToManyField(
+        UserProfile, blank=True, related_name="favorite_stories"
+    )
 
     class Meta:
         """Meta class for Story Model"""
@@ -115,6 +121,9 @@ class Anime(Base):
         blank=True,
     )
     video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
+    favorited_by = models.ManyToManyField(
+        UserProfile, blank=True, related_name="favorite_animes"
+    )
 
     class Meta:
         """Meta class for Anime Model"""

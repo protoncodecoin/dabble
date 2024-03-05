@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -357,6 +358,69 @@ def comments(request, content_type, content_id):
     return Response(
         {"message": "Something went wrong.😢🤦‍♂️"},
         status=status.HTTP_405_METHOD_NOT_ALLOWED,
+    )
+
+
+@api_view(["POST"])
+def toggle_favorite(request, content_type, content_id):
+    """Toggle User favorite."""
+    if request.user.is_authenticated:
+        user = request.user
+        content_type_mapping = {
+            "series": models.Series,
+            "anime": models.Anime,
+            "story": models.Story,
+        }
+        target_content = content_type_mapping.get(content_type)
+        if target_content:
+            if target_content == models.Anime:
+                anime_obj = get_object_or_404(Anime, pk=content_id)
+                user_profile = UserProfile.objects.get(user=user)
+                if anime_obj.favorited_by.filter(id=user_profile.id).exists():
+                    anime_obj.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": "anime removed from favorites"},
+                        status=status.HTTP_204_NO_CONTENT,
+                    )
+                anime_obj.favorited_by.add(user_profile)
+                return Response(
+                    {"message": "anime added to favorites"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == models.Series:
+                series_obj = get_object_or_404(Series, pk=content_id)
+                user_profile = UserProfile.objects.get(user=user)
+                if series_obj.favorited_by.filter(id=user_profile.id).exists():
+                    series_obj.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": "series removed from favorites"},
+                        status=status.HTTP_204_NO_CONTENT,
+                    )
+                series_obj.favorited_by.add(user_profile)
+                return Response(
+                    {"message": "series added to favorites"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == models.Story:
+                story_obj = get_object_or_404(Story, pk=content_id)
+                user_profile = UserProfile.objects.get(user=user)
+                if story_obj.favorited_by.filter(id=user_profile.id).exists():
+                    story_obj.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": "story removed from favorites"},
+                        status=status.HTTP_204_NO_CONTENT,
+                    )
+                story_obj.favorited_by.add(user_profile)
+                return Response(
+                    {"message": "story added to favorites"}, status=status.HTTP_200_OK
+                )
+
+        return Response(
+            {"message": "Invalid information provided to complete request"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    return Response(
+        {"message": "Login to continue"}, status=status.HTTP_401_UNAUTHORIZED
     )
 
 

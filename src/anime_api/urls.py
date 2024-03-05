@@ -13,6 +13,11 @@ urlpatterns = [
         name="like_and_unlike",
     ),
     path(
+        "favorites/<str:content_type>/<str:content_id>/",
+        views.toggle_favorite,
+        name="toggle_favorite",
+    ),
+    path(
         "comments/<str:content_type>/<int:content_id>", views.comments, name="comments"
     ),
     path("series/", views.SeriesListAPI.as_view(), name="series-list"),

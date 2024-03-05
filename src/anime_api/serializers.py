@@ -1,3 +1,4 @@
+from dataclasses import field
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
@@ -387,7 +388,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Story)
         comments = Comment.objects.filter(
-            target_ct=target_content_type, target_id=obj.id
+            content_type=target_content_type, object_id=obj.id
         )
 
         all_comments = {comment.comment: comment.user.email for comment in comments}
@@ -545,6 +546,61 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         return new_anime_obj
 
 
+class AnimeFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:anime-detail")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+
+    class Meta:
+        model = Anime
+        fields = [
+            "series_name",
+            "episode_title",
+            "episode_number",
+            "anime_thumbnail",
+            "episode_url",
+        ]
+
+
+class StoryFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:story-detail")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+
+    class Meta:
+        model = Story
+        fields = [
+            "series_name",
+            "episode_title",
+            "episode_number",
+            "thumbnail",
+            "episode_url",
+        ]
+
+
+class SeriesFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:series-detail")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+
+    class Meta:
+        model = Series
+        fields = [
+            "series_name",
+            "series_poster",
+            "episode_url",
+        ]
+
+
 class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     comments = serializers.SerializerMethodField()
@@ -553,6 +609,9 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     user_has_liked = serializers.SerializerMethodField()
     liked_user_names = serializers.SerializerMethodField()
     tags = TagListSerializerField()
+    # favorited_urls = serializers.HyperlinkedRelatedField(
+    #     view_name="animes:favorite-detail", read_only=True
+    # )
 
     class Meta:
         model = Anime
@@ -574,6 +633,8 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "comments",
             "owner",
+            "favorited_by",
+            # "favorited_urls",
         ]
 
     def update(self, instance, validated_data):

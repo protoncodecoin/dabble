@@ -13,7 +13,14 @@ from django.views.generic import RedirectView
 
 from rest_framework import generics
 from rest_framework.decorators import permission_classes
+from rest_framework.views import APIView
 
+from anime_api.serializers import (
+    AnimeDetailSerializer,
+    AnimeFavoriteSerializer,
+    SeriesFavoriteSerializer,
+    StoryFavoriteSerializer,
+)
 
 from .models import UserProfile, CreatorProfile, Follow, CustomUser
 from .serializers import (
@@ -104,6 +111,45 @@ class AllUsersListAPIView(generics.ListAPIView):
     serializer_class = UsersSerializer
 
 
+class FavoritedAPIView2(APIView):
+    """
+    View to list all user favorites in the system.
+
+    """
+
+    def get(self, request, format=None):
+        """
+        Return a list of all user favorites.
+        """
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+        anime = models.Anime.objects.filter(favorited_by=user_profile)
+        stories = models.Story.objects.filter(favorited_by=user_profile)
+        series = models.Series.objects.filter(favorited_by=user_profile)
+
+        favorited_serializer = AnimeFavoriteSerializer(
+            anime, many=True, context={"request": request}
+        )
+        stories_serializer = StoryFavoriteSerializer(
+            stories, many=True, context={"request": request}
+        )
+        series_serializer = SeriesFavoriteSerializer(
+            series,
+            many=True,
+            context={"request": request},
+        )
+        return Response(
+            {
+                "message": [
+                    favorited_serializer.data,
+                    stories_serializer.data,
+                    series_serializer.data,
+                ]
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 @api_view(["GET", "POST", "PUT"])
 # @permission_classes([permissions.IsCommonUser])
 def follow_and_unfollow(request, creator_id):
@@ -116,11 +162,13 @@ def follow_and_unfollow(request, creator_id):
             {
                 "status": "error",
                 "detail": f"Creator with the id of {creator_id} does not exists",
-            }
+            },
+            status=status.HTTP_404_NOT_FOUND,
         )
     except UserProfile.DoesNotExist:
         return Response(
-            {"status": "error", "detail": "Sign up to perform this action."}
+            {"status": "error", "detail": "Sign up to perform this action."},
+            status=status.HTTP_401_UNAUTHORIZED,
         )
 
     if not user_prof.follows.filter(pk=creator.id).exists():
@@ -144,62 +192,6 @@ def follow_and_unfollow(request, creator_id):
             {"status": "ok", "message": "Unfollow was successful"},
             status=status.HTTP_204_NO_CONTENT,
         )
-
-
-# @api_view(["POST"])
-# @permission_classes([permissions.IsCommonUser])
-# def add_remove_favorite(request, content_type, content_id):
-#     user = request.user
-#     user_prof = UserProfile.objects.get(user=user)
-
-#     if request.method == "POST":
-#         output = create_favorite(
-#             request_user=user_prof, content_id=content_id, target_model=models.Series
-#         )
-#         if output:
-#             return Response(
-#                 {"message": output.data},
-#                 status=status.HTTP_200_OK,
-#             )
-#         else:
-#             return Response(
-#                 {"message": "successfully deleted to favorite"},
-#                 status=status.HTTP_204_NO_CONTENT,
-#             )
-
-#     if content_type == "stories":
-#         output = create_favorite(
-#             request_user=user_prof, content_id=content_id, target_model=models.Story
-#         )
-#         if output:
-#             return Response(
-#                 {"message": output.data},
-#                 status=status.HTTP_200_OK,
-#             )
-#         else:
-#             return Response(
-#                 {"message": "Favorite was successfully removed"},
-#                 status=status.HTTP_204_NO_CONTENT,
-#             )
-
-#     if content_type == "anime":
-#         output = create_favorite(
-#             request_user=user_prof, content_id=content_id, target_model=models.Anime
-#         )
-#         if output:
-#             return Response(
-#                 {"message": output.data},
-#                 status=status.HTTP_200_OK,
-#             )
-#         else:
-#             return Response(
-#                 {"message": "Favorite was removed successfully"},
-#                 status=status.HTTP_204_NO_CONTENT,
-#             )
-
-#     return Response(
-#         {"message": "Method not allowed"}, status=status.HTTP_400_BAD_REQUEST
-#     )
 
 
 @api_view(["POST"])

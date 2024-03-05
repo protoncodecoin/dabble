@@ -5,7 +5,7 @@ from . import views
 app_name = "users"
 
 urlpatterns = [
-    path("favorites/", views.FavoriteAPIView.as_view()),
+    path("favorites/all/", views.FavoritedAPIView2.as_view()),
     # path("profile-search", views.search_creators, name="search_creators"),
     path("creators-profile/", views.CreatorListAPIView.as_view()),
     path(
