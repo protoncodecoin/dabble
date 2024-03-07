@@ -166,7 +166,7 @@ class UsersProfileListAPIView(generics.ListAPIView):
 class UserProfileDetailAPIView(generics.RetrieveUpdateAPIView):
     """Views for showing details of common user."""
 
-    # queryset = UserProfile.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
     def get(self, request, pk, format=None):
@@ -190,7 +190,7 @@ class UserProfileDetailAPIView(generics.RetrieveUpdateAPIView):
         user = request.user
         user_profile = UserProfile.objects.get(user=user)
 
-        if user_profile.user.email == request.user:
+        if request.user.email == user_profile.user.email:
             if user_profile:
                 if "profile_img" in request.FILES:
                     file = request.FILES["profile_img"]
