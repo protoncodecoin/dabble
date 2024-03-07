@@ -6,10 +6,10 @@ from . import views
 app_name = "animes"
 
 urlpatterns = [
-    path("search/<str:contenttype>/", views.search_contents, name="search"),
+    path("search/<str:contenttype>/", views.search, name="search"),
     path(
         "likes/<str:content_type>/<str:content_id>/",
-        views.like_and_unlike,
+        views.toggle_like,
         name="like_and_unlike",
     ),
     path(

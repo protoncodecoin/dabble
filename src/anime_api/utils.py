@@ -1,6 +1,7 @@
 """
 Utils for anime app.
 """
+
 video_format = [
     "mp4",
     "mkv",
@@ -14,6 +15,21 @@ def video_file_checker(file_type: str):
     if file_type in video_format:
         return True
     return False
+
+
+def profile_img_renamer(name: str, file_extension):
+    """
+    Args:
+
+        name (str): name to be given to file
+        file_extension (str): the extension of the file
+
+    Returns:
+       file: renamed file
+    """
+
+    file_name = f"{name}.{file_extension}"
+    return file_name
 
 
 def media_renamer(

@@ -40,10 +40,10 @@ from users_api.serializers import CreatorProfileSerializer
 
 
 @api_view(["GET"])
-def search_contents(request, contenttype):
+def search(request, contenttype):
     """
     Search database by using contenttype(models) and the query provided.
-    contenttype/models include: series, story, anime.
+    contenttype/models include: series, story, anime, creatorProfile.
     """
     content_type_mapping = {
         "series": models.Series,
@@ -157,7 +157,7 @@ def search_contents(request, contenttype):
 
 @api_view(["POST", "PUT"])
 # @permission_classes([permissions.IsCommonUser, permissions.IsStaff])
-def like_and_unlike(request, content_id, content_type):
+def toggle_like(request, content_id, content_type):
     user = request.user
     if content_id:
         if content_type == "series":
@@ -236,7 +236,9 @@ def comments(request, content_type, content_id):
                 result, many=True, context={"request": request}
             )
 
-            return Response({comment_serializer.data}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": comment_serializer.data}, status=status.HTTP_200_OK
+            )
 
         if content_type == "anime":
             target_content_type = ContentType.objects.get_for_model(Anime)

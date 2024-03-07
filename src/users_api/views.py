@@ -12,11 +12,9 @@ from django.views.generic import RedirectView
 
 
 from rest_framework import generics
-from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 
 from anime_api.serializers import (
-    AnimeDetailSerializer,
     AnimeFavoriteSerializer,
     SeriesFavoriteSerializer,
     StoryFavoriteSerializer,
@@ -79,11 +77,55 @@ class CreatorListAPIView(generics.ListAPIView):
     serializer_class = CreatorProfileSerializer
 
 
-class CreatorDetailAPIView(generics.RetrieveAPIView):
+class CreatorDetailAPIView(generics.RetrieveUpdateAPIView):
     """View for showing details of creator."""
 
     queryset = CreatorProfile.objects.all()
     serializer_class = CreatorProfileSerializer
+
+    def get(self, request, pk, format=None):
+        try:
+            creator_profile = CreatorProfile.objects.get(id=pk)
+        except CreatorProfile.DoesNotExist:
+            return Response(
+                {"message": "Creator Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        creator_serializer = CreatorProfileSerializer(
+            creator_profile, context={"request": request}
+        )
+
+        return Response({"result": creator_serializer.data}, status=status.HTTP_200_OK)
+
+    def patch(self, request, pk, *args, **kwargs):
+
+        if "creator_logo" in request.FILES:
+            try:
+
+                creator = CreatorProfile.objects.get(id=pk)
+
+            except CreatorProfile.DoesNotExist:
+                return Response(
+                    {"message": "Creator Profile does not exist"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except UserProfile.DoesNotExist:
+                return Response(
+                    {"message": "User Profile does not exist"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if request.user == creator.creator.email:
+                file = request.FILES["creator_logo"]
+                extension = file.name.split(".")[-1]
+
+                file.name = f"{creator.company_name}.{extension}"
+                request.FILES["creator_logo"] = file
+
+                return super().patch(request, *args, *kwargs)
+            return Response(
+                {"message": "REQUEST NOT PERMITTED"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
 
 
 class CreatorFollowersAPIView(APIView):
@@ -95,8 +137,13 @@ class CreatorFollowersAPIView(APIView):
         """
         return followers based on creator
         """
-
-        creator_profile = CreatorProfile.objects.get(creator=creator_pk)
+        try:
+            creator_profile = CreatorProfile.objects.get(creator=creator_pk)
+        except CreatorProfile.DoesNotExist:
+            return Response(
+                {"message": "Creator Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         followers = creator_profile.followers.all()
         no_of_followers = followers.count()
 
@@ -116,20 +163,52 @@ class UsersProfileListAPIView(generics.ListAPIView):
     serializer_class = UserProfileSerializer
 
 
-class UserProfileDetailAPIView(generics.RetrieveAPIView):
+class UserProfileDetailAPIView(generics.RetrieveUpdateAPIView):
     """Views for showing details of common user."""
 
-    queryset = UserProfile.objects.all()
+    # queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
     def get(self, request, pk, format=None):
 
-        user = request.user
-        user_profile = UserProfile.objects.get(user=user)
+        try:
+            user_profile = UserProfile.objects.get(id=pk)
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"message": "User Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         user_serializer = UserProfileSerializer(
             user_profile, context={"request": request}
         )
         return Response({"message": user_serializer.data}, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        """
+        Handle partial update
+        """
+        user = request.user
+        user_profile = UserProfile.objects.get(user=user)
+
+        if user_profile.user.email == request.user:
+            if user_profile:
+                if "profile_img" in request.FILES:
+                    file = request.FILES["profile_img"]
+                    extension = file.name.split(".")[-1]
+
+                    file.name = f"{user_profile.user.email}.{extension}"
+
+                    request.FILES["profile_img"] = file
+                    return super().patch(request, *args, *kwargs)
+
+            return Response(
+                {"message": "User Profile not found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {"message": "NOT PERMITTED TO MAKE REQUEST"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
 
 class AllUsersListAPIView(generics.ListAPIView):
@@ -140,7 +219,7 @@ class AllUsersListAPIView(generics.ListAPIView):
     serializer_class = UsersSerializer
 
 
-class FavoritedAPIView2(APIView):
+class FavoritedAPIView(APIView):
     """
     View to list all user favorites in the system.
 
@@ -151,12 +230,18 @@ class FavoritedAPIView2(APIView):
         Return a list of all user favorites.
         """
         user = request.user
-        user_profile = UserProfile.objects.get(user=user)
+        try:
+            user_profile = UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            return Response(
+                {"message": "User Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         anime = models.Anime.objects.filter(favorited_by=user_profile)
         stories = models.Story.objects.filter(favorited_by=user_profile)
         series = models.Series.objects.filter(favorited_by=user_profile)
 
-        favorited_serializer = AnimeFavoriteSerializer(
+        anime_serializer = AnimeFavoriteSerializer(
             anime, many=True, context={"request": request}
         )
         stories_serializer = StoryFavoriteSerializer(
@@ -170,9 +255,9 @@ class FavoritedAPIView2(APIView):
         return Response(
             {
                 "message": [
-                    favorited_serializer.data,
-                    stories_serializer.data,
-                    series_serializer.data,
+                    {"anime": anime_serializer.data},
+                    {"stories": stories_serializer.data},
+                    {"series": series_serializer.data},
                 ]
             },
             status=status.HTTP_200_OK,
@@ -221,35 +306,3 @@ def follow_and_unfollow(request, creator_id):
             {"status": "ok", "message": "Unfollow was successful"},
             status=status.HTTP_204_NO_CONTENT,
         )
-
-
-# @api_view(["POST"])
-# @permission_classes([permissions.IsCommonUser])
-# def add_remove_favorite(request, content_type, content_id):
-#     user = request.user
-#     user_profile = UserProfile.objects.get(user=user)
-
-#     content_type_mapping = {
-#         "series": models.Series,
-#         "stories": models.Story,
-#         "anime": models.Anime,
-#     }
-
-#     target_model = content_type_mapping.get(content_type)
-
-#     if not target_model:
-#         return Response(
-#             {"message": "Invalid content_type"}, status=status.HTTP_400_BAD_REQUEST
-#         )
-
-#     output = create_favorite(
-#         request_user=user_profile, content_id=content_id, target_model=target_model
-#     )
-
-#     if output:
-#         return Response({"message": output.data}, status=status.HTTP_200_OK)
-#     else:
-#         return Response(
-#             {"message": "Favorite was successfully removed"},
-#             status=status.HTTP_204_NO_CONTENT,
-#         )
