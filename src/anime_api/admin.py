@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Series, Story, Anime, Season, Media, Video, Text
+from .models import Series, Story, Anime, Season, Media, Video, Text, Design
 
 
 # Register your models here.
@@ -63,3 +63,4 @@ class MediaAdmin(admin.ModelAdmin):
 
 admin.site.register(Video)
 admin.site.register(Text)
+admin.site.register(Design)

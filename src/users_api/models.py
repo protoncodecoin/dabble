@@ -36,7 +36,7 @@ class CreatorProfile(models.Model):
     )
     company_name = models.CharField(max_length=200, blank=True, null=True)
     company_website = models.URLField(blank=True, null=True)
-    company_description = models.CharField(max_length=500, blank=True, null=True)
+    biography = models.CharField(max_length=500, blank=True, null=True)
     creator_logo = models.ImageField(
         upload_to="creatorProfile/%Y/%m/%d/",
         blank=True,

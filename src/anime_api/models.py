@@ -139,7 +139,7 @@ class Media(models.Model):
         CreatorProfile, on_delete=models.CASCADE, related_name="singles"
     )
     title = models.CharField(max_length=150)
-    synopsis = models.CharField(max_length=300)
+    synopsis = models.TextField(max_length=300, blank=True, null=True)
     release_date = models.DateTimeField(auto_now_add=True)
     thumbnail = models.ImageField(
         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
@@ -151,6 +151,7 @@ class Media(models.Model):
             "model__in": (
                 "text",
                 "video",
+                "design",
             )
         },
     )
@@ -177,3 +178,9 @@ class Video(models.Model):
     """Model for single video content"""
 
     video_file = models.FileField(upload_to="singles/video/%Y/%m/", blank=False)
+
+
+class Design(models.Model):
+    """Model for Illustrations/Design"""
+
+    design = models.ImageField(upload_to="singles/designs/%Y/%m/", blank=False)

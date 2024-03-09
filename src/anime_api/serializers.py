@@ -167,7 +167,9 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             content_type=target_content_type, object_id=obj.id
         )
 
-        all_comments = {comment.comment: comment.user.email for comment in comments}
+        all_comments = {comment.text: comment.user.user.email for comment in comments}
+
+        # all_comments = {"message": "howl"}
 
         return all_comments
 
