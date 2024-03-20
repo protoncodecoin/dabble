@@ -15,6 +15,9 @@ from .models import (
     Story,
     Anime,
     Season,
+    Text,
+    Design,
+    Video,
 )
 
 from comment_system.models import Comment
@@ -31,6 +34,12 @@ from .serializers import (
     AnimeCreateSerializer,
     SeasonSerializer,
     SeasonCreateSerializer,
+    TextDetailSerializer,
+    TextCreateSerializer,
+    DesignSerializer,
+    DesignDetailSerializer,
+    VideoCreateSerializer,
+    VideoDetailSerializer,
 )
 
 from anime_api import models
@@ -528,3 +537,78 @@ class SeasonDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
+
+
+class TextCreateAPIView(generics.ListCreateAPIView):
+    """
+    View to create text object.
+    """
+
+    queryset = Text.objects.all()
+    serializer_class = TextCreateSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serailizer = TextCreateSerializer(queryset, many=True)
+        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+
+
+class TextUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    retrieve single object
+    update object
+    delete object
+    """
+
+    queryset = Text.objects.all()
+    serializer_class = TextDetailSerializer
+
+
+class DesignCreateListAPIView(generics.ListCreateAPIView):
+    """
+    list and create design/illustration object
+    """
+
+    queryset = Design.objects.all()
+    serializer_class = DesignSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serailizer = DesignSerializer(queryset, many=True)
+        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+
+
+class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve: pk
+    Update: pk
+    Delete: pk
+    """
+
+    queryset = Design.objects.all()
+    serializer_class = DesignDetailSerializer
+
+
+class VideoCreateListAPIView(generics.ListCreateAPIView):
+    """
+    list and create design/illustration object
+    """
+
+    queryset = Video.objects.all()
+    serializer_class = VideoCreateSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serailizer = VideoCreateSerializer(queryset, many=True)
+        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+
+
+class VideoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve: pk
+    Update: pk
+    Delete: pk
+    """
+
+    queryset = Video.objects.all()
+    serializer_class = VideoDetailSerializer

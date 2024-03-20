@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Series, Story, Anime, Season, Media, Video, Text, Design
+from .models import Series, Story, Anime, Season, Video, Text, Design
 
 
 # Register your models here.
@@ -52,15 +52,54 @@ class SeasonAdmin(admin.ModelAdmin):
     list_display_links = ["series"]
 
 
-@admin.register(Media)
-class MediaAdmin(admin.ModelAdmin):
-    """Register Media model to admin site."""
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+    """Register Video model to admin site."""
 
-    list_display = ["creator", "title", "release_date"]
-    list_display_links = ["creator", "title"]
-    list_filter = ["release_date", "creator"]
+    list_display = [
+        "id",
+        "creator",
+        "title",
+        "release_date",
+    ]
 
 
-admin.site.register(Video)
-admin.site.register(Text)
-admin.site.register(Design)
+@admin.register(Text)
+class TextAdmin(admin.ModelAdmin):
+    """Register Video model to admin site."""
+
+    list_display = [
+        "creator",
+        "title",
+        "id",
+        "release_date",
+    ]
+    list_filter = [
+        "release_date",
+        "id",
+        "creator",
+    ]
+    list_display_links = [
+        "title",
+        "id",
+    ]
+
+
+@admin.register(Design)
+class DesignAdmin(admin.ModelAdmin):
+    """Register Video model to admin site."""
+
+    list_display = [
+        "id",
+        "creator",
+        "title",
+        "release_date",
+    ]
+
+    list_filter = [
+        "release_date",
+        "id",
+        "creator",
+    ]
+
+    list_display_links = ["title"]

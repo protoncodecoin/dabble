@@ -1,5 +1,5 @@
-from dataclasses import field
 from django.contrib.contenttypes.models import ContentType
+
 from rest_framework import serializers
 
 from taggit.serializers import (
@@ -13,6 +13,9 @@ from .models import (
     Story,
     Anime,
     Season,
+    Text,
+    Design,
+    Video,
 )
 
 from comment_system.models import Comment
@@ -397,6 +400,42 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         return all_comments
 
 
+class StoryFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:story-detail")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+
+    class Meta:
+        model = Story
+        fields = [
+            "series_name",
+            "episode_title",
+            "episode_number",
+            "thumbnail",
+            "episode_url",
+        ]
+
+
+class SeriesFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:series-detail")
+    series_name = serializers.ReadOnlyField(source="series.series_name")
+
+    class Meta:
+        model = Series
+        fields = [
+            "series_name",
+            "series_poster",
+            "episode_url",
+        ]
+
+
 class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
     """A Model Serializer for Anime Model"""
 
@@ -567,42 +606,6 @@ class AnimeFavoriteSerializer(serializers.ModelSerializer):
         ]
 
 
-class StoryFavoriteSerializer(serializers.ModelSerializer):
-    """
-    Serializers user favorites
-    """
-
-    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:story-detail")
-    series_name = serializers.ReadOnlyField(source="series.series_name")
-
-    class Meta:
-        model = Story
-        fields = [
-            "series_name",
-            "episode_title",
-            "episode_number",
-            "thumbnail",
-            "episode_url",
-        ]
-
-
-class SeriesFavoriteSerializer(serializers.ModelSerializer):
-    """
-    Serializers user favorites
-    """
-
-    episode_url = serializers.HyperlinkedIdentityField(view_name="animes:series-detail")
-    series_name = serializers.ReadOnlyField(source="series.series_name")
-
-    class Meta:
-        model = Series
-        fields = [
-            "series_name",
-            "series_poster",
-            "episode_url",
-        ]
-
-
 class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     comments = serializers.SerializerMethodField()
@@ -708,12 +711,14 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
 
-    def get_liked_user_names(self, obj):
+    def get_liked_user_names(
+        self,
+    ):
         liked_users = obj.likes.all()
         liked_usernames = [user.username for user in liked_users]
         return liked_usernames
 
-    def get_comments(self, obj):
+    def get_comments(self, ob):
         target_content_type = ContentType.objects.get_for_model(Anime)
         comments = Comment.objects.filter(
             content_type=target_content_type, object_id=obj.id
@@ -793,3 +798,221 @@ class SeasonCreateSerializer(serializers.ModelSerializer):
         series_id = validated_data.get("series")
         season_number = validated_data.get("season_number")
         return Season.objects.create(series=series_id, season_number=season_number)
+
+
+class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Text
+        fields = [
+            "id",
+            "title",
+            "synopsis",
+            "content",
+            "thumbnail",
+            "creator",
+            "tags",
+        ]
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            if validated_data.get("thumbnail"):
+                title = validated_data.get("title")
+                extension = validated_data.get("thumbnail").name.split(".")[-1]
+                generated_name = f"{title}.{extension}"
+
+                validated_data.get("thumbnail").name = generated_name
+                return super().create(validated_data)
+        raise serializers.ValidationError("You do not have the permission")
+
+
+class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Text
+        fields = [
+            "id",
+            "title",
+            "content",
+            "synopsis",
+            "thumbnail",
+            "tags",
+        ]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            try:
+                req_creator = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if req_creator == instance.creator:
+                if validated_data.get("thumbnail"):
+                    if validated_data.get("title"):
+                        extension = validated_data.get("thumbnail").name.split(".")[-1]
+                        title = validated_data.get("title")
+                        generated_name = f"{title}.{extension}"
+                        validated_data.get("thumbnaiil").name = generated_name
+                return super().update(instance, validated_data)
+            raise serializers.ValidationError(
+                "You do not have the required permission."
+            )
+        raise serializers.ValidationError("You do not have the required permission.")
+
+
+class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Design
+        fields = [
+            "creator",
+            "id",
+            "title",
+            "synopsis",
+            "illustration",
+            "tags",
+        ]
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+
+            title = validated_data.get("title")
+            extension = validated_data.get("illustration").name.split(".")[-1]
+            generated_name = f"{title}.{extension}"
+            validated_data.get("illustration").name = generated_name
+            return super().create(validated_data)
+        raise serializers.ValidationError("You don't have the permission")
+
+
+class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Design
+
+        fields = [
+            "id",
+            "creator",
+            "title",
+            "synopsis",
+            "illustration",
+            "tags",
+        ]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            try:
+                req_creator = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if req_creator == instance.creator:
+                if validated_data.get("illustration"):
+                    extension = validated_data.get("illustration").name.split(".")[-1]
+                    if validated_data.get("title"):
+                        title = validated_data.get("title")
+                        generated_name = f"{title}.{extension}"
+                        validated_data.get("illustration").name = generated_name
+                        print(validated_data.get("illustration").name)
+                return super().update(instance, validated_data)
+            raise serializers.ValidationError(
+                "You do not have the required permission."
+            )
+        raise serializers.ValidationError("You do not have the required permission.")
+
+
+class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
+
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Video
+        fields = [
+            "id",
+            "creator",
+            "title",
+            "thumbnail",
+            "synopsis",
+            "video_file",
+            "tags",
+        ]
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            # try:
+            #     creator_prof = CreatorProfile.get(creator=req_user)
+            # except CreatorProfile.DoesNotExist:
+            #     raise serializers.ValidationError("User does not exist")
+            if validated_data.get("thumbnail"):
+                title = validated_data.get("title")
+                thumbnail_extension = validated_data.get("thumbnail").name.split(".")[
+                    -1
+                ]
+                generated_name = f"{title}.{thumbnail_extension}"
+                validated_data.get("thumbnail").name = generated_name
+            if validated_data.get("video_file"):
+                title = validated_data.get("title")
+                video_extension = validated_data.get("video_file").name.split(".")[-1]
+                generated_name = f"singles_{title}.{video_extension}"
+                validated_data.get("video_file").name = generated_name
+            return super().create(validated_data)
+        raise serializers.ValidationError(
+            "You do not have the permission to perform this action"
+        )
+
+
+class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = Video
+        fields = [
+            "id",
+            "title",
+            "synopsis",
+            "thumbnail",
+            "video_file",
+            "tags",
+            "creator",
+        ]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+        if req_user.is_creator:
+            try:
+                creator_profile = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+
+            if creator_profile == instance.creator:
+                if validated_data.get("thumbnail"):
+                    if validated_data.get("title"):
+                        title = validated_data.get("title")
+                        extension = validated_data.get("thumbnail").name.split(".")[-1]
+                        generated_file_name = f"{title}.{extension}"
+                        validated_data.get("thumbnail").name = generated_file_name
+                return super().update(instance, validated_data)
+
+            raise serializers.ValidationError(
+                "You do not have the permission to perform this action."
+            )
+        raise serializers.ValidationError(
+            "You do not have the permission to perform this action."
+        )

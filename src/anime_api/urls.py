@@ -35,4 +35,15 @@ urlpatterns = [
     path("seasons/", views.SeasonListAPI.as_view()),
     path("season/create/", views.SeasonCreateAPI.as_view()),
     path("season/<int:pk>/", views.SeasonDetailAPIView.as_view()),
+    # New Media
+    # Text
+    path("textcontent/create/", views.TextCreateAPIView.as_view()),
+    path("textcontent/", views.TextCreateAPIView.as_view()),
+    path("textcontent/<int:pk>/", views.TextUpdateDeleteAPIView.as_view()),
+    # Design/Illustration
+    path("designcontent/", views.DesignCreateListAPIView.as_view()),
+    path("designcontent/<int:pk>/", views.DesignDetailAPIView.as_view()),
+    # Video
+    path("videocontent/", views.VideoCreateListAPIView.as_view()),
+    path("videocontent/<int:pk>/", views.VideoDetailAPIView.as_view()),
 ]
