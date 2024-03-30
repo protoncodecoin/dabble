@@ -569,7 +569,7 @@ class TextUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         if text.creator != req_user_prof:
             return Response(
-                {"detail": "You do not have the permission to delete this book"}
+                {"detail": "You do not have the permission to delete this content"}
             )
 
         return self.destroy(request, *args, **kwargs)
@@ -605,7 +605,7 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         if design.creator != req_user_prof:
             return Response(
-                {"detail": "You do not have the permission to delete this book"}
+                {"detail": "You do not have the permission to delete this content"}
             )
 
         return self.destroy(request, *args, **kwargs)
@@ -641,7 +641,7 @@ class VideoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         if video.creator != req_user_prof:
             return Response(
-                {"detail": "You do not have the permission to delete this book"}
+                {"detail": "You do not have the permission to delete this content"}
             )
 
         return self.destroy(request, *args, **kwargs)

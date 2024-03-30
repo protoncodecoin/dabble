@@ -105,7 +105,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "user_email",
             "profile_img",
         ]
-        
 
 
 class UserProfileDetailSerializer(serializers.ModelSerializer):
@@ -123,6 +122,4 @@ class UserProfileDetailSerializer(serializers.ModelSerializer):
             "profile_img",
             "names_of_follows",
         ]
-        extra_kwargs = {
-            "follows": {"required": False}
-        }
+        extra_kwargs = {"follows": {"required": False}}

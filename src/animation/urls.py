@@ -61,6 +61,7 @@ urlpatterns = [
     path("content/", include("anime_api.urls", namespace="animes")),
     path("comments/", include("comment_system.urls", namespace="comments")),
     path("users/", include("users_api.urls", namespace="users")),
+    path("library/", include("library.urls", namespace="library")),
 ]
 
 if settings.DEBUG:
