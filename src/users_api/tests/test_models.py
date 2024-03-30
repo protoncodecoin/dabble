@@ -11,10 +11,10 @@ from users_api import models
 class ModelTest(TestCase):
     """Test for user model."""
 
-    def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            email="user@example.com", password="password123"
-        )
+    # def setUp(self):
+    #     self.user = get_user_model().objects.create_user(
+    #         email="commonuser@example.com", password="password123"
+    #     )
 
     def test_common_user_creation(self):
         """Test commom user creation is successful without creator status."""
@@ -62,10 +62,13 @@ class ModelTest(TestCase):
 
     def test_creator_profile(self):
         """test creation of user profile."""
+        user = get_user_model().objects.create(
+            email="creator@example.com", password="testpassword123"
+        )
         creator_profile = models.CreatorProfile.objects.create(
-            creator=self.user,
+            creator=user,
             company_name="star apple",
-            company_website="https://star-apple.com/animations",
+            company_website="https://starapple.com/animations",
         )
 
-        self.assertEqual(creator_profile.creator, self.user)
+        self.assertEqual(creator_profile.creator, user)
