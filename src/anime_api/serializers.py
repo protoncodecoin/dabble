@@ -820,13 +820,19 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         req_user = request.user
 
         if req_user.is_creator:
-            if validated_data.get("thumbnail"):
-                title = validated_data.get("title")
-                extension = validated_data.get("thumbnail").name.split(".")[-1]
-                generated_name = f"{title}.{extension}"
+            try:
+                creator_prof = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if validated_data.get("creator") == creator_prof:
+                if validated_data.get("thumbnail"):
+                    title = validated_data.get("title")
+                    extension = validated_data.get("thumbnail").name.split(".")[-1]
+                    generated_name = f"{title}.{extension}"
 
-                validated_data.get("thumbnail").name = generated_name
-                return super().create(validated_data)
+                    validated_data.get("thumbnail").name = generated_name
+                    return super().create(validated_data)
+            raise serializers.ValidationError("Invalid ID Provided")
         raise serializers.ValidationError("You do not have the permission")
 
 
@@ -886,12 +892,18 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
         req_user = request.user
 
         if req_user.is_creator:
+            try:
+                creator_prof = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if validated_data.get("creator") == creator_prof:
 
-            title = validated_data.get("title")
-            extension = validated_data.get("illustration").name.split(".")[-1]
-            generated_name = f"{title}.{extension}"
-            validated_data.get("illustration").name = generated_name
-            return super().create(validated_data)
+                title = validated_data.get("title")
+                extension = validated_data.get("illustration").name.split(".")[-1]
+                generated_name = f"{title}.{extension}"
+                validated_data.get("illustration").name = generated_name
+                return super().create(validated_data)
+            raise serializers.ValidationError("Invalid ID Provided")
         raise serializers.ValidationError("You don't have the permission")
 
 
@@ -955,23 +967,27 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         req_user = request.user
 
         if req_user.is_creator:
-            # try:
-            #     creator_prof = CreatorProfile.get(creator=req_user)
-            # except CreatorProfile.DoesNotExist:
-            #     raise serializers.ValidationError("User does not exist")
-            if validated_data.get("thumbnail"):
-                title = validated_data.get("title")
-                thumbnail_extension = validated_data.get("thumbnail").name.split(".")[
-                    -1
-                ]
-                generated_name = f"{title}.{thumbnail_extension}"
-                validated_data.get("thumbnail").name = generated_name
-            if validated_data.get("video_file"):
-                title = validated_data.get("title")
-                video_extension = validated_data.get("video_file").name.split(".")[-1]
-                generated_name = f"singles_{title}.{video_extension}"
-                validated_data.get("video_file").name = generated_name
-            return super().create(validated_data)
+            try:
+                creator_prof = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if validated_data.get("creator") == creator_prof:
+                if validated_data.get("thumbnail"):
+                    title = validated_data.get("title")
+                    thumbnail_extension = validated_data.get("thumbnail").name.split(
+                        "."
+                    )[-1]
+                    generated_name = f"{title}.{thumbnail_extension}"
+                    validated_data.get("thumbnail").name = generated_name
+                if validated_data.get("video_file"):
+                    title = validated_data.get("title")
+                    video_extension = validated_data.get("video_file").name.split(".")[
+                        -1
+                    ]
+                    generated_name = f"singles_{title}.{video_extension}"
+                    validated_data.get("video_file").name = generated_name
+                return super().create(validated_data)
+            raise serializers.ValidationError("Invalid ID Provided")
         raise serializers.ValidationError(
             "You do not have the permission to perform this action"
         )

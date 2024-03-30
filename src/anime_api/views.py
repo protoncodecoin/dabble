@@ -563,6 +563,17 @@ class TextUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Text.objects.all()
     serializer_class = TextDetailSerializer
 
+    def delete(self, request, *args, **kwargs):
+        text = self.get_object()
+        req_user_prof = CreatorProfile.objects.get(creator=request.user)
+
+        if text.creator != req_user_prof:
+            return Response(
+                {"detail": "You do not have the permission to delete this book"}
+            )
+
+        return self.destroy(request, *args, **kwargs)
+
 
 class DesignCreateListAPIView(generics.ListCreateAPIView):
     """
@@ -588,6 +599,17 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Design.objects.all()
     serializer_class = DesignDetailSerializer
 
+    def delete(self, request, *args, **kwargs):
+        design = self.get_object()
+        req_user_prof = CreatorProfile.objects.get(creator=request.user)
+
+        if design.creator != req_user_prof:
+            return Response(
+                {"detail": "You do not have the permission to delete this book"}
+            )
+
+        return self.destroy(request, *args, **kwargs)
+
 
 class VideoCreateListAPIView(generics.ListCreateAPIView):
     """
@@ -612,3 +634,14 @@ class VideoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Video.objects.all()
     serializer_class = VideoDetailSerializer
+
+    def delete(self, request, *args, **kwargs):
+        video = self.get_object()
+        req_user_prof = CreatorProfile.objects.get(creator=request.user)
+
+        if video.creator != req_user_prof:
+            return Response(
+                {"detail": "You do not have the permission to delete this book"}
+            )
+
+        return self.destroy(request, *args, **kwargs)

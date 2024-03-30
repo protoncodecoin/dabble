@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "anime_api.apps.AnimeApiConfig",
     "users_api.apps.UsersApiConfig",
     "comment_system.apps.CommentSystemConfig",
+    "library.apps.LibraryConfig",
     #
     # third party apps
     "taggit",
