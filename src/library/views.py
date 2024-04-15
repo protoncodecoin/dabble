@@ -42,7 +42,7 @@ class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookDetailSerializer
-    permission_classes = [permissions.IsAdmin]
+    # permission_classes = [permissions.IsAdmin]
 
 
 # class BookAPIView(views.APIView):

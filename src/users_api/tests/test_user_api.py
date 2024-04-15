@@ -3,12 +3,10 @@ Test user api endpoints.
 """
 
 from django.test import TestCase
-from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 
 from rest_framework.test import APIClient
-from rest_framework import status
 
 from users_api.models import CreatorProfile
 
@@ -46,8 +44,8 @@ class PublicUserApiTests(TestCase):
             biography=biography,
         )
 
-        self.assertEqual(user.email, payload["email"])
-        self.assertEqual(user.email, creator_profile.creator.email)
+        self.assertEqual(user.email, payload["email"])  # type: ignore
+        self.assertEqual(user.email, creator_profile.creator.email)  # type: ignore
         self.assertEqual(creator_profile.company_name, company_name)
         self.assertEqual(creator_profile.company_website, company_website)
         self.assertEqual(creator_profile.biography, biography)

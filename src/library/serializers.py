@@ -14,10 +14,10 @@ class BookSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "cover",
-            "added_by",
+            # "added_by",
             "book_description",
-            "book",
             "book_category",
+            "book",
         ]
 
     def create(self, validated_data):
@@ -56,9 +56,9 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "title",
             "cover",
             "book_description",
-            "book",
             "book_category",
             "added_on",
             "updated_on",
+            "book",
         ]
         read_only_fields = ["added_on", "updated_on"]
