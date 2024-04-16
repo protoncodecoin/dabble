@@ -18,6 +18,7 @@ class BookSerializer(serializers.ModelSerializer):
             "book_description",
             "book_category",
             "book",
+            "added_by",
         ]
 
     def create(self, validated_data):
@@ -36,7 +37,7 @@ class BookSerializer(serializers.ModelSerializer):
                     print("user is found", validated_data.get("added_by"))
                     return super().create(validated_data)
                 raise serializers.ValidationError("User is not an admin")
-            raise serializers.ValidationError("User Detail not provided")
+            raise serializers.ValidationError("User ID not provided")
         raise serializers.ValidationError("User is not a creator or admin")
 
 
@@ -62,3 +63,11 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "book",
         ]
         read_only_fields = ["added_on", "updated_on"]
+
+        # def update(self, instance, validated_data):
+        #     request = self.context.get("request")
+
+        #     if request.user.is_creator and request.user.is_superuser:
+        #         print("True")
+
+        #         return super().update(instance, validated_data)
