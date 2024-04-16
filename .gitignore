@@ -6,6 +6,9 @@ __pycache__
 db.sqlite3
 media
 
+# random credential files
+jsontoken.json
+
 # Backup files # 
 *.bak 
 
