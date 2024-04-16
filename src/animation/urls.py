@@ -20,21 +20,23 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from dj_rest_auth.registration.views import (
-    VerifyEmailView,
-    ConfirmEmailView,
-)
+from dj_rest_auth.registration.views import VerifyEmailView
 from dj_rest_auth.views import PasswordResetConfirmView
 
 from rest_framework_simplejwt import views as jwt_views
 
 from users_api.views import MyTokenObtainPairView
 
-from users_api.views import email_confirm_redirect, password_reset_confirm_redirect
+from users_api.views import (
+    email_confirm_redirect,
+    password_reset_confirm_redirect,
+    GoogleAuthRedirect,
+    GoogleRedirectURIView,
+)
 
 
 from dj_rest_auth.registration.views import RegisterView, ResendEmailVerificationView
-from dj_rest_auth.views import LoginView, LogoutView, UserDetailsView, PasswordResetView
+from dj_rest_auth.views import LogoutView, UserDetailsView, PasswordResetView
 
 
 urlpatterns = [
@@ -77,35 +79,12 @@ urlpatterns = [
     # path("login/", LoginView.as_view(), name="rest_login"),
     path("logout/", LogoutView.as_view(), name="rest_logout"),
     path("user/", UserDetailsView.as_view(), name="rest_user_details"),
-    # path(
-    #     "account-confirm-email/<str:key>/",
-    #     email_confirm_redirect,
-    #     name="account_confirm_email",
-    # ),
-    # path(
-    #     "password/reset/confirm/<str:uidb64>/<str:token>/",
-    #     password_reset_confirm_redirect,
-    #     name="password_reset_confirm",
-    # ),
-    # path(
-    #     "api/v1/dj-rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/",
-    #     PasswordResetConfirmView.as_view(),
-    #     name="password_reset_confirm",
-    # ),
-    # path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),
-    # path(
-    #     "api/v1/dj-rest-auth/registration/account-confirm-email/<str:key>/",
-    #     ConfirmEmailView.as_view(),
-    # ),
-    # path(
-    #     "api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")
-    # ),
-    # path(
-    #     "api/v1/dj-rest-auth/account-confirm-email/",
-    #     VerifyEmailView.as_view(),
-    #     name="account_email_verification_sent",
-    # ),
     path("api/v1/api-auth/", include("rest_framework.urls")),
+    # Google social Oauth2
+    path("auth/", include("drf_social_oauth2.urls", namespace="drf")),
+    path("google-signup/", GoogleAuthRedirect.as_view()),
+    path("callback/google", GoogleRedirectURIView.as_view(), name="google_redirect"),
+    # API URLS
     path("content/", include("anime_api.urls", namespace="animes")),
     path("comments/", include("comment_system.urls", namespace="comments")),
     path("users/", include("users_api.urls", namespace="users")),

@@ -26,9 +26,7 @@ class CommentAPIView(generics.ListCreateAPIView):
             return Response(
                 {"error": "Invalid content type"}, status=status.HTTP_400_BAD_REQUEST
             )
-        comment = serializer.save(
-            target_ct=content_type, target_id=target_obj, user=request_user
-        )
+        serializer.save(target_ct=content_type, target_id=target_obj, user=request_user)
 
         return Response(
             {"message": "Comment Created Successfully"}, status=status.HTTP_201_CREATED
