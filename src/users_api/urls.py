@@ -1,10 +1,22 @@
 from django.urls import path
 
+from users_api.views import email_confirm_redirect, password_reset_confirm_redirect
+
 from . import views
 
 app_name = "users"
 
 urlpatterns = [
+    # path(
+    #     "account-confirm-email/<str:key>/",
+    #     email_confirm_redirect,
+    #     name="account_confirm_email",
+    # ),
+    # path(
+    #     "password/reset/confirm/<str:uidb64>/<str:token>/",
+    #     password_reset_confirm_redirect,
+    #     name="password_reset_confirm",
+    # ),
     path("favorites/all/", views.FavoritedAPIView.as_view()),
     # path("profile-search", views.search_creators, name="search_creators"),
     path("creators-profile/all/", views.CreatorListAPIView.as_view()),

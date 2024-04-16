@@ -268,6 +268,14 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
+EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:3000/email/confirm/"
+
+# <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
+PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
+    "http://localhost:3000/password-reset/confirm/"
+)
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",

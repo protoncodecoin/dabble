@@ -45,6 +45,9 @@ from anime_api import permissions
 from anime_api import models
 
 
+from django.conf import settings
+from django.http import HttpResponseRedirect
+
 User = get_user_model()
 
 
@@ -306,3 +309,13 @@ def follow_and_unfollow(request, creator_id):
             {"status": "ok", "message": "Unfollow was successful"},
             status=status.HTTP_204_NO_CONTENT,
         )
+
+
+def email_confirm_redirect(request, key):
+    return HttpResponseRedirect(f"{settings.EMAIL_CONFIRM_REDIRECT_BASE_URL}{key}/")
+
+
+def password_reset_confirm_redirect(request, uidb64, token):
+    return HttpResponseRedirect(
+        f"{settings.PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL}{uidb64}/{token}/"
+    )
