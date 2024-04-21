@@ -41,43 +41,50 @@ from dj_rest_auth.views import LogoutView, UserDetailsView, PasswordResetView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("register/", RegisterView.as_view(), name="rest_register"),
-    path("register/verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
+    path("api/v1/auth/register/", RegisterView.as_view(), name="rest_register"),
     path(
-        "register/resend-email/",
+        "api/v1/auth/register/verify-email/",
+        VerifyEmailView.as_view(),
+        name="rest_verify_email",
+    ),
+    path(
+        "api/v1/auth/register/resend-email/",
         ResendEmailVerificationView.as_view(),
         name="rest_resend_email",
     ),
     path(
-        "account-confirm-email/<str:key>/",
+        "api/v1/auth/account-confirm-email/<str:key>/",
         email_confirm_redirect,
         name="account_confirm_email",
     ),
     path(
-        "account-confirm-email/",
+        "api/v1/auth/account-confirm-email/",
         VerifyEmailView.as_view(),
         name="account_email_verification_sent",
     ),
-    path("password/reset/", PasswordResetView.as_view(), name="rest_password_reset"),
     path(
-        "password/reset/confirm/<str:uidb64>/<str:token>/",
+        "api/v1/auth/password/reset/",
+        PasswordResetView.as_view(),
+        name="rest_password_reset",
+    ),
+    path(
+        "api/v1/auth/password/reset/confirm/<str:uidb64>/<str:token>/",
         password_reset_confirm_redirect,
         name="password_reset_confirm",
     ),
     path(
-        "password/reset/confirm/",
+        "api/v1/auth/password/reset/confirm/",
         PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
     path(
-        "login/", MyTokenObtainPairView.as_view(), name="rest_login"
+        "api/v1/auth/login/", MyTokenObtainPairView.as_view(), name="rest_login"
     ),  # overrides the login url provided by dj-rest-auth
     path(
-        "token/refresh/",
+        "api/v1/auth/token/refresh/",
         jwt_views.TokenRefreshView.as_view(),
     ),
-    # path("login/", LoginView.as_view(), name="rest_login"),
-    path("logout/", LogoutView.as_view(), name="rest_logout"),
+    path("api/v1/auth/logout/", LogoutView.as_view(), name="rest_logout"),
     path("user/", UserDetailsView.as_view(), name="rest_user_details"),
     path("api/v1/api-auth/", include("rest_framework.urls")),
     # Google social Oauth2

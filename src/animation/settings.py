@@ -245,7 +245,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-LOGIN_URL = "http://localhost:8000/api/v1/dj-rest-auth/login"
+# LOGIN_URL = "http://localhost:8000/api/v1/dj-rest-auth/login"
 USE_JWT = True
 SITE_ID = 1
 
