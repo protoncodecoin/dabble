@@ -834,6 +834,9 @@ class SeasonCreateSerializer(serializers.ModelSerializer):
 
 class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Text
@@ -845,6 +848,7 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "creator",
             "tags",
+            "likes",
         ]
 
     def create(self, validated_data):
@@ -854,13 +858,7 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         if req_user.is_creator:
             try:
                 creator_prof = CreatorProfile.objects.get(creator=req_user)
-                print(creator_prof, validated_data.get("creator"), "=================")
-                print(
-                    type(creator_prof),
-                    type(validated_data.get("creator")),
-                    "--------------",
-                )
-                print(creator_prof == validated_data.get("creator"))
+
             except CreatorProfile.DoesNotExist:
                 raise serializers.ValidationError("User does not exist")
             if validated_data.get("creator") == creator_prof:
@@ -878,6 +876,9 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Text
@@ -888,6 +889,7 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "thumbnail",
             "tags",
+            "likes",
         ]
 
     def update(self, instance, validated_data):
@@ -915,6 +917,9 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Design
@@ -925,6 +930,7 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "illustration",
             "tags",
+            "likes",
         ]
 
     def create(self, validated_data):
@@ -949,6 +955,9 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Design
@@ -960,6 +969,7 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "illustration",
             "tags",
+            "likes",
         ]
 
     def update(self, instance, validated_data):
@@ -989,6 +999,9 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Video
@@ -1000,6 +1013,7 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "video_file",
             "tags",
+            "likes",
         ]
 
     def create(self, validated_data):
@@ -1035,6 +1049,9 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Video
@@ -1046,6 +1063,7 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "tags",
             "creator",
+            "likes",
         ]
 
     def update(self, instance, validated_data):

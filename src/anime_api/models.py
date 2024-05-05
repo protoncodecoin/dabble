@@ -137,49 +137,6 @@ class Anime(Base):
         verbose_name_plural = "Animations"
 
 
-# class Media(models.Model):
-#     """Model for single Movies/Animations"""
-
-#     creator = models.ForeignKey(
-#         CreatorProfile,
-#         on_delete=models.CASCADE,
-#         related_name="%(class)s_related",
-#     )
-#     title = models.CharField(
-#         max_length=150,
-#     )
-#     synopsis = models.TextField(max_length=300, blank=True)
-#     release_date = models.DateTimeField(
-#         auto_now_add=True,
-#     )
-#     thumbnail = models.ImageField(
-#         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
-#     )
-#     content_type = models.ForeignKey(
-#         ContentType,
-#         on_delete=models.CASCADE,
-#         limit_choices_to={
-#             "model__in": (
-#                 "text",
-#                 "video",
-#                 "design",
-#             )
-#         },
-#     )
-#     object_id = models.PositiveIntegerField()
-#     item = GenericForeignKey("content_type", "object_id")
-
-# class Meta:
-#     """Meta class for Single Model."""
-
-#     verbose_name = "Media"
-#     verbose_name_plural = "Media"
-#     abstract = True
-
-# def __str__(self):
-#     return self.title
-
-
 class Text(models.Model):
     """Model for single story content"""
 
@@ -199,6 +156,7 @@ class Text(models.Model):
         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
     )
     content = models.TextField()
+    likes = models.ManyToManyField(CreatorProfile, related_name="liked_text")
     tags = TaggableManager(blank=True)
 
     class Meta:
@@ -227,6 +185,7 @@ class Video(models.Model):
     thumbnail = models.ImageField(
         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
     )
+    likes = models.ManyToManyField(CreatorProfile, related_name="liked_videos")
     video_file = models.FileField(
         upload_to="singles/video/%Y/%m/",
     )
@@ -255,9 +214,7 @@ class Design(models.Model):
     release_date = models.DateTimeField(
         auto_now_add=True,
     )
-    # thumbnail = models.ImageField(
-    #     upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
-    # )
+    likes = models.ManyToManyField(CreatorProfile, related_name="liked_illustration")
     illustration = models.ImageField(
         upload_to="singles/designs/%Y/%m/",
     )

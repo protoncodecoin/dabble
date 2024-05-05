@@ -1,6 +1,5 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -237,6 +236,63 @@ def toggle_like(request, content_id, content_type):
                 return Response(
                     {"message": "UnLike was successful"},
                     status=status.HTTP_204_NO_CONTENT,
+                )
+
+        elif content_type == "text":
+            try:
+                text_instance = Text.objects.get(pk=content_id)
+                creator = CreatorProfile.objects.get(creator=user)
+            except Text.DoesNotExist:
+                return Response(
+                    {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if not text_instance.likes.filter(creator=user).exists():
+                text_instance.likes.add(creator)
+                return Response(
+                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                )
+            else:
+                text_instance.likes.remove(creator)
+                return Response(
+                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
+                )
+
+        elif content_type == "video":
+            try:
+                video_instance = Video.objects.get(pk=content_id)
+                creator = CreatorProfile.objects.get(creator=user)
+            except Video.DoesNotExist:
+                return Response(
+                    {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if not video_instance.likes.filter(creator=user).exists():
+                video_instance.likes.add(creator)
+                return Response(
+                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                )
+            else:
+                video_instance.likes.remove(creator)
+                return Response(
+                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
+                )
+
+        elif content_type == "design":
+            try:
+                design_instance = Design.objects.get(pk=content_id)
+                creator = CreatorProfile.objects.get(creator=user)
+            except Design.DoesNotExist:
+                return Response(
+                    {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if not design_instance.likes.filter(creator=user).exists():
+                design_instance.likes.add(creator)
+                return Response(
+                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                )
+            else:
+                design_instance.likes.remove(creator)
+                return Response(
+                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
                 )
     return Response(
         {"detail": "content_id missing"}, status=status.HTTP_400_BAD_REQUEST
@@ -696,7 +752,9 @@ class TextCreateAPIView(generics.ListCreateAPIView):
 
     def list(self, request):
         queryset = self.get_queryset()
-        serailizer = TextCreateSerializer(queryset, many=True)
+        serailizer = TextCreateSerializer(
+            queryset, many=True, context={"request": request}
+        )
         return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
@@ -732,7 +790,7 @@ class DesignCreateListAPIView(generics.ListCreateAPIView):
 
     def list(self, request):
         queryset = self.get_queryset()
-        serailizer = DesignSerializer(queryset, many=True)
+        serailizer = DesignSerializer(queryset, many=True, context={"request": request})
         return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
@@ -768,7 +826,9 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
 
     def list(self, request):
         queryset = self.get_queryset()
-        serailizer = VideoCreateSerializer(queryset, many=True)
+        serailizer = VideoCreateSerializer(
+            queryset, many=True, context={"request": request}
+        )
         return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
