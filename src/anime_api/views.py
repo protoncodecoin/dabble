@@ -178,7 +178,12 @@ def toggle_like(request, content_id, content_type):
     User actions: like && unlike
     User can like and unlike a Post
     """
-    user = request.user
+    try:
+        user = CreatorProfile.objects.get(creator=request.user)
+    except CreatorProfile.DoesNotExist:
+        return Response(
+            {"message": "User detail not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     if content_id:
         if content_type == "series":
             try:
@@ -241,18 +246,18 @@ def toggle_like(request, content_id, content_type):
         elif content_type == "text":
             try:
                 text_instance = Text.objects.get(pk=content_id)
-                creator = CreatorProfile.objects.get(creator=user)
+
             except Text.DoesNotExist:
                 return Response(
                     {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
                 )
-            if not text_instance.likes.filter(creator=user).exists():
-                text_instance.likes.add(creator)
+            if not text_instance.likes.filter(pk=user.id).exists():
+                text_instance.likes.add(user)
                 return Response(
                     {"message": "like was successful", "status": status.HTTP_200_OK}
                 )
             else:
-                text_instance.likes.remove(creator)
+                text_instance.likes.remove(user)
                 return Response(
                     {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
                 )
@@ -260,18 +265,18 @@ def toggle_like(request, content_id, content_type):
         elif content_type == "video":
             try:
                 video_instance = Video.objects.get(pk=content_id)
-                creator = CreatorProfile.objects.get(creator=user)
+
             except Video.DoesNotExist:
                 return Response(
                     {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
                 )
-            if not video_instance.likes.filter(creator=user).exists():
-                video_instance.likes.add(creator)
+            if not video_instance.likes.filter(pk=user.id).exists():
+                video_instance.likes.add(user)
                 return Response(
                     {"message": "like was successful", "status": status.HTTP_200_OK}
                 )
             else:
-                video_instance.likes.remove(creator)
+                video_instance.likes.remove(user)
                 return Response(
                     {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
                 )
@@ -279,18 +284,17 @@ def toggle_like(request, content_id, content_type):
         elif content_type == "design":
             try:
                 design_instance = Design.objects.get(pk=content_id)
-                creator = CreatorProfile.objects.get(creator=user)
             except Design.DoesNotExist:
                 return Response(
                     {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
                 )
-            if not design_instance.likes.filter(creator=user).exists():
-                design_instance.likes.add(creator)
+            if not design_instance.likes.filter(pk=user.id).exists():
+                design_instance.likes.add(user)
                 return Response(
                     {"message": "like was successful", "status": status.HTTP_200_OK}
                 )
             else:
-                design_instance.likes.remove(creator)
+                design_instance.likes.remove(user)
                 return Response(
                     {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
                 )

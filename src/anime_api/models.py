@@ -83,7 +83,7 @@ class Base(models.Model):
     episode_release_date = models.DateField(auto_now_add=True)
     publish = models.BooleanField(default=True)
     likes = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="%(class)s_like", blank=True
+        CreatorProfile, related_name="%(class)s_like", blank=True
     )
     tags = TaggableManager(blank=True)
 
