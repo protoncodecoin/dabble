@@ -111,10 +111,10 @@ class UserProfileAdmin(admin.ModelAdmin):
 class FollowAdmin(admin.ModelAdmin):
     list_display = [
         "user_from",
-        "creator_to",
+        "user_to",
         "created",
     ]
     list_display_links = [
         "user_from",
-        "creator_to",
+        "user_to",
     ]

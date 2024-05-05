@@ -7,7 +7,7 @@ from django.core.validators import (
 
 from taggit.managers import TaggableManager
 
-from users_api.models import CreatorProfile, UserProfile
+from users_api.models import CreatorProfile
 
 
 # Create your models here.
@@ -33,7 +33,7 @@ class Series(models.Model):
     )
     tags = TaggableManager()
     favorited_by = models.ManyToManyField(
-        UserProfile, blank=True, related_name="favorite_series"
+        CreatorProfile, blank=True, related_name="favorite_series"
     )
 
     def __str__(self):
@@ -47,8 +47,13 @@ class Series(models.Model):
 
 
 class Season(models.Model):
+    OBJ_TYPE = (
+        ("Anime", "Animation"),
+        ("Story", "Story"),
+    )
     series = models.ForeignKey(Series, on_delete=models.CASCADE, related_name="season")
     season_number = models.IntegerField()
+    obj_type = models.CharField(max_length=10, choices=OBJ_TYPE, default="Anime")
     release_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -67,7 +72,9 @@ class Base(models.Model):
         on_delete=models.CASCADE,
         related_name="%(class)s_related",
     )
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    season = models.ForeignKey(
+        Season, on_delete=models.CASCADE, related_name="%(class)s_season"
+    )
     episode_number = models.IntegerField(
         null=False, validators=[MinValueValidator(1), MaxValueValidator(20)]
     )
@@ -92,7 +99,7 @@ class Base(models.Model):
         return f"{self.series.series_name}, Episode: {self.episode_number}"
 
 
-class Story(Base):
+class WrittenStory(Base):
     """Database Model for Story"""
 
     thumbnail = models.ImageField(
@@ -100,14 +107,14 @@ class Story(Base):
     )
     content = models.TextField(blank=False)
     favorited_by = models.ManyToManyField(
-        UserProfile, blank=True, related_name="favorite_stories"
+        CreatorProfile, blank=True, related_name="favorite_stories"
     )
 
     class Meta:
         """Meta class for Story Model"""
 
-        verbose_name = "Story"
-        verbose_name_plural = "Stories"
+        verbose_name = "Written Story"
+        verbose_name_plural = "Written Stories"
 
 
 class Anime(Base):
@@ -120,7 +127,7 @@ class Anime(Base):
     )
     video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
     favorited_by = models.ManyToManyField(
-        UserProfile, blank=True, related_name="favorite_animes"
+        CreatorProfile, blank=True, related_name="favorite_animes"
     )
 
     class Meta:

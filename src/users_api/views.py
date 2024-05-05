@@ -1,58 +1,36 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
-
-# from django.db.models import Q
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.views.generic import RedirectView
 from django.views.generic.base import View
 
-# from django.contrib.postgres.search import (
-#     SearchVector,
-#     SearchQuery,
-#     SearchRank,
-# )
 
-
-from rest_framework import generics
 from rest_framework.views import APIView
 
-from anime_api.serializers import (
-    AnimeFavoriteSerializer,
-    SeriesFavoriteSerializer,
-    StoryFavoriteSerializer,
-)
 
-from .models import UserProfile, CreatorProfile, Follow, CustomUser
+from .models import (
+    CreatorProfile,
+    Follow,
+    CustomUser,
+)
 from .serializers import (
-    CreatorFollowersSerializer,
-    UserProfileSerializer,
-    UsersSerializer,
-    CreatorProfileSerializer,
     MyTokenObtainPairSerializer,
+    RCreatorSerializerDetail,
 )
 
 from rest_framework.decorators import api_view
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework import viewsets, mixins
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
 
-# from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-# from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-# from dj_rest_auth.registration.views import SocialLoginView
-
-
-from anime_api import permissions as custom_permissions
-from anime_api import models
-
-# from users_api.models import CreatorProfile
-
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from .serializers import RCreatorSerializer, RCustomUserSerializer, RFollowSerializer
 
 import requests
 
@@ -88,7 +66,6 @@ class GoogleRedirectURIView(APIView):
     def get(self, request):
         # Extract the authorization code from the request URL
         code = request.GET.get("code")
-      
 
         if code:
             # Prepare the requet paramter to exchange the authorization code for an access token
@@ -157,206 +134,16 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-class CreatorListAPIView(generics.ListAPIView):
-    """view for listing all creators"""
-
-    queryset = CreatorProfile.objects.all()
-    serializer_class = CreatorProfileSerializer
-
-
-class CreatorDetailAPIView(generics.RetrieveUpdateAPIView):
-    """View for showing details of creator."""
-
-    queryset = CreatorProfile.objects.all()
-    serializer_class = CreatorProfileSerializer
-
-    def get(self, request, pk, format=None):
-        try:
-            creator_profile = CreatorProfile.objects.get(id=pk)
-        except CreatorProfile.DoesNotExist:
-            return Response(
-                {"message": "Creator Profile does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        creator_serializer = CreatorProfileSerializer(
-            creator_profile, context={"request": request}
-        )
-
-        return Response({"result": creator_serializer.data}, status=status.HTTP_200_OK)
-
-    def patch(self, request, pk, *args, **kwargs):
-
-        if "creator_logo" in request.FILES:
-            try:
-
-                creator = CreatorProfile.objects.get(id=pk)
-
-            except CreatorProfile.DoesNotExist:
-                return Response(
-                    {"message": "Creator Profile does not exist"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-            except UserProfile.DoesNotExist:
-                return Response(
-                    {"message": "User Profile does not exist"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-            if request.user == creator.creator.email:
-                file = request.FILES["creator_logo"]
-                extension = file.name.split(".")[-1]
-
-                file.name = f"{creator.company_name}.{extension}"
-                request.FILES["creator_logo"] = file
-
-                return super().patch(request, *args, *kwargs)
-            return Response(
-                {"message": "REQUEST NOT PERMITTED"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-
-
-class CreatorFollowersAPIView(APIView):
-    """
-    list of creator followers
-    """
-
-    def get(self, request, creator_pk, format=None):
-        """
-        return followers based on creator
-        """
-        try:
-            creator_profile = CreatorProfile.objects.get(creator=creator_pk)
-        except CreatorProfile.DoesNotExist:
-            return Response(
-                {"message": "Creator Profile does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        followers = creator_profile.followers.all()
-        no_of_followers = followers.count()
-
-        follower_serializer = CreatorFollowersSerializer(
-            followers, many=True, context={"request": request}
-        )
-        return Response(
-            {"result": follower_serializer.data, "total_followers": no_of_followers},
-            status=status.HTTP_200_OK,
-        )
-
-
-class UsersProfileListAPIView(generics.ListAPIView):
-    """view for listing all users Profile"""
-
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-
-class UserProfileDetailAPIView(generics.RetrieveUpdateAPIView):
-    """Views for showing details of common user."""
-
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-
-    def get(self, request, pk, format=None):
-
-        try:
-            user_profile = UserProfile.objects.get(id=pk)
-        except UserProfile.DoesNotExist:
-            return Response(
-                {"message": "User Profile does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        user_serializer = UserProfileSerializer(
-            user_profile, context={"request": request}
-        )
-        return Response({"message": user_serializer.data}, status=status.HTTP_200_OK)
-
-    def patch(self, request, *args, **kwargs):
-        """
-        Handle partial update
-        """
-        user = request.user
-        user_profile = UserProfile.objects.get(user=user)
-
-        if request.user.email == user_profile.user.email:
-            if user_profile:
-                if "profile_img" in request.FILES:
-                    file = request.FILES["profile_img"]
-                    extension = file.name.split(".")[-1]
-
-                    file.name = f"{user_profile.user.email}.{extension}"
-
-                    request.FILES["profile_img"] = file
-                    return super().patch(request, *args, *kwargs)
-
-            return Response(
-                {"message": "User Profile not found"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        return Response(
-            {"message": "NOT PERMITTED TO MAKE REQUEST"},
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
-
-
-class AllUsersListAPIView(generics.ListAPIView):
-    """Listing all users"""
-
-    permission_classes = [custom_permissions.EndPointRestrict]
-    queryset = CustomUser.objects.all()
-    serializer_class = UsersSerializer
-
-
-class FavoritedAPIView(APIView):
-    """
-    View to list all user favorites in the system.
-
-    """
-
-    def get(self, request, format=None):
-        """
-        Return a list of all user favorites.
-        """
-        user = request.user
-        try:
-            user_profile = UserProfile.objects.get(user=user)
-        except UserProfile.DoesNotExist:
-            return Response(
-                {"message": "User Profile does not exist"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        anime = models.Anime.objects.filter(favorited_by=user_profile)
-        stories = models.Story.objects.filter(favorited_by=user_profile)
-        series = models.Series.objects.filter(favorited_by=user_profile)
-
-        anime_serializer = AnimeFavoriteSerializer(
-            anime, many=True, context={"request": request}
-        )
-        stories_serializer = StoryFavoriteSerializer(
-            stories, many=True, context={"request": request}
-        )
-        series_serializer = SeriesFavoriteSerializer(
-            series,
-            many=True,
-            context={"request": request},
-        )
-        return Response(
-            {
-                "message": [
-                    {"anime": anime_serializer.data},
-                    {"stories": stories_serializer.data},
-                    {"series": series_serializer.data},
-                ]
-            },
-            status=status.HTTP_200_OK,
-        )
-
-
-@api_view(["GET", "POST", "PUT"])
+@api_view(["POST", "PUT"])
 # @permission_classes([custom_permissions.IsCommonUser])
 def follow_and_unfollow(request, creator_id):
+    """
+    Action to follow and unfollow a user
+    """
     user = request.user
+
     try:
-        user_prof = UserProfile.objects.get(user=user)
+        user_prof = CreatorProfile.objects.get(creator=user)
         creator = CreatorProfile.objects.get(id=creator_id)
     except CreatorProfile.DoesNotExist:
         return Response(
@@ -366,14 +153,9 @@ def follow_and_unfollow(request, creator_id):
             },
             status=status.HTTP_404_NOT_FOUND,
         )
-    except UserProfile.DoesNotExist:
-        return Response(
-            {"status": "error", "detail": "Sign up to perform this action."},
-            status=status.HTTP_401_UNAUTHORIZED,
-        )
 
-    if not user_prof.follows.filter(pk=creator.id).exists():
-        Follow.objects.create(user_from=user_prof, creator_to=creator)
+    if not user_prof.following.filter(pk=creator.id).exists():
+        Follow.objects.create(user_from=user_prof, user_to=creator)
         return Response(
             {"status": "ok", "message": "Successfully Following"},
             status=status.HTTP_201_CREATED,
@@ -381,7 +163,7 @@ def follow_and_unfollow(request, creator_id):
     else:
         try:
             follow_relationship = Follow.objects.filter(
-                user_from=user_prof, creator_to=creator
+                user_from=user_prof, user_to=creator
             ).first()
         except Follow.DoesNotExist:
             return Response(
@@ -390,6 +172,120 @@ def follow_and_unfollow(request, creator_id):
             )
         follow_relationship.delete()
         return Response(
-            {"status": "ok", "message": "Unfollow was successful"},
+            {"status": "ok", "message": "Not following successful"},
             status=status.HTTP_204_NO_CONTENT,
         )
+
+
+class CreatorViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    This Viewset provides list, retrieve and update action for the Creatorprofile.
+    The CreatorProfile is only created when a user signs up and should not be created through the serializer.
+    """
+
+    queryset = CreatorProfile.objects.all()
+    serializer_class = RCreatorSerializer
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        # check if user is authenticated
+        # check if user is owner of object: update, partial_update
+
+        permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+        if self.action == "update":
+            permission_classes = [permissions.IsAuthenticated]
+
+        if self.action == "partial_update":
+            permission_classes = [permissions.IsAuthenticated]
+
+        if self.action == "update":
+            # This is done to prevent normal user from making full update including creator* field having FK to the AUTH_USER_MODEL.
+            # This will be implemented later
+            permission_classes = [permissions.IsAdminUser]
+
+        return [permission() for permission in permission_classes]
+
+    def list(self, request):
+        queryset = CreatorProfile.objects.only(
+            "id",
+            "creator",
+            "company_name",
+            "company_website",
+            "biography",
+            "creator_logo",
+        )
+        serializer = RCreatorSerializer(
+            queryset,
+            many=True,
+            context={"request": request},
+        )
+        return Response(data=serializer.data)
+
+    def retrieve(self, request, pk=None):
+
+        instance = self.get_object()
+        serializer = RCreatorSerializerDetail(
+            instance,
+            context={"request": request},
+        )
+        return Response(data=serializer.data)
+
+    def update(self, request):
+        instance = self.get_object()
+
+        if instance.creator.email != self.request.user.email:
+            return Response(
+                {"message": "Not allowed", "status": status.HTTP_401_UNAUTHORIZED},
+            )
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def partial_update(self, request, pk=None):
+
+        instance = self.get_object()
+        req_user = self.request.user.email
+
+        if instance.creator.email != req_user:
+            return Response(
+                {"message": "Not allowed", "status": status.HTTP_401_UNAUTHORIZED},
+            )
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
+class CustomUserViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    This ViewSet provides list and retrieve action for the CustomUser model. This view can not be used to create CustomUser.
+    """
+
+    queryset = CustomUser.objects.all()
+    serializer_class = RCustomUserSerializer
+
+
+class FollowViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    This ViewSet only returns a list of users
+    """
+
+    queryset = CreatorProfile
+    serializer_class = RFollowSerializer

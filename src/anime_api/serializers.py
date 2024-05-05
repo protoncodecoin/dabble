@@ -10,7 +10,7 @@ from taggit.models import Tag
 
 from .models import (
     Series,
-    Story,
+    WrittenStory,
     Anime,
     Season,
     Text,
@@ -186,13 +186,14 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.ReadOnlyField(source="likes.count")
     season_number = serializers.ReadOnlyField(source="season.season_number")
+    creative_type = serializers.ReadOnlyField(source="season.obj_type")
     season_id = serializers.ReadOnlyField(source="season.id")
     tags = TagListSerializerField()
 
     class Meta:
         """Meta class of Story Serializer"""
 
-        model = Story
+        model = WrittenStory
         fields = [
             "pk",
             "url",
@@ -203,6 +204,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
             "likes",
             "season_id",
             "season_number",
+            "creative_type",
             "tags",
         ]
 
@@ -221,7 +223,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     class Meta:
         """Meta class of Story Serializer"""
 
-        model = Story
+        model = WrittenStory
         fields = [
             "pk",
             "url",
@@ -245,14 +247,14 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
         if user == creator:
             if data["series"] == data["season"].series:
-                qs = Story.objects.filter(
+                qs = WrittenStory.objects.filter(
                     series=data["series"],
                     season=data["season"],
                     episode_title=data["episode_title"],
                     episode_number=data["episode_number"],
                 )
                 if qs.exists():
-                    total_num_episodes = Story.objects.filter(
+                    total_num_episodes = WrittenStory.objects.filter(
                         series=data["series"], season=data["season"]
                     ).count()
                     data["episode_number"] += (
@@ -294,7 +296,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
             thumbnail.name = generated_thumbnail_name
 
-        new_story_obj = Story.objects.create(
+        new_story_obj = WrittenStory.objects.create(
             series=series_id,
             season=season_id,
             episode_number=episode_number,
@@ -319,7 +321,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
 
     class Meta:
-        model = Story
+        model = WrittenStory
         fields = [
             "pk",
             "series",
@@ -391,7 +393,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         return liked_usernames
 
     def get_comments(self, obj):
-        target_content_type = ContentType.objects.get_for_model(Story)
+        target_content_type = ContentType.objects.get_for_model(WrittenStory)
         comments = Comment.objects.filter(
             content_type=target_content_type, object_id=obj.id
         )
@@ -409,7 +411,7 @@ class StoryFavoriteSerializer(serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
 
     class Meta:
-        model = Story
+        model = WrittenStory
         fields = [
             "series_name",
             "episode_title",
@@ -464,7 +466,7 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "description",
             "likes",
             "anime_thumbnail",
-            "video_file",
+            # "video_file",
             "season",
             "season_number",
             "creator",
@@ -662,15 +664,16 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
                     instance.tags.set(tag_instances)
 
+                req_series_name = instance.series.series_name
+                req_season_number = instance.season.season_number
+                req_episode_number = instance.episode_number
+
                 if validated_data.get("video_file"):
                     sent_video_type = validated_data.get("video_file").name.split(".")[
                         -1
                     ]
 
                     if video_file_checker(sent_video_type):
-                        req_series_name = instance.series.series_name
-                        req_season_number = instance.season.season_number
-                        req_episode_number = instance.episode_number
 
                         generated_file_name = media_renamer(
                             req_series_name,
@@ -711,14 +714,12 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
 
-    def get_liked_user_names(
-        self,
-    ):
+    def get_liked_user_names(self, obj):
         liked_users = obj.likes.all()
         liked_usernames = [user.username for user in liked_users]
         return liked_usernames
 
-    def get_comments(self, ob):
+    def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Anime)
         comments = Comment.objects.filter(
             content_type=target_content_type, object_id=obj.id
@@ -739,6 +740,8 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 class SeasonSerializer(serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
 
+    # episodes = serializers.SerializerMethodField()
+
     class Meta:
         model = Season
         fields = [
@@ -747,6 +750,7 @@ class SeasonSerializer(serializers.ModelSerializer):
             "series",
             "season_number",
             "release_date",
+            # "episodes",
         ]
 
     def update(self, instance, validated_data):
@@ -755,13 +759,41 @@ class SeasonSerializer(serializers.ModelSerializer):
         if request.user.is_creator:
             user_obj = CreatorProfile.objects.get(creator=request.user)
             if user_obj == instance.series.creator:
+                # check if the episode of the validated data already exist in the data
+                # Return an error it
+                try:
+                    Season.objects.filter(series=instance.series).get(
+                        season_number=validated_data.get("season_number")
+                    )
+                except Season.DoesNotExist:
+                    raise serializers.ValidationError("Episode Does not exist")
+
                 return super().update(instance=instance, validated_data=validated_data)
+
             raise serializers.ValidationError(
                 "You don't have the permission to modify this resources"
             )
         raise serializers.ValidationError(
             "You don't have the permission to access this file."
         )
+
+    # def get_episodes(self, obj: Season):
+    #     anime_instance = obj.anime_season.all()
+    #     story_instance = obj.story_season.all()
+
+    #     request = self.context.get("request")
+
+    #     anime_serializer = AnimeSerializer(
+    #         anime_instance, context={"request": request}
+    #     ).data
+    #     story_serializer = (
+    #         StorySerializer(story_instance, context={"request": request}).data,
+    #     )
+
+    #     return [
+    #         anime_serializer,
+    #         story_serializer,
+    #     ]
 
 
 class SeasonCreateSerializer(serializers.ModelSerializer):
@@ -822,6 +854,13 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         if req_user.is_creator:
             try:
                 creator_prof = CreatorProfile.objects.get(creator=req_user)
+                print(creator_prof, validated_data.get("creator"), "=================")
+                print(
+                    type(creator_prof),
+                    type(validated_data.get("creator")),
+                    "--------------",
+                )
+                print(creator_prof == validated_data.get("creator"))
             except CreatorProfile.DoesNotExist:
                 raise serializers.ValidationError("User does not exist")
             if validated_data.get("creator") == creator_prof:
@@ -831,7 +870,8 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
                     generated_name = f"{title}.{extension}"
 
                     validated_data.get("thumbnail").name = generated_name
-                    return super().create(validated_data)
+                return super().create(validated_data)
+
             raise serializers.ValidationError("Invalid ID Provided")
         raise serializers.ValidationError("You do not have the permission")
 

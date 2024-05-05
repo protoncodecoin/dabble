@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Series, Story, Anime, Season, Video, Text, Design
+from .models import Series, WrittenStory, Anime, Season, Video, Text, Design
 
 
 # Register your models here.
@@ -14,7 +14,7 @@ class SeriesAdmin(admin.ModelAdmin):
     list_display_links = ["series_name"]
 
 
-@admin.register(Story)
+@admin.register(WrittenStory)
 class StoriesAdmin(admin.ModelAdmin):
     """Registger Stories Model to Admin site"""
 

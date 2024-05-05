@@ -6,7 +6,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 
 from django.db import transaction
 
-from .models import UserProfile, CreatorProfile, CustomUser
+from .models import UserProfile, CreatorProfile, CustomUser, Follow
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -25,7 +25,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class CustomRegisterSerializer(RegisterSerializer):
     """Customize the dj-rest-auth registerSerializer to include custom user models"""
 
-    is_creator = serializers.BooleanField(default=False)
+    is_creator = serializers.BooleanField(default=True)
 
     @transaction.atomic
     def save(self, request):
@@ -51,75 +51,76 @@ class CustomRegisterSerializer(RegisterSerializer):
         return user
 
 
-class UsersSerializer(serializers.ModelSerializer):
-    """Serializer for Django User Model"""
+class RFollowSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    serializer to serialize and deserialize data of Follow model
+    """
 
     class Meta:
-        """Meta class for the Django user Model"""
+        model = Follow
+        fields = [
+            "url",
+            "id",
+            "user_from",
+            "user_to",
+        ]
 
+
+class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer to serialize and deserialize data of the creatorProfile model
+    """
+
+    class Meta:
+        model = CreatorProfile
+        fields = [
+            "id",
+            "url",
+            "creator",
+            "company_name",
+            "company_website",
+            "biography",
+            "creator_logo",
+            # "following",
+            # "followers",
+        ]
+
+
+class RCreatorSerializerDetail(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer to serialize and deserialize data of the creatorProfile model
+    """
+
+    class Meta:
+        model = CreatorProfile
+        fields = [
+            "id",
+            "url",
+            "creator",
+            "company_name",
+            "company_website",
+            "biography",
+            "creator_logo",
+            "following",
+            "followers",
+        ]
+
+
+class RCustomUserSerializer(serializers.HyperlinkedModelSerializer):
+    """
+    Serializer to serialize and deserialize data related to the CustomerUser model
+    """
+
+    user_profile = serializers.HyperlinkedIdentityField(
+        view_name="creatorprofile-detail", read_only=True
+    )
+
+    class Meta:
         model = CustomUser
         fields = [
-            # "username",
-            "first_name",
-            "last_name",
+            "id",
+            "username",
             "email",
-            "is_creator",
+            "is_active",
+            "user_profile",
         ]
-
-
-class CreatorProfileSerializer(serializers.ModelSerializer):
-    """Serializer for the Creator Profile"""
-
-    class Meta:
-        """Meta class for the Creator Profile"""
-
-        model = CreatorProfile
-        fields = "__all__"
-
-
-class CreatorFollowersSerializer(serializers.ModelSerializer):
-    """
-    list of creator followers
-    """
-
-    user = serializers.ReadOnlyField(source="user.email")
-
-    class Meta:
-        model = UserProfile
-        fields = [
-            "user",
-        ]
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    """Serializer for the User Profile"""
-
-    user_email = serializers.ReadOnlyField(source="user.email")
-
-    class Meta:
-        """Meta class for the User Profile"""
-
-        model = UserProfile
-        fields = [
-            "pk",
-            "user_email",
-            "profile_img",
-        ]
-
-
-class UserProfileDetailSerializer(serializers.ModelSerializer):
-    """Serializer for the User Profile"""
-
-    user_email = serializers.ReadOnlyField(source="user.email")
-
-    class Meta:
-        """Meta class for the User Profile"""
-
-        model = UserProfile
-        fields = [
-            "pk",
-            "user_email",
-            "profile_img",
-            "names_of_follows",
-        ]
-        extra_kwargs = {"follows": {"required": False}}

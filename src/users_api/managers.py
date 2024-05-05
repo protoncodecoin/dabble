@@ -9,7 +9,7 @@ class CustomUserManager(BaseUserManager):
     """
 
     def create_user(self, email, password, **extra_fields):
-        """Method to create user making email field require"""
+        """Method to create user making email field required"""
         if not email:
             raise ValueError(_("Users must have an email address"))
         email = self.normalize_email(email)

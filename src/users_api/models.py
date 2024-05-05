@@ -42,6 +42,9 @@ class CreatorProfile(models.Model):
         blank=True,
         default="default/creator_default.jfif",
     )
+    following = models.ManyToManyField(
+        "self", through="Follow", symmetrical=False, related_name="followers"
+    )
 
     def __str__(self):
         """Readable representation of the User Profile model"""
@@ -64,9 +67,9 @@ class UserProfile(models.Model):
         blank=True,
         default="default/user_default.jpg",
     )
-    follows = models.ManyToManyField(
-        CreatorProfile, through="Follow", related_name="followers", blank=True
-    )
+    # follows = models.ManyToManyField(
+    #     CreatorProfile, through="Follow", related_name="followers", blank=True
+    # )
 
     def __str__(self):
         """Human readable representation of the User Profile model"""
@@ -80,20 +83,20 @@ class UserProfile(models.Model):
 
 class Follow(models.Model):
     user_from = models.ForeignKey(
-        UserProfile,
+        CreatorProfile,
         on_delete=models.CASCADE,
         related_name="creator_following",
         null=True,
         blank=True,
     )
-    creator_to = models.ForeignKey(
+    user_to = models.ForeignKey(
         CreatorProfile, on_delete=models.CASCADE, related_name="user_followers"
     )
 
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_from} is following {self.creator_to}"
+        return f"{self.user_from} is following {self.user_to}"
 
     class Meta:
         verbose_name_plural = "Follow"

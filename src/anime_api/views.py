@@ -7,12 +7,13 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework import filters
+from rest_framework.views import APIView
 
 from .renderers import CustomJSONRenderer
 
 from .models import (
     Series,
-    Story,
+    WrittenStory,
     Anime,
     Season,
     Text,
@@ -40,12 +41,18 @@ from .serializers import (
     DesignDetailSerializer,
     VideoCreateSerializer,
     VideoDetailSerializer,
+    AnimeFavoriteSerializer,
+    StoryFavoriteSerializer,
+    SeriesFavoriteSerializer,
 )
 
 from anime_api import models
 
 from users_api.models import CreatorProfile, UserProfile
-from users_api.serializers import CreatorProfileSerializer
+from users_api.serializers import (
+    # CreatorProfileSerializer,
+    RCreatorSerializer,
+)
 
 
 @api_view(["GET"])
@@ -57,7 +64,7 @@ def search(request, contenttype):
     content_type_mapping = {
         "series": models.Series,
         "anime": models.Anime,
-        "story": models.Story,
+        "story": models.WrittenStory,
         "creator": CreatorProfile,
     }
 
@@ -90,7 +97,7 @@ def search(request, contenttype):
                     {"result": anime_serializer.data}, status=status.HTTP_200_OK
                 )
 
-            if target_content == models.Story:
+            if target_content == models.WrittenStory:
                 search_vector = SearchVector(
                     "episode_title",
                     "description",
@@ -99,7 +106,7 @@ def search(request, contenttype):
                 )
                 search_query = SearchQuery(query)
                 results = (
-                    Story.objects.annotate(
+                    WrittenStory.objects.annotate(
                         search=search_vector,
                         rank=SearchRank(search_vector, search_query),
                     )
@@ -138,7 +145,8 @@ def search(request, contenttype):
                 search_vector = SearchVector(
                     "company_name",
                     "company_website",
-                    "company_descripiton",
+                    "biography",
+                    "creator.creator",
                 )
                 search_query = SearchQuery(query)
                 results = (
@@ -149,7 +157,7 @@ def search(request, contenttype):
                     .filter(search=search_query)
                     .order_by("-rank")
                 )
-                creator_serializer = CreatorProfileSerializer(
+                creator_serializer = RCreatorSerializer(
                     results, many=True, context={"request": request}
                 )
 
@@ -167,6 +175,10 @@ def search(request, contenttype):
 @api_view(["POST", "PUT"])
 # @permission_classes([permissions.IsCommonUser, permissions.IsStaff])
 def toggle_like(request, content_id, content_type):
+    """
+    User actions: like && unlike
+    User can like and unlike a Post
+    """
     user = request.user
     if content_id:
         if content_type == "series":
@@ -190,8 +202,8 @@ def toggle_like(request, content_id, content_type):
                 )
         elif content_type == "stories":
             try:
-                stories_instance = Story.objects.get(id=content_id)
-            except Story.DoesNotExist:
+                stories_instance = WrittenStory.objects.get(id=content_id)
+            except WrittenStory.DoesNotExist:
                 return Response(
                     {"message": f"Story with id of {content_id} does not exist"},
                     status=status.HTTP_404_NOT_FOUND,
@@ -261,7 +273,7 @@ def comments(request, content_type, content_id):
             return Response(comment_serializer.data)
 
         if content_type == "story":
-            target_content_type = ContentType.objects.get_for_model(Story)
+            target_content_type = ContentType.objects.get_for_model(WrittenStory)
             result = Comment.objects.filter(
                 content_type=target_content_type, object_id=content_id
             )
@@ -301,7 +313,7 @@ def comments(request, content_type, content_id):
             )
 
         if content_type == "story":
-            target_content_type = ContentType.objects.get_for_model(Story)
+            target_content_type = ContentType.objects.get_for_model(WrittenStory)
 
             Comment.objects.create(
                 user=user_profile,
@@ -333,7 +345,7 @@ def comments(request, content_type, content_id):
             )
 
         if content_type == "story":
-            target_content_type = ContentType.objects.get_for_model(Story)
+            target_content_type = ContentType.objects.get_for_model(WrittenStory)
             existing_comment = Comment.objects.filter(
                 user=user,
                 content_type=target_content_type,
@@ -380,13 +392,21 @@ def toggle_favorite(request, content_type, content_id):
         content_type_mapping = {
             "series": models.Series,
             "anime": models.Anime,
-            "story": models.Story,
+            "story": models.WrittenStory,
         }
         target_content = content_type_mapping.get(content_type)
         if target_content:
             if target_content == models.Anime:
-                anime_obj = get_object_or_404(Anime, pk=content_id)
-                user_profile = UserProfile.objects.get(user=user)
+                try:
+                    anime_obj = Anime.objects.get(pk=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+                except Anime.DoesNotExist or CreatorProfile.DoesNotExist:
+                    return Response(
+                        {
+                            "message": "object does not exist",
+                            "status": status.HTTP_404_NOT_FOUND,
+                        }
+                    )
                 if anime_obj.favorited_by.filter(id=user_profile.id).exists():
                     anime_obj.favorited_by.remove(user_profile)
                     return Response(
@@ -399,8 +419,17 @@ def toggle_favorite(request, content_type, content_id):
                 )
 
             if target_content == models.Series:
-                series_obj = get_object_or_404(Series, pk=content_id)
-                user_profile = UserProfile.objects.get(user=user)
+
+                try:
+                    series_obj = Series.objects.get(pk=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+                except CreatorProfile.DoesNotExist or Series.DoesNotExist:
+                    return Response(
+                        {
+                            "message": "object does not exist",
+                            "status": status.HTTP_404_NOT_FOUND,
+                        }
+                    )
                 if series_obj.favorited_by.filter(id=user_profile.id).exists():
                     series_obj.favorited_by.remove(user_profile)
                     return Response(
@@ -412,9 +441,17 @@ def toggle_favorite(request, content_type, content_id):
                     {"message": "series added to favorites"}, status=status.HTTP_200_OK
                 )
 
-            if target_content == models.Story:
-                story_obj = get_object_or_404(Story, pk=content_id)
-                user_profile = UserProfile.objects.get(user=user)
+            if target_content == models.WrittenStory:
+                try:
+                    story_obj = WrittenStory.objects.get(pk=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+                except CreatorProfile.DoesNotExist or WrittenStory.DoesNotExist:
+                    return Response(
+                        {
+                            "message": "object does not exist",
+                            "status": status.HTTP_404_NOT_FOUND,
+                        }
+                    )
                 if story_obj.favorited_by.filter(id=user_profile.id).exists():
                     story_obj.favorited_by.remove(user_profile)
                     return Response(
@@ -433,6 +470,51 @@ def toggle_favorite(request, content_type, content_id):
     return Response(
         {"message": "Login to continue"}, status=status.HTTP_401_UNAUTHORIZED
     )
+
+
+class FavoritedAPIView(APIView):
+    """
+    View to list all user favorites in the system.
+
+    """
+
+    def get(self, request, format=None):
+        """
+        Return a list of all user favorites.
+        """
+        user = request.user
+        try:
+            user_profile = CreatorProfile.objects.get(creator=user)
+        except CreatorProfile.DoesNotExist:
+            return Response(
+                {"message": "User Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        anime = models.Anime.objects.filter(favorited_by=user_profile)
+        stories = models.WrittenStory.objects.filter(favorited_by=user_profile)
+        series = models.Series.objects.filter(favorited_by=user_profile)
+
+        anime_serializer = AnimeFavoriteSerializer(
+            anime, many=True, context={"request": request}
+        )
+        stories_serializer = StoryFavoriteSerializer(
+            stories, many=True, context={"request": request}
+        )
+        series_serializer = SeriesFavoriteSerializer(
+            series,
+            many=True,
+            context={"request": request},
+        )
+        return Response(
+            {
+                "message": [
+                    {"anime": anime_serializer.data},
+                    {"stories": stories_serializer.data},
+                    {"series": series_serializer.data},
+                ]
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class SeriesListAPI(generics.ListAPIView):
@@ -473,7 +555,7 @@ class SeriesDetailAPI(generics.RetrieveUpdateAPIView):
 class StoryListAPI(generics.ListAPIView):
     """Handles Story data from the Story Model"""
 
-    queryset = Story.objects.filter(publish=True)
+    queryset = WrittenStory.objects.filter(publish=True)
     serializer_class = StorySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series__series_name", "^episode_title", "^description"]
@@ -482,7 +564,7 @@ class StoryListAPI(generics.ListAPIView):
 class StoryCreateAPI(generics.ListCreateAPIView):
     """Handles Story data from the Story Model"""
 
-    queryset = Story.objects.filter(publish=True)
+    queryset = WrittenStory.objects.filter(publish=True)
     serializer_class = StoryCreateSerializer
 
 
@@ -490,8 +572,29 @@ class StoryDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     """Provide Retrieve, Update and Delete functionality for Story Model"""
 
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
-    queryset = Story.objects.all()
+    queryset = WrittenStory.objects.all()
     serializer_class = StoryDetailSerializer
+
+    def delete(self, request, *args, **kwargs):
+
+        if "pk" in kwargs:
+
+            try:
+                story_obj = WrittenStory.objects.get(pk=kwargs["pk"])
+            except WrittenStory.DoesNotExist:
+                return Response(
+                    {"message": "Story not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            # if the user submitting the request isn't the same as the user that created the obj, reject the data and return an error
+            if story_obj.series.creator.creator.email != request.user.email:
+                return Response(
+                    {"message": "Not permitted", "status": status.HTTP_401_UNAUTHORIZED}
+                )
+            # if the user is the same as the creator of the object
+            return super().delete(request, *args, **kwargs)
+        return Response(
+            {"message": "Invalid pk provided", "status": status.HTTP_400_BAD_REQUEST}
+        )
 
 
 class AnimeListAPI(generics.ListAPIView):
@@ -517,6 +620,25 @@ class AnimeDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Anime.objects.all()
     serializer_class = AnimeDetailSerializer
 
+    def delete(self, request, *args, **kwargs):
+
+        if "pk" in kwargs:
+
+            try:
+                anime_obj = Anime.objects.get(pk=kwargs["pk"])
+            except Anime.DoesNotExist:
+                return Response(
+                    {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if anime_obj.series.creator.creator.email != request.user.email:
+                return Response(
+                    {"message": "Not permitted", "status": status.HTTP_401_UNAUTHORIZED}
+                )
+            return super().delete(request, *args, **kwargs)
+        return Response(
+            {"message": "Invalid pk provided", "status": status.HTTP_400_BAD_REQUEST}
+        )
+
 
 class SeasonListAPI(generics.ListAPIView):
     """View for listing all season instances"""
@@ -537,6 +659,31 @@ class SeasonDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
+
+    def delete(self, request, *args, **kwargs):
+        if "pk" in kwargs:
+            try:
+                season_obj = Season.objects.get(pk=kwargs["pk"])
+            except Season.DoesNotExist:
+                return Response(
+                    {"message": "detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if season_obj:
+                if request.user.email != season_obj.series.creator.creator.email:
+                    return Response(
+                        {
+                            "message": "Not permitted",
+                            "status": status.HTTP_401_UNAUTHORIZED,
+                        }
+                    )
+
+                return self.destroy(request, *args, **kwargs)
+            return Response(
+                {
+                    "message": "Invalid details provided",
+                    "status": status.HTTP_400_BAD_REQUEST,
+                }
+            )
 
 
 class TextCreateAPIView(generics.ListCreateAPIView):

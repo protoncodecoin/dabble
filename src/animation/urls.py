@@ -39,6 +39,8 @@ from dj_rest_auth.registration.views import RegisterView, ResendEmailVerificatio
 from dj_rest_auth.views import LogoutView, UserDetailsView, PasswordResetView
 
 
+from users_api.urls import router
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/auth/register/", RegisterView.as_view(), name="rest_register"),
@@ -85,8 +87,10 @@ urlpatterns = [
         jwt_views.TokenRefreshView.as_view(),
     ),
     path("api/v1/auth/logout/", LogoutView.as_view(), name="rest_logout"),
-    path("user/", UserDetailsView.as_view(), name="rest_user_details"),
+    # Django auth urls
     path("api/v1/api-auth/", include("rest_framework.urls")),
+    # Django Rest User Detail url
+    path("user/", UserDetailsView.as_view(), name="rest_user_details"),
     # Google social Oauth2
     path("auth/", include("drf_social_oauth2.urls", namespace="drf")),
     path("google-signup/", GoogleAuthRedirect.as_view()),
@@ -94,8 +98,11 @@ urlpatterns = [
     # API URLS
     path("content/", include("anime_api.urls", namespace="animes")),
     path("comments/", include("comment_system.urls", namespace="comments")),
-    path("users/", include("users_api.urls", namespace="users")),
     path("library/", include("library.urls", namespace="library")),
+    # USER ROUTERS
+    path("", include(router.urls)),
+    # USER FAVOURITE
+    path("actions/", include("users_api.urls", namespace="users")),
 ]
 
 if settings.DEBUG:
