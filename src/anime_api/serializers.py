@@ -47,7 +47,15 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
         view_name="animes:series-detail", lookup_field="pk"
     )
     creator = serializers.ReadOnlyField(source="creator.username")
-    likes = serializers.ReadOnlyField(source="likes.count")
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
+    seasons = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name="season-detail",
+        source="series.season.all",
+    )
 
     class Meta:
         """Meta class for Series Serializer"""
@@ -62,6 +70,7 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "likes",
             "tags",
+            "seasons",
         ]
 
         extra_kwargs = {
@@ -102,10 +111,16 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="creator", read_only=True)
     creator = serializers.ReadOnlyField(source="creator.username")
     comments = serializers.SerializerMethodField()
-    total_likes = serializers.ReadOnlyField(source="likes.count")
     user_has_liked = serializers.SerializerMethodField()
-    liked_user_names = serializers.SerializerMethodField()
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
+    season = serializers.HyperlinkedIdentityField(
+        view_name="animes:season-detail",
+        read_only=True,
+        many=True,
+    )
 
     class Meta:
         model = Series
@@ -118,12 +133,11 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "start_date",
             "end_date",
             "user_has_liked",
-            "total_likes",
             "likes",
-            "liked_user_names",
             "owner",
             "comments",
             "tags",
+            "season",
         ]
 
     def update(self, instance, validated_data):
@@ -159,11 +173,6 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
 
-    def get_liked_user_names(self, obj):
-        liked_users = obj.likes.all()
-        liked_usernames = [user.username for user in liked_users]
-        return liked_usernames
-
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Series)
         comments = Comment.objects.filter(
@@ -184,11 +193,13 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
         view_name="animes:story-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    likes = serializers.ReadOnlyField(source="likes.count")
     season_number = serializers.ReadOnlyField(source="season.season_number")
     creative_type = serializers.ReadOnlyField(source="season.obj_type")
     season_id = serializers.ReadOnlyField(source="season.id")
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         """Meta class of Story Serializer"""
@@ -216,7 +227,9 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         view_name="animes:story-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    likes = serializers.ReadOnlyField(source="likes.count")
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
     season_number = serializers.ReadOnlyField(source="season.season_number")
     tags = TagListSerializerField()
 
@@ -312,12 +325,13 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    user_has_liked = serializers.SerializerMethodField()
-    likes = serializers.ReadOnlyField(source="likes.count")
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
     comments = serializers.SerializerMethodField()
     user_has_liked = serializers.SerializerMethodField()
-    liked_user_names = serializers.SerializerMethodField()
     season_number = serializers.ReadOnlyField(source="season.season_number")
+
     tags = TagListSerializerField()
 
     class Meta:
@@ -333,7 +347,6 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "episode_release_date",
             "user_has_liked",
             "likes",
-            "liked_user_names",
             "description",
             "content",
             "thumbnail",
@@ -446,7 +459,9 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
         view_name="animes:anime-detail", lookup_field="pk"
     )
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    likes = serializers.ReadOnlyField(source="likes.count")
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
     season_number = serializers.ReadOnlyField(
         source="season.season_number", read_only=True
     )
@@ -476,6 +491,9 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
 
     class Meta:
         model = Anime
@@ -489,6 +507,7 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "tags",
             "anime_thumbnail",
+            "likes",
         ]
 
     def validate(self, data):
@@ -612,9 +631,10 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
     comments = serializers.SerializerMethodField()
     series_name = serializers.ReadOnlyField(source="series.series_name")
-    likes = serializers.ReadOnlyField(source="likes.count")
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
     user_has_liked = serializers.SerializerMethodField()
-    liked_user_names = serializers.SerializerMethodField()
     tags = TagListSerializerField()
     # favorited_urls = serializers.HyperlinkedRelatedField(
     #     view_name="animes:favorite-detail", read_only=True
@@ -634,7 +654,6 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "publish",
             "tags",
             "likes",
-            "liked_user_names",
             "description",
             "anime_thumbnail",
             "video_file",
@@ -714,11 +733,6 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
 
-    def get_liked_user_names(self, obj):
-        liked_users = obj.likes.all()
-        liked_usernames = [user.username for user in liked_users]
-        return liked_usernames
-
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Anime)
         comments = Comment.objects.filter(
@@ -739,6 +753,9 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 class SeasonSerializer(serializers.ModelSerializer):
     series_name = serializers.ReadOnlyField(source="series.series_name")
+    url = serializers.HyperlinkedIdentityField(
+        view_name="animes:season-detail", read_only=True
+    )
 
     # episodes = serializers.SerializerMethodField()
 
@@ -746,6 +763,7 @@ class SeasonSerializer(serializers.ModelSerializer):
         model = Season
         fields = [
             "pk",
+            "url",
             "series_name",
             "series",
             "season_number",
@@ -797,6 +815,8 @@ class SeasonSerializer(serializers.ModelSerializer):
 
 
 class SeasonCreateSerializer(serializers.ModelSerializer):
+    # episodes = serializers.HyperlinkedIdentityField()
+
     class Meta:
         model = Season
         fields = [

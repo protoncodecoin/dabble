@@ -53,6 +53,8 @@ from users_api.serializers import (
     RCreatorSerializer,
 )
 
+from library.models import Book
+
 
 @api_view(["GET"])
 def search(request, contenttype):
@@ -453,6 +455,7 @@ def toggle_favorite(request, content_type, content_id):
             "series": models.Series,
             "anime": models.Anime,
             "story": models.WrittenStory,
+            "book": Book,
         }
         target_content = content_type_mapping.get(content_type)
         if target_content:
@@ -523,6 +526,26 @@ def toggle_favorite(request, content_type, content_id):
                     {"message": "story added to favorites"}, status=status.HTTP_200_OK
                 )
 
+            if target_content == Book:
+                try:
+                    book_instance = Book.objects.get(id=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+
+                except Book.DoesNotExist or CreatorProfile.DoesNotExist:
+                    return Response(
+                        {"message": "book not found"}, status=status.HTTP_404_NOT_FOUND
+                    )
+                if book_instance.favorited_by.filter(id=user.id).exists():
+                    book_instance.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": "book removed from favorites"},
+                        status=status.HTTP_204_NO_CONTENT,
+                    )
+                book_instance.favorited_by.add(user_profile)
+                return Response(
+                    {"message": "book added to favorites"}, status=status.HTTP_200_OK
+                )
+
         return Response(
             {"message": "Invalid information provided to complete request"},
             status=status.HTTP_400_BAD_REQUEST,
@@ -589,8 +612,8 @@ class SeriesListAPI(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
-    def get_queryset(self):
-        return Series.objects.all()
+    # def get_queryset(self):
+    #     return Series.objects.all()
 
 
 class SeriesCreateAPI(generics.CreateAPIView):

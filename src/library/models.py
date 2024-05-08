@@ -27,6 +27,9 @@ class Book(models.Model):
     )
     added_on = models.DateTimeField(auto_now_add=True, blank=True)
     updated_on = models.DateTimeField(auto_now=True)
+    favorited_by = models.ManyToManyField(
+        CreatorProfile, related_name="favorited_books", blank=True
+    )
 
     class Meta:
         verbose_name = "Book"

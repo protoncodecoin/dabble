@@ -27,7 +27,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import RCreatorSerializer, RCustomUserSerializer, RFollowSerializer
@@ -132,6 +132,24 @@ class GoogleRedirectURIView(APIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class MyTokenObtainPairView2(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        # Retreive tokens from the response
+        access_token = response.data.get("access")
+        refresh_token = response.data.get("refresh")
+
+        # set tokens in HTTP only cookies
+        response = JsonResponse({"message": "Login successful"})
+        response.set_cookie("access_token", access_token, httponly=True)
+        response.set_cookie("refresh_token", refresh_token, httponly=True)
+
+        return response
 
 
 @api_view(["POST", "PUT"])

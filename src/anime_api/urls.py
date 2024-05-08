@@ -35,9 +35,9 @@ urlpatterns = [
     path("anime/create/", views.AnimeCreateAPI.as_view(), name="animes-create"),
     path("anime/<int:pk>/", views.AnimeDetailAPI.as_view(), name="anime-detail"),
     # seasons url path
-    path("season/", views.SeasonListAPI.as_view()),
-    path("season/create/", views.SeasonCreateAPI.as_view()),
-    path("season/<int:pk>/", views.SeasonDetailAPIView.as_view()),
+    path("season/", views.SeasonListAPI.as_view(), name="season-list"),
+    path("season/create/", views.SeasonCreateAPI.as_view(), name="season-create"),
+    path("season/<int:pk>/", views.SeasonDetailAPIView.as_view(), name="season-detail"),
     # New Media
     # Text
     path("textcontent/create/", views.TextCreateAPIView.as_view()),

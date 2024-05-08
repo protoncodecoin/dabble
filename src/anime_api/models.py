@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+
 from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
@@ -29,7 +29,7 @@ class Series(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(null=True, blank=True)
     likes = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="series_like", blank=True
+        CreatorProfile, related_name="series_like", blank=True
     )
     tags = TaggableManager()
     favorited_by = models.ManyToManyField(
@@ -61,7 +61,7 @@ class Season(models.Model):
 
     class Meta:
         verbose_name_plural = "Season"
-        ordering = ["-release_date"]
+        ordering = ["release_date"]
 
 
 class Base(models.Model):
