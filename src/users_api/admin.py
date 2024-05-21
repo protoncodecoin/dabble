@@ -89,6 +89,7 @@ class CreatorProfileAdmin(admin.ModelAdmin):
         "creator",
         "creator_logo",
         "id",
+        "total_likes",
     ]
     list_display_links = [
         "id",

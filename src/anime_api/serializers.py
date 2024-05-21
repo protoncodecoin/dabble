@@ -71,11 +71,8 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
             "likes",
             "tags",
             "seasons",
+            "typeof",
         ]
-
-        extra_kwargs = {
-            "slug": {"write_only": True},
-        }
 
     def create(self, validated_data):
         request = self.context.get("request")
@@ -138,6 +135,7 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "comments",
             "tags",
             "season",
+            "typeof",
         ]
 
     def update(self, instance, validated_data):
@@ -217,6 +215,8 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
             "season_number",
             "creative_type",
             "tags",
+            "thumbnail",
+            "typeof",
         ]
 
 
@@ -251,6 +251,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "likes",
             "season",
             "season_number",
+            "typeof",
         ]
 
     def validate(self, data):
@@ -353,6 +354,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "owner",
             "comments",
             "tags",
+            "typeof",
         ]
 
     def update(self, instance, validated_data):
@@ -480,12 +482,13 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "episode_number",
             "description",
             "likes",
-            "anime_thumbnail",
+            "thumbnail",
             # "video_file",
             "season",
             "season_number",
             "creator",
             "tags",
+            "typeof",
         ]
 
 
@@ -506,8 +509,9 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "description",
             "video_file",
             "tags",
-            "anime_thumbnail",
+            "thumbnail",
             "likes",
+            "typeof",
         ]
 
     def validate(self, data):
@@ -562,7 +566,7 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         episode_title = validated_data.get("episode_title")
         episode_number = validated_data.get("episode_number")
         description = validated_data.get("description")
-        thumbnail = validated_data.get("anime_thumbnail")
+        thumbnail = validated_data.get("thumbnail")
         file = validated_data.get("video_file")
         tags = validated_data.get("tags")
         split_tags = tags[0].split(",")
@@ -600,7 +604,7 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             episode_title=episode_title,
             episode_number=episode_number,
             description=description,
-            anime_thumbnail=thumbnail,
+            thumbnail=thumbnail,
             video_file=file,
         )
         new_anime_obj.tags.add(*tag_objs)
@@ -622,7 +626,7 @@ class AnimeFavoriteSerializer(serializers.ModelSerializer):
             "series_name",
             "episode_title",
             "episode_number",
-            "anime_thumbnail",
+            "thumbnail",
             "episode_url",
         ]
 
@@ -655,11 +659,12 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "tags",
             "likes",
             "description",
-            "anime_thumbnail",
+            "thumbnail",
             "video_file",
             "comments",
             "owner",
             "favorited_by",
+            "typeof",
             # "favorited_urls",
         ]
 
@@ -705,10 +710,10 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                             f"{generated_file_name}.{sent_video_type}"
                         )
 
-                if validated_data.get("anime_thumbnail"):
-                    sent_thumbnail_type = validated_data.get(
-                        "anime_thumbnail"
-                    ).name.split(".")[-1]
+                if validated_data.get("thumbnail"):
+                    sent_thumbnail_type = validated_data.get("thumbnail").name.split(
+                        "."
+                    )[-1]
 
                     generated_file_name = media_renamer(
                         req_series_name,
@@ -716,7 +721,7 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                         req_episode_number,
                         sent_thumbnail_type,
                     )
-                    validated_data.get("anime_thumbnail").name = (
+                    validated_data.get("thumbnail").name = (
                         f"{generated_file_name}.{sent_thumbnail_type}"
                     )
 
@@ -768,6 +773,7 @@ class SeasonSerializer(serializers.ModelSerializer):
             "series",
             "season_number",
             "release_date",
+            "typeof",
             # "episodes",
         ]
 
@@ -824,6 +830,7 @@ class SeasonCreateSerializer(serializers.ModelSerializer):
             "series",
             "season_number",
             "release_date",
+            "typeof",
         ]
 
     def validate(self, data):
@@ -869,6 +876,7 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "creator",
             "tags",
             "likes",
+            "typeof",
         ]
 
     def create(self, validated_data):
@@ -910,6 +918,7 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "tags",
             "likes",
+            "typeof",
         ]
 
     def update(self, instance, validated_data):
@@ -990,6 +999,7 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "illustration",
             "tags",
             "likes",
+            "typeof",
         ]
 
     def update(self, instance, validated_data):
@@ -1034,6 +1044,7 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "tags",
             "likes",
+            "typeof",
         ]
 
     def create(self, validated_data):
@@ -1084,6 +1095,7 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "tags",
             "creator",
             "likes",
+            "typeof",
         ]
 
     def update(self, instance, validated_data):

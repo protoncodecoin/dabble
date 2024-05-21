@@ -34,6 +34,7 @@ class CreatorProfile(models.Model):
         related_name="creator_profile",
         on_delete=models.CASCADE,
     )
+    programme = models.CharField(max_length=100, blank=True)
     company_name = models.CharField(max_length=200, blank=True, null=True)
     company_website = models.URLField(blank=True, null=True)
     biography = models.CharField(max_length=500, blank=True, null=True)
@@ -45,6 +46,7 @@ class CreatorProfile(models.Model):
     following = models.ManyToManyField(
         "self", through="Follow", symmetrical=False, related_name="followers"
     )
+    total_likes = models.IntegerField(default=0)
 
     def __str__(self):
         """Readable representation of the User Profile model"""
@@ -53,6 +55,9 @@ class CreatorProfile(models.Model):
     class Meta:
         """Meta class to set the User Profile plural title on the site"""
 
+        indexes = [
+            models.Index(fields=["total_likes"]),
+        ]
         verbose_name_plural = "Creators Profile"
 
 

@@ -35,6 +35,7 @@ class Series(models.Model):
     favorited_by = models.ManyToManyField(
         CreatorProfile, blank=True, related_name="favorite_series"
     )
+    typeof = models.CharField(max_length=6, default="series")
 
     def __str__(self):
         return self.series_name
@@ -55,6 +56,7 @@ class Season(models.Model):
     season_number = models.IntegerField()
     obj_type = models.CharField(max_length=10, choices=OBJ_TYPE, default="Anime")
     release_date = models.DateTimeField(auto_now_add=True)
+    typeof = models.CharField(max_length=6, default="season")
 
     def __str__(self):
         return f"{self.series.series_name} season {self.season_number}"
@@ -93,7 +95,7 @@ class Base(models.Model):
         """Meta class to set this model as an abstract class"""
 
         abstract = True
-        ordering = ["-episode_release_date"]
+        # ordering = ["-episode_release_date"]
 
     def __str__(self):
         return f"{self.series.series_name}, Episode: {self.episode_number}"
@@ -109,6 +111,7 @@ class WrittenStory(Base):
     favorited_by = models.ManyToManyField(
         CreatorProfile, blank=True, related_name="favorite_stories"
     )
+    typeof = models.CharField(max_length=12, default="writtenstory")
 
     class Meta:
         """Meta class for Story Model"""
@@ -120,7 +123,7 @@ class WrittenStory(Base):
 class Anime(Base):
     """Database Model for Series"""
 
-    anime_thumbnail = models.ImageField(
+    thumbnail = models.ImageField(
         upload_to="animations/thumbnails/%Y/%m/",
         default="default/anime.jfif",
         blank=True,
@@ -129,6 +132,7 @@ class Anime(Base):
     favorited_by = models.ManyToManyField(
         CreatorProfile, blank=True, related_name="favorite_animes"
     )
+    typeof = models.CharField(max_length=5, default="anime")
 
     class Meta:
         """Meta class for Anime Model"""
@@ -158,6 +162,7 @@ class Text(models.Model):
     content = models.TextField()
     likes = models.ManyToManyField(CreatorProfile, related_name="liked_text")
     tags = TaggableManager(blank=True)
+    typeof = models.CharField(max_length=4, default="text")
 
     class Meta:
         verbose_name = "Text Content"
@@ -190,6 +195,7 @@ class Video(models.Model):
         upload_to="singles/video/%Y/%m/",
     )
     tags = TaggableManager(blank=True)
+    typeof = models.CharField(max_length=5, default="video")
 
     class Meta:
         verbose_name = "Video Content"
@@ -219,6 +225,7 @@ class Design(models.Model):
         upload_to="singles/designs/%Y/%m/",
     )
     tags = TaggableManager(blank=True)
+    typeof = models.CharField(max_length=6, default="design")
 
     class Meta:
         verbose_name = "Design/Illustration Content"

@@ -1,9 +1,14 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.views.generic.base import View
+from django.db.models import F, Q, Count
 
 
 from rest_framework.views import APIView
+
+from anime_api.models import Series
 
 
 from .models import (
@@ -16,7 +21,7 @@ from .serializers import (
     RCreatorSerializerDetail,
 )
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -146,8 +151,22 @@ class MyTokenObtainPairView2(TokenObtainPairView):
 
         # set tokens in HTTP only cookies
         response = JsonResponse({"message": "Login successful"})
-        response.set_cookie("access_token", access_token, httponly=True)
-        response.set_cookie("refresh_token", refresh_token, httponly=True)
+        response.set_cookie(
+            "dabble_access_token",
+            access_token,
+            httponly=True,
+            samesite="None",
+            secure=True,
+            max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+        )
+        response.set_cookie(
+            "dabble_refresh_token",
+            refresh_token,
+            httponly=True,
+            samesite="None",
+            secure=True,
+            max_age=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+        )
 
         return response
 
@@ -217,6 +236,7 @@ class CreatorViewSet(
         # check if user is owner of object: update, partial_update
 
         permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        # filter_backends = [DjangoFilterBackend]
 
         if self.action == "update":
             permission_classes = [permissions.IsAuthenticated]
@@ -230,6 +250,53 @@ class CreatorViewSet(
             permission_classes = [permissions.IsAdminUser]
 
         return [permission() for permission in permission_classes]
+
+    @action(detail=False)
+    def top_creators(self, request):
+        """
+        A list of top creators
+        """
+        one_month_ago = timezone.now() - timedelta(days=30)
+
+        top_series = (
+            Series.objects.annotate(
+                written_stories_count=Count("writtenstory_related"),
+                anime_count=Count("anime_related"),
+                # anime_likes_count=Count("anime_related__likes"),
+                recent_anime=Count(
+                    "anime_related",
+                    filter=Q(anime_related__episode_release_date__gte=one_month_ago),
+                ),
+                recent_written_stories=Count(
+                    "writtenstory_related",
+                    filter=Q(
+                        writtenstory_related__episode_release_date__gte=one_month_ago
+                    ),
+                ),
+            )
+            .annotate(
+                total_contributions=F("written_stories_count") + F("anime_count"),
+                recent_contributions=F("recent_written_stories") + F("recent_anime"),
+            )
+            .order_by(
+                "-total_contributions",
+                "-recent_contributions",
+            )[:10]
+        )
+
+        top_series_creators = [obj.creator for obj in top_series]
+        top_creators_id = [obj.creator.id for obj in top_series]
+        filtered_list = []
+        for i in range(len(top_creators_id)):
+            if top_creators_id[i] not in filtered_list:
+                filtered_list.append(top_creators_id[i])
+            else:
+                top_series_creators.pop(i)
+        page = self.paginate_queryset(top_series_creators)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response({"message": 0}, status=status.HTTP_200_OK)
 
     def list(self, request):
         queryset = CreatorProfile.objects.only(

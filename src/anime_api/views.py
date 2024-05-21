@@ -1,5 +1,8 @@
+from datetime import timedelta
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.db.models import Q, F, Count, Sum
+from django.utils import timezone
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,8 +10,6 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework import filters
 from rest_framework.views import APIView
-
-from .renderers import CustomJSONRenderer
 
 from .models import (
     Series,
@@ -223,7 +224,7 @@ def toggle_like(request, content_id, content_type):
                 stories_instance.likes.remove(user)
                 return Response(
                     {"message": "UnLike was successful"},
-                    status=status.HTTP_200_OK,
+                    status=status.HTTP_204_NO_CONTENT,
                 )
         elif content_type == "animes":
             try:
@@ -608,12 +609,43 @@ class SeriesListAPI(generics.ListAPIView):
     # ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
-    renderer_classes = [CustomJSONRenderer]
+    # renderer_classes = [CustomJSONRenderer]
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
     # def get_queryset(self):
     #     return Series.objects.all()
+
+    # def get_top_series(self, request):
+    #     """
+    #     Get the top series
+    #     """
+    #     one_month_ago = timezone.now() - timedelta(days=30)
+    #     top_series = (
+    #         Series.objects.annotate(
+    #             written_stories_count=Count("writtenstory_related"),
+    #             anime_count=Count("anime_related"),
+    #             # anime_likes_count=Count("anime_related__likes"),
+    #             recent_anime=Count(
+    #                 "anime_related",
+    #                 filter=Q(anime_related__episode_release_date__gte=one_month_ago),
+    #             ),
+    #             recent_written_stories=Count(
+    #                 "writtenstory_related",
+    #                 filter=Q(
+    #                     writtenstory_related__episode_release_date__gte=one_month_ago
+    #                 ),
+    #             ),
+    #         )
+    #         .annotate(
+    #             total_contributions=F("written_stories_count") + F("anime_count"),
+    #             recent_contributions=F("recent_written_stories") + F("recent_anime"),
+    #         )
+    #         .order_by(
+    #             "-total_contributions",
+    #             "-recent_contributions",
+    #         )[:10]
+    #     )
 
 
 class SeriesCreateAPI(generics.CreateAPIView):
@@ -686,6 +718,19 @@ class AnimeListAPI(generics.ListAPIView):
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer
+
+    def top_anime(self, request):
+        """
+        List of top 10 animations
+        """
+        one_month_ago = timezone.now() - timedelta(days=30)
+        top_animation = (
+            Anime.objects.filter(episode_release_date__gte=one_month_ago)
+            .annotate(recent_likes_count=Count("likes"))
+            .order_by("-recent_likes_count")[:10]
+        )
+        serializer = AnimeSerializer(top_animation, many=True)
+        return Response({"message": serializer.data}, status=status.HTTP_200_OK)
 
 
 class AnimeCreateAPI(generics.CreateAPIView):
@@ -776,13 +821,14 @@ class TextCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Text.objects.all()
     serializer_class = TextCreateSerializer
+    # renderer_classes = [CustomJSONRenderer]
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serailizer = TextCreateSerializer(
-            queryset, many=True, context={"request": request}
-        )
-        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serailizer = TextCreateSerializer(
+    #         queryset, many=True, context={"request": request}
+    #     )
+    #     return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
 class TextUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -815,10 +861,10 @@ class DesignCreateListAPIView(generics.ListCreateAPIView):
     queryset = Design.objects.all()
     serializer_class = DesignSerializer
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serailizer = DesignSerializer(queryset, many=True, context={"request": request})
-        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serailizer = DesignSerializer(queryset, many=True, context={"request": request})
+    #     return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
 class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -851,12 +897,12 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoCreateSerializer
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        serailizer = VideoCreateSerializer(
-            queryset, many=True, context={"request": request}
-        )
-        return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serailizer = VideoCreateSerializer(
+    #         queryset, many=True, context={"request": request}
+    #     )
+    #     return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
 
 
 class VideoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):

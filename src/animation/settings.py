@@ -30,12 +30,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "192.168.100.100:8000"]
+ALLOWED_HOSTS = [
+    "*",
+    "192.168.100.100:8000",
+    "http://localhost:1234",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -49,6 +54,7 @@ INSTALLED_APPS = [
     "users_api.apps.UsersApiConfig",
     "comment_system.apps.CommentSystemConfig",
     "library.apps.LibraryConfig",
+    "chat.apps.ChatConfig",
     #
     # third party apps
     "taggit",
@@ -106,6 +112,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "animation.wsgi.application"
+ASGI_APPLICATION = "animation.asgi.application"
 
 
 # Database
@@ -178,7 +185,7 @@ AUTH_USER_MODEL = "users_api.CustomUser"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -187,7 +194,7 @@ REST_FRAMEWORK = {
         "drf_social_oauth2.authentication.SocialAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
+    "PAGE_SIZE": 3,
 }
 
 SIMPLE_JWT = {
@@ -245,11 +252,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-# LOGIN_URL = "http://localhost:8000/api/v1/dj-rest-auth/login"
 USE_JWT = True
 SITE_ID = 1
 
-# LOGIN_URL = "http://localhost:8000"
 
 # Email Backend
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -270,12 +275,11 @@ PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
 
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:1234",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "http://127.0.0.1:5500",
-    "http://127.0.0.1:5501",
-    "http://127.0.0.1:5502",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 # GOOGLE CONFIGURATION
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")

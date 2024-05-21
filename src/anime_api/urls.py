@@ -34,6 +34,7 @@ urlpatterns = [
     path("anime/", views.AnimeListAPI.as_view(), name="animes-list"),
     path("anime/create/", views.AnimeCreateAPI.as_view(), name="animes-create"),
     path("anime/<int:pk>/", views.AnimeDetailAPI.as_view(), name="anime-detail"),
+    path("anime/top-animations/", views.AnimeListAPI.as_view()),
     # seasons url path
     path("season/", views.SeasonListAPI.as_view(), name="season-list"),
     path("season/create/", views.SeasonCreateAPI.as_view(), name="season-create"),

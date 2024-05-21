@@ -25,7 +25,7 @@ from dj_rest_auth.views import PasswordResetConfirmView
 
 from rest_framework_simplejwt import views as jwt_views
 
-from users_api.views import MyTokenObtainPairView
+from users_api.views import MyTokenObtainPairView, MyTokenObtainPairView2
 
 from users_api.views import (
     email_confirm_redirect,
