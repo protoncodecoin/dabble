@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext as _
+from django.utils.text import slugify
 
 from django.conf import settings
 
@@ -34,6 +35,7 @@ class CreatorProfile(models.Model):
         related_name="creator_profile",
         on_delete=models.CASCADE,
     )
+    slug = models.SlugField(blank=True, max_length=200)
     programme = models.CharField(max_length=100, blank=True)
     company_name = models.CharField(max_length=200, blank=True, null=True)
     company_website = models.URLField(blank=True, null=True)
@@ -51,6 +53,11 @@ class CreatorProfile(models.Model):
     def __str__(self):
         """Readable representation of the User Profile model"""
         return f"Profile of {self.creator.email}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.creator.username)
+        super().save(*args, **kwargs)
 
     class Meta:
         """Meta class to set the User Profile plural title on the site"""

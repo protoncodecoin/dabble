@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 from django.core.validators import (
     MinValueValidator,
@@ -20,6 +21,7 @@ class Series(models.Model):
         related_name="series_created",
         verbose_name="creator",
     )
+    slug = models.SlugField(max_length=300, blank=True)
     series_name = models.CharField(max_length=200, unique=True)
     series_poster = models.ImageField(
         upload_to="series/posters/%Y/%m/",
@@ -39,6 +41,11 @@ class Series(models.Model):
 
     def __str__(self):
         return self.series_name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.series_name)
+        super().save(*args, **kwargs)
 
     class Meta:
         """Meta class for Series Model"""
@@ -77,6 +84,7 @@ class Base(models.Model):
     season = models.ForeignKey(
         Season, on_delete=models.CASCADE, related_name="%(class)s_season"
     )
+    slug = models.SlugField(max_length=300, blank=True)
     episode_number = models.IntegerField(
         null=False, validators=[MinValueValidator(1), MaxValueValidator(20)]
     )
@@ -85,7 +93,10 @@ class Base(models.Model):
     episode_release_date = models.DateField(auto_now_add=True)
     publish = models.BooleanField(default=True)
     likes = models.ManyToManyField(
-        CreatorProfile, related_name="%(class)s_like", blank=True
+        CreatorProfile,
+        related_name="%(class)s_like",
+        blank=True,
+        symmetrical=False,
     )
     tags = TaggableManager(blank=True)
 
@@ -99,6 +110,11 @@ class Base(models.Model):
 
     def __str__(self):
         return f"{self.series.series_name}, Episode: {self.episode_number}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.episode_title)
+        super().save(*args, **kwargs)
 
 
 class WrittenStory(Base):
@@ -149,6 +165,7 @@ class Text(models.Model):
         on_delete=models.CASCADE,
         related_name="%(class)s_related",
     )
+    slug = models.SlugField(blank=True, max_length=300)
     title = models.CharField(
         max_length=150,
     )
@@ -160,7 +177,9 @@ class Text(models.Model):
         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
     )
     content = models.TextField()
-    likes = models.ManyToManyField(CreatorProfile, related_name="liked_text")
+    likes = models.ManyToManyField(
+        CreatorProfile, related_name="liked_text", blank=True
+    )
     tags = TaggableManager(blank=True)
     typeof = models.CharField(max_length=4, default="text")
 
@@ -170,6 +189,11 @@ class Text(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class Video(models.Model):
@@ -183,6 +207,7 @@ class Video(models.Model):
     title = models.CharField(
         max_length=150,
     )
+    slug = models.SlugField(blank=True, max_length=300)
     synopsis = models.TextField(max_length=300, blank=True)
     release_date = models.DateTimeField(
         auto_now_add=True,
@@ -190,7 +215,9 @@ class Video(models.Model):
     thumbnail = models.ImageField(
         upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
     )
-    likes = models.ManyToManyField(CreatorProfile, related_name="liked_videos")
+    likes = models.ManyToManyField(
+        CreatorProfile, related_name="liked_videos", blank=True, symmetrical=False
+    )
     video_file = models.FileField(
         upload_to="singles/video/%Y/%m/",
     )
@@ -204,6 +231,11 @@ class Video(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 
 class Design(models.Model):
     """Model for Illustrations/Design"""
@@ -213,6 +245,7 @@ class Design(models.Model):
         on_delete=models.CASCADE,
         related_name="%(class)s_related",
     )
+    slug = models.SlugField(blank=True, max_length=300)
     title = models.CharField(
         max_length=150,
     )
@@ -220,7 +253,9 @@ class Design(models.Model):
     release_date = models.DateTimeField(
         auto_now_add=True,
     )
-    likes = models.ManyToManyField(CreatorProfile, related_name="liked_illustration")
+    likes = models.ManyToManyField(
+        CreatorProfile, related_name="liked_illustration", blank=True
+    )
     illustration = models.ImageField(
         upload_to="singles/designs/%Y/%m/",
     )
@@ -233,3 +268,8 @@ class Design(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)

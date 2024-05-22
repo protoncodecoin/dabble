@@ -266,7 +266,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
-EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:3000/email/confirm/"
+EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:1234/email/confirm/"
 
 # <PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL>/<uidb64>/<token>/
 PASSWORD_RESET_CONFIRM_REDIRECT_BASE_URL = (
@@ -290,3 +290,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
 ]
+
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0

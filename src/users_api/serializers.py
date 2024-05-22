@@ -70,6 +70,7 @@ class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer to serialize and deserialize data of the creatorProfile model
     """
+
     username = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
@@ -77,6 +78,7 @@ class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             "id",
             "url",
+            "slug",
             "creator",
             "username",
             "programme",
@@ -99,6 +101,7 @@ class RCreatorSerializerDetail(serializers.HyperlinkedModelSerializer):
         fields = [
             "id",
             "url",
+            "slug",
             "creator",
             "company_name",
             "programme",

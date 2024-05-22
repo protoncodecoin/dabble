@@ -4,6 +4,7 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import Q, F, Count, Sum
 from django.utils import timezone
 
+import redis
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
@@ -55,6 +56,13 @@ from users_api.serializers import (
 )
 
 from library.models import Book
+
+from django.conf import settings
+
+# connect to redis
+# r = redis.Redis(
+#     host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB
+# )
 
 
 @api_view(["GET"])
@@ -613,40 +621,6 @@ class SeriesListAPI(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
-    # def get_queryset(self):
-    #     return Series.objects.all()
-
-    # def get_top_series(self, request):
-    #     """
-    #     Get the top series
-    #     """
-    #     one_month_ago = timezone.now() - timedelta(days=30)
-    #     top_series = (
-    #         Series.objects.annotate(
-    #             written_stories_count=Count("writtenstory_related"),
-    #             anime_count=Count("anime_related"),
-    #             # anime_likes_count=Count("anime_related__likes"),
-    #             recent_anime=Count(
-    #                 "anime_related",
-    #                 filter=Q(anime_related__episode_release_date__gte=one_month_ago),
-    #             ),
-    #             recent_written_stories=Count(
-    #                 "writtenstory_related",
-    #                 filter=Q(
-    #                     writtenstory_related__episode_release_date__gte=one_month_ago
-    #                 ),
-    #             ),
-    #         )
-    #         .annotate(
-    #             total_contributions=F("written_stories_count") + F("anime_count"),
-    #             recent_contributions=F("recent_written_stories") + F("recent_anime"),
-    #         )
-    #         .order_by(
-    #             "-total_contributions",
-    #             "-recent_contributions",
-    #         )[:10]
-    #     )
-
 
 class SeriesCreateAPI(generics.CreateAPIView):
     """Return all Series in Database to the endpoint"""
@@ -663,6 +637,7 @@ class SeriesDetailAPI(generics.RetrieveUpdateAPIView):
     """views for handling single instance of series model"""
 
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
+    # lookup_field = "slug"
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
 

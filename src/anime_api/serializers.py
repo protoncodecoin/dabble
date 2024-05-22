@@ -64,6 +64,7 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = [
             "url",
             "pk",
+            "slug",
             "creator",
             "series_name",
             "series_poster",
@@ -123,6 +124,7 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Series
         fields = [
             "pk",
+            "slug",
             "creator",
             "series_name",
             "synopsis",
@@ -206,6 +208,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = [
             "pk",
             "url",
+            "slug",
             "series",
             "series_name",
             "episode_number",
@@ -240,6 +243,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = [
             "pk",
             "url",
+            "slug",
             "series",
             "series_name",
             "episode_number",
@@ -339,6 +343,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = WrittenStory
         fields = [
             "pk",
+            "slug",
             "series",
             "series_name",
             "season_number",
@@ -475,6 +480,7 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Anime
         fields = [
             "pk",
+            "slug",
             "url",
             "series_name",
             "series",
@@ -502,6 +508,7 @@ class AnimeCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Anime
         fields = [
             "pk",
+            "slug",
             "series",
             "season",
             "episode_number",
@@ -648,6 +655,7 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Anime
         fields = [
             "pk",
+            "slug",
             "series",
             "series_name",
             "episode_number",
@@ -869,6 +877,7 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Text
         fields = [
             "id",
+            "slug",
             "title",
             "synopsis",
             "content",
@@ -912,6 +921,7 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Text
         fields = [
             "id",
+            "slug",
             "title",
             "content",
             "synopsis",
@@ -955,6 +965,7 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = [
             "creator",
             "id",
+            "slug",
             "title",
             "synopsis",
             "illustration",
@@ -993,6 +1004,7 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 
         fields = [
             "id",
+            "slug",
             "creator",
             "title",
             "synopsis",
@@ -1037,6 +1049,7 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Video
         fields = [
             "id",
+            "slug",
             "creator",
             "title",
             "thumbnail",
@@ -1088,6 +1101,7 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Video
         fields = [
             "id",
+            "slug",
             "title",
             "synopsis",
             "thumbnail",

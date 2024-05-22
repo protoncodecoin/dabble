@@ -10,8 +10,9 @@ class SeriesAdmin(admin.ModelAdmin):
 
     list_display = ["creator", "series_name", "id", "start_date"]
     list_filter = ["creator", "start_date", "end_date"]
-    # prepopulated_fields = {"slug": ("series_name",)}
+    prepopulated_fields = {"slug": ("series_name",)}
     list_display_links = ["series_name"]
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(WrittenStory)
@@ -27,6 +28,8 @@ class StoriesAdmin(admin.ModelAdmin):
     ]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
+    prepopulated_fields = {"slug": ("episode_title",)}
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(Anime)
@@ -42,6 +45,8 @@ class AnimeAdmin(admin.ModelAdmin):
     ]
     list_filter = ["episode_release_date"]
     list_display_links = ["episode_title"]
+    prepopulated_fields = {"slug": ("episode_title",)}
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(Season)
@@ -50,6 +55,7 @@ class SeasonAdmin(admin.ModelAdmin):
 
     list_display = ["series", "season_number", "release_date", "id"]
     list_display_links = ["series"]
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(Video)
@@ -62,6 +68,7 @@ class VideoAdmin(admin.ModelAdmin):
         "title",
         "release_date",
     ]
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(Text)
@@ -83,6 +90,8 @@ class TextAdmin(admin.ModelAdmin):
         "title",
         "id",
     ]
+    prepopulated_fields = {"slug": ("title",)}
+    # show_facets = admin.ShowFacets.ALWAYS
 
 
 @admin.register(Design)
@@ -103,3 +112,5 @@ class DesignAdmin(admin.ModelAdmin):
     ]
 
     list_display_links = ["title"]
+    prepopulated_fields = {"slug": ("title",)}
+    # show_facets = admin.ShowFacets.ALWAYS

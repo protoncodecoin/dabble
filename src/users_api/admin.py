@@ -96,6 +96,7 @@ class CreatorProfileAdmin(admin.ModelAdmin):
         "creator",
         "creator_logo",
     ]
+    # prepopulated_fields = {"slug": ("creator__username",)}
 
 
 @admin.register(UserProfile)
