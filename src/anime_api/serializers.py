@@ -971,6 +971,7 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
             "illustration",
             "tags",
             "likes",
+            "typeof",
         ]
 
     def create(self, validated_data):

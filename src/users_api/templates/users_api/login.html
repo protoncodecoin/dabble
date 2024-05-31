@@ -1,0 +1,77 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dabble | Sign In</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+  <div class="side-bar">
+    <div class="side-bar">
+      <a class="ico" href="{% url 'anime_html:index' %}"><img src="{% static 'icons/home darkicons.svg' %}" alt="home-icon"></a>
+  </div>
+  </div>
+
+  <div class="main">
+    <div class="overlay hidden"></div>
+    <div class="sign-in">
+      <h1>Welcome Back</h1>
+
+      {% for message in messages %}
+      <div class="auth-alert error">
+        {% if message.success %}
+        {{ message }}
+
+        {% else %}
+        {{ message }}
+        {% endif %}
+        
+      </div>
+      {% endfor %}
+      
+      <div class="google-auth">
+        <img src="{% static 'icons/googlelogo.svg' %}" alt="google logo">
+        <a>LOG IN WITH Google</a>
+        <div></div>
+      </div>
+
+      <p>OR LOGIN WITH EMAIL</p>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input class="info" type="email" placeholder="Email" name="email">
+        <input class="info" type="password" placeholder="Password" name="password">
+
+        <div class="check-forgot-password">
+          <div class="left">
+            <input class="checkbox" type="checkbox">
+            Keep me logged in
+          </div>
+          <div class="right">
+            <a href="#">Forgot passsword</a>
+          </div>
+        </div>
+
+        <button class="btn-2 show-modal submit" type="submit">Log in</button>
+
+        <p>Not a member? <a href="{% url 'users_html:signup' %}">Sign Up</a></p>
+      </form>
+      
+    </div>
+    <div class="image-bg"></div>
+
+    <!-- MODAL -->
+    <div class="pop-modal modal hidden">
+      <button class="close-modal">x</button>
+      <img src="{% static 'icons/mail.svg' %}" alt="">
+      <h2>There was an error with your request</h2>
+    </div>
+  </div>
+
+  <script src="{% static 'js/formvalidation.js' %}"></script>
+
+
+</body>
+</html>

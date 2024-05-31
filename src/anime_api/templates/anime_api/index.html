@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="trends">
+    <h3>[] Trends</h3>
+    <div class="container">
+        <button>
+        <img src="{% static 'icons/backarrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+        <div class="posts xx" id="rootTrends">
+
+        </div>
+        <button>
+        <img src="{% static 'icons/arrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+    </div>
+    </section>
+
+    <section class="recents">
+    <h3>Recently Viewed</h3>
+    <div class="container">
+        <button>
+        <img src="{% static 'icons/backarrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+        <div class="recent-posts posts xx" id="rootTrends">
+        <div class="recent-card">
+            <img src="{% static 'images/(6).jpg' %}" alt="" />
+            <p>Modern Abstract Composition in 3D</p>
+        </div>
+        <div class="recent-card">
+            <img src="{% static 'images/(2).jpg' %}" alt="" />
+            <p>Modern Abstract Composition in 3D</p>
+        </div>
+
+        <div class="recent-card">
+            <img src="{% static 'images/(6).jpg' %}" alt="" />
+            <p>Modern Abstract Composition in 3D</p>
+        </div>
+        <div class="recent-card">
+            <img src="{% static 'images/(2).jpg' %}" alt="" />
+            <p>Modern Abstract Composition in 3D</p>
+        </div>
+        </div>
+        <button>
+        <img src="{% static 'icons/arrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+    </div>
+    </section>
+
+    <section class="books">
+    <h3>[] Recommended Books</h3>
+    <div class="container">
+        <button>
+        <img src="{% static 'icons/backarrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+        <div class="posts xx">
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <p>200 pages</p>
+            <p>15 chapters</p>
+        </div>
+
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Lady Liberty</p>
+            <p>Brie Tankson</p>
+            <p>70 pages</p>
+            <p>5 chapters</p>
+        </div>
+
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Ancient Poems</p>
+            <p>Serwah Cole</p>
+            <p>20 pages</p>
+            <p>1 chapters</p>
+        </div>
+
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <p>200 pages</p>
+            <p>15 chapters</p>
+        </div>
+
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Lady Liberty</p>
+            <p>Brie Tankson</p>
+            <p>70 pages</p>
+            <p>5 chapters</p>
+        </div>
+
+        <div class="book-card">
+            <img src="{% static 'images/(16).jpg' %}" alt="" />
+            <p>Ancient Poems</p>
+            <p>Serwah Cole</p>
+            <p>20 pages</p>
+            <p>1 chapters</p>
+        </div>
+        </div>
+        <button>
+        <img src="{% static 'icons/arrow 2icons.svg' %}" alt="" class="ico" />
+        </button>
+    </div>
+    </section>
+
+    <section class="page-content">
+    <h3>[] Posts</h3>
+    <div class="posts" id="rootPost">
+       
+    </div>
+    </section>
+</div>
+{% endblock %}

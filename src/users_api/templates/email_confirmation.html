@@ -1,0 +1,8 @@
+{% autoescape off %}
+
+Welcome to Dabble - Dabble Account Activation
+Hello {{ name }}
+Please verify your email by clicking on the following link.
+Confirmation Link: http://{{ domain }}{% url 'users_html:activate' uidb64=uid  token=token %}
+
+{% endautoescape %}

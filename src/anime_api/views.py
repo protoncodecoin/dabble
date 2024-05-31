@@ -67,10 +67,7 @@ from django.conf import settings
 
 @api_view(["GET"])
 def search(request, contenttype):
-    """
-    Search database by using contenttype(models) and the query provided.
-    contenttype/models include: series, story, anime, creatorProfile.
-    """
+
     content_type_mapping = {
         "series": models.Series,
         "anime": models.Anime,
@@ -599,7 +596,7 @@ class FavoritedAPIView(APIView):
         )
         return Response(
             {
-                "message": [
+                "results": [
                     {"anime": anime_serializer.data},
                     {"stories": stories_serializer.data},
                     {"series": series_serializer.data},
@@ -637,7 +634,7 @@ class SeriesDetailAPI(generics.RetrieveUpdateAPIView):
     """views for handling single instance of series model"""
 
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
-    # lookup_field = "slug"
+    lookup_field = "pk"
     queryset = Series.objects.all()
     serializer_class = SeriesDetailSerializer
 

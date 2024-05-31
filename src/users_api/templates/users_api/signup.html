@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dabble | Sign Up</title>
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+  <div class="side-bar">
+      <a class="ico" href="{% url 'anime_html:index' %}"><img src="{% static 'icons/home darkicons.svg' %}" alt=""></a>
+  </div>
+
+  <div class="main">
+    <div class="image-bg">
+      <div class="overlay hidden"></div>
+      <div class="sign-up-modal">
+        <h1>Create new Account.</h1>
+
+        <div class="google-auth">
+          <img src="{% static 'icons/googlelogo.svg' %}" alt="">
+          <a>SIGN UP WITH Google</a>
+          <div></div>
+        </div>
+
+        <p class="or">OR LOGIN WITH EMAIL</p>
+
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input class="info" type="text" placeholder="Username">
+          <input class="info" type="email" placeholder="Email">
+          <input class="info" type="password" placeholder="Password">
+          
+          <div class="button-center">
+            <button class="btn-1 show-modal submit" type="submit">Create Account</button>
+          </div>
+  
+          <p>Already a member? <a href="{% url 'users_html:login' %}">Log In</a></p>
+        </div>
+        </form>
+
+      <!-- MODAL -->
+      <div class="pop-modal modal hidden">
+        <button class="close-modal">x</button>
+        <img src="{% static 'images/mail.svg' %}" alt="">
+        <h2>A verification link was sent to your email account! Please click it to finish creating your account</h2>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+<script src="{% static 'formvalidation.js' %}"></script>
+</body>
+</html>

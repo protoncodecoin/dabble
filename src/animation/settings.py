@@ -170,6 +170,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 # MEDIA
 MEDIA_URL = "media/"
@@ -189,6 +192,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
         "drf_social_oauth2.authentication.SocialAuthentication",
@@ -257,14 +261,13 @@ SITE_ID = 1
 
 
 # Email Backend
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-
 # <EMAIL_CONFIRM_REDIRECT_BASE_URL>/<key>
 EMAIL_CONFIRM_REDIRECT_BASE_URL = "http://localhost:1234/email/confirm/"
 

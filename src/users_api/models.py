@@ -11,7 +11,7 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser):
     """Extends the AbstractUser Model of Django to Customize the User model"""
 
-    # username = None
+    # username = models.CharField(max_length=200, unique=True)
     email = models.EmailField(_("email address"), unique=True)
     is_creator = models.BooleanField(
         default=False,

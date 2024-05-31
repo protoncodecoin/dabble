@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dabble | Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
+  </head>
+  <body>
+     <!-- Navigation bar-->
+    {% include 'partials/_navbar.html' %}
+
+    <div class="main" id="main-view">
+    <!-- Top navigational bar-->
+    {% include 'partials/_topnav.html' %}
+
+      <div class="content">
+        <div class="top-section">
+          <div class="content-main">
+            <div class="banner">
+              <img src="{% static 'images/cloudy.jpg' %}" alt="" />
+            </div>
+            <div class="portfolio-link">
+              Portfolio <a href="#">15 artworks</a>
+            </div>
+          </div>
+  
+          <!-- CONTENT RIGHT -->
+          <div class="profile-content">
+            <div class="profile-image">
+              <img id="profile-pic" src="{% static 'images/cloudy.jpg' %}" alt="">
+            </div>
+
+            <h3 id="creator-name">Jeffrey Dahmer</h3>
+            <h5 id="creator-programme">Creative Multimedia</h5>
+
+            
+            <p id="biography">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam animi accusamus ipsam cum labore.</p>
+
+            <div class="tags">
+              <h4>Interests</h4>
+              <div class="tag">Music</div>
+              <div class="tag">Anime</div>
+              <div class="tag">Cars</div>
+              <div class="tag">Food</div>
+              <div class="tag">Travel</div>
+            </div>
+
+            <div class="profile-buttons">
+              <button class="btn-2 msg">Message</button>
+            
+            <button class="btn-2 edit">Edit Profile</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BOTTOM SECTION -->
+        <div class="bottom-section">
+
+          <section class="page-content">
+            
+              <button class="btn-2">Posts</button>
+              <button class="btn-2">Watchlist</button>
+            <div class="posts">
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="{% static 'images/(16).jpg' %}" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="{% static 'images/(16).jpg' %}" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="/Images/ (16).jpg" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="/Images/ (16).jpg" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="/Images/ (16).jpg" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="/Images/ (16).jpg" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div>
+              <div class="book-card">
+                <img src="/Images/ (16).jpg" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div>
+              
+            </div>
+          </section>
+        </div>
+        <!--  -->
+        <!--  -->
+      </div>
+    </div>
+  </body>
+  {% comment %} <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script> {% endcomment %}
+  <script src="{% static 'js/profileController.js' %}"></script>
+</html>

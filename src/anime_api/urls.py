@@ -25,7 +25,7 @@ urlpatterns = [
     ),
     path("series/", views.SeriesListAPI.as_view(), name="series-list"),
     path("series/create/", views.SeriesCreateAPI.as_view(), name="series-create"),
-    path("series/<slug:slug>/", views.SeriesDetailAPI.as_view(), name="series-detail"),
+    path("series/<int:pk>/", views.SeriesDetailAPI.as_view(), name="series-detail"),
     # series url path
     path("stories/", views.StoryListAPI.as_view(), name="stories-list"),
     path("stories/create/", views.StoryCreateAPI.as_view(), name="stories-create"),

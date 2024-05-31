@@ -43,6 +43,10 @@ from users_api.urls import router
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # RENDER HTML URLS
+    path("users/m/", include("users_api.urls_html", namespace="users_html")),
+    path("", include("anime_api.urls_html", namespace="anime_html")),
+    # END OF RENDER HTML URLS
     path("api/v1/auth/register/", RegisterView.as_view(), name="rest_register"),
     path(
         "api/v1/auth/register/verify-email/",
