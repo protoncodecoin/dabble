@@ -8,17 +8,24 @@ from users_api.models import CustomUser
 class BookSerializer(serializers.ModelSerializer):
     """Serializer class to serialize books"""
 
+    uploader = serializers.ReadOnlyField(source="added_by.creator.username")
+
     class Meta:
         model = Book
         fields = [
             "id",
             "title",
             "cover",
+            "slug",
             # "added_by",
             "book_description",
             "book_category",
             "book",
+            "chapters",
+            "pages",
+            "uploader",
             "added_by",
+            "external_link",
         ]
 
     def create(self, validated_data):
@@ -55,12 +62,16 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "added_by",
             "posted_by",
             "title",
+            "slug",
             "cover",
             "book_description",
             "book_category",
+            "chapters",
+            "pages",
             "added_on",
             "updated_on",
             "book",
+            "external_links",
         ]
         read_only_fields = ["added_on", "updated_on"]
 

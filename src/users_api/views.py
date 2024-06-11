@@ -265,12 +265,12 @@ class CreatorViewSet(
                 # anime_likes_count=Count("anime_related__likes"),
                 recent_anime=Count(
                     "anime_related",
-                    filter=Q(anime_related__episode_release_date__lte=one_month_ago),
+                    filter=Q(anime_related__release_date__lte=one_month_ago),
                 ),
                 recent_written_stories=Count(
                     "writtenstory_related",
                     filter=Q(
-                        writtenstory_related__episode_release_date__lte=one_month_ago
+                        writtenstory_related__release_date__lte=one_month_ago
                     ),
                 ),
             )

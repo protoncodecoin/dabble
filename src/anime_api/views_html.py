@@ -223,7 +223,7 @@ def post_ranking(request):
 
     top_anime_trends = (
         anime_trends.annotate(
-            count_likes=Count("likes", filter=Q(episode_release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -232,7 +232,7 @@ def post_ranking(request):
 
     top_story_trends = (
         story_trends.annotate(
-            count_likes=Count("likes", filter=Q(episode_release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")

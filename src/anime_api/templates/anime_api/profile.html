@@ -23,7 +23,9 @@
               <img src="{% static 'images/cloudy.jpg' %}" alt="" />
             </div>
             <div class="portfolio-link">
-              Portfolio <a href="#">15 artworks</a>
+              Portfolio <a href="#" id="numOfWorks">
+                <!-- 15 artworks -->
+              </a>
             </div>
           </div>
   
@@ -51,7 +53,7 @@
             <div class="profile-buttons">
               <button class="btn-2 msg">Message</button>
             
-            <button class="btn-2 edit">Edit Profile</button>
+              <button class="btn-2 edit">Edit Profile</button>
             </div>
 
           </div>
@@ -64,12 +66,22 @@
             
               <button class="btn-2">Posts</button>
               <button class="btn-2">Watchlist</button>
-            <div class="posts">
-              <div class="page-content-card">
+            <div class="posts" id="allCreatorPosts">
+              <!-- <div class="page-content-card">
                 <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
                 <p>Character Modeling In 3D</p></a>
               </div>
               <div class="book-card">
+                <img src="{% static 'images/(16).jpg' %}" alt="" />
+                <p>Machine's Way</p>
+                <p>Ronald Awudi</p>
+                <button><a href="postpage.html">Read</a></button>
+              </div> -->
+              <!-- <div class="page-content-card">
+                <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div> -->
+              <!-- <div class="book-card">
                 <img src="{% static 'images/(16).jpg' %}" alt="" />
                 <p>Machine's Way</p>
                 <p>Ronald Awudi</p>
@@ -80,16 +92,6 @@
                 <p>Character Modeling In 3D</p></a>
               </div>
               <div class="book-card">
-                <img src="{% static 'images/(16).jpg' %}" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="{% static 'images/(3).jpg' %}" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
                 <img src="/Images/ (16).jpg" alt="" />
                 <p>Machine's Way</p>
                 <p>Ronald Awudi</p>
@@ -116,6 +118,11 @@
                 <button><a href="postpage.html">Read</a></button>
               </div>
               <div class="page-content-card">
+                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
+                <p>Character Modeling In 3D</p></a>
+              </div> -->
+              
+              <!-- <div class="page-content-card">
                 <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
                 <p>Character Modeling In 3D</p></a>
               </div>
@@ -129,11 +136,6 @@
                 <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
                 <p>Character Modeling In 3D</p></a>
               </div>
-              
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
               <div class="book-card">
                 <img src="/Images/ (16).jpg" alt="" />
                 <p>Machine's Way</p>
@@ -149,7 +151,7 @@
                 <p>Machine's Way</p>
                 <p>Ronald Awudi</p>
                 <button><a href="postpage.html">Read</a></button>
-              </div>
+              </div> -->
               
             </div>
           </section>
@@ -159,6 +161,5 @@
       </div>
     </div>
   </body>
-  {% comment %} <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script> {% endcomment %}
   <script src="{% static 'js/profileController.js' %}"></script>
 </html>

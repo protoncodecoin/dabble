@@ -18,16 +18,6 @@
   {% block content %}
 
   {% endblock %}
-
-  {% comment %} <script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script> {% endcomment %}
-  <script>
-    {% comment %} const csrftoken = Cookies.get('csrftoken');
-    document.addEventListener('DOMContentLoaded', (event) => {
-   // DOM loaded
-  {% block domready %}
-  {% endblock %} {% endcomment %}
- {% comment %} }) {% endcomment %}
- </script>
-  <script src="{%static "js/formvalidation.js" %}"></script>
+  <script src="{%static 'js/formvalidation.js' %}"></script>
   </body>
 </html>

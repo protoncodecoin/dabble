@@ -798,7 +798,7 @@ class SeasonListAPI(generics.ListAPIView):
 
         queryset = Season.objects.all()
 
-        user_id = self.request.query_params.get("user_id")
+        user_id = self.request.query_params.get("id")
         season_slug = self.request.query_params.get("slug")
 
         if user_id is not None:
@@ -863,7 +863,7 @@ class TextCreateAPIView(generics.ListCreateAPIView):
 
         queryset = Text.objects.all()
 
-        user_id = self.request.query_params.get("user_id")
+        user_id = self.request.query_params.get("id")
         text_slug = self.request.query_params.get("slug")
 
         if user_id is not None:
@@ -933,7 +933,7 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         queryset = Season.objects.all()
 
-        user_id = self.request.query_params.get("user_id")
+        user_id = self.request.query_params.get("id")
         design_slug = self.request.query_params.get("slug")
 
         if user_id is not None:
@@ -969,7 +969,7 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
 
         queryset = Video.objects.all()
 
-        user_id = self.request.query_params.get("user_id")
+        user_id = self.request.query_params.get("id")
         video_slug = self.request.query_params.get("slug")
 
         if user_id is not None:

@@ -24,9 +24,9 @@ class StoriesAdmin(admin.ModelAdmin):
         "episode_title",
         "id",
         "episode_number",
-        "episode_release_date",
+        "release_date",
     ]
-    list_filter = ["episode_release_date"]
+    list_filter = ["release_date"]
     list_display_links = ["episode_title"]
     prepopulated_fields = {"slug": ("episode_title",)}
     # show_facets = admin.ShowFacets.ALWAYS
@@ -41,9 +41,9 @@ class AnimeAdmin(admin.ModelAdmin):
         "episode_title",
         "id",
         "episode_number",
-        "episode_release_date",
+        "release_date",
     ]
-    list_filter = ["episode_release_date"]
+    list_filter = ["release_date"]
     list_display_links = ["episode_title"]
     prepopulated_fields = {"slug": ("episode_title",)}
     # show_facets = admin.ShowFacets.ALWAYS

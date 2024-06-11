@@ -1,6 +1,6 @@
-const rootElement = document.getElementById("rootPost");
+const rootElementPost = document.getElementById("rootPost");
 
-const baseURL = "127.0.0.7:8000/";
+const postBaseURL = "127.0.0.7:8000/";
 
 /**
  *Swaps each selected element in the array with a randomly selected element from the remaining un-shuffled portion of the array.
@@ -17,13 +17,13 @@ const shuffle = (array) => {
 };
 
 /**
- * Concatenates baseURL with endpoint to fetch data from the restAPI. eg: 0.0.0.0:8000/endpoint
+ * Concatenates postBaseURL with endpoint to fetch data from the restAPI. eg: 0.0.0.0:8000/endpoint
  * Do not authentication and errrors returned from the server.
- * @param {string} baseURL - base url of the restapi. This is set by default but can be overwritten.
+ * @param {string} postBaseURL - base url of the restapi. This is set by default but can be overwritten.
  */
-const getData = async function (baseURL) {
+const getData = async function (postBaseURL) {
   try {
-    const url = baseURL;
+    const url = postBaseURL;
     // let access_token = window.localStorage.getItem("dabble_access");
     // const data = await fetch(url, {
     //   headers: {
@@ -78,13 +78,13 @@ const getPostController = async function () {
   let shuffledData = shuffle(flattenResult);
 
   //   Render data in Browser
-  renderHTML(shuffledData);
+  renderPostHTML(shuffledData);
 };
 
 /**
  * @param {Array} data accept response data from the server and renders it in the browser
  */
-const renderHTML = function (data) {
+const renderPostHTML = function (data) {
   let renderedHTML = data
     .map((el) => {
       return `
@@ -100,7 +100,7 @@ const renderHTML = function (data) {
     })
     .join("");
 
-  rootElement.insertAdjacentHTML("beforeend", renderedHTML);
+  rootElementPost.insertAdjacentHTML("beforeend", renderedHTML);
 };
 
 getPostController();

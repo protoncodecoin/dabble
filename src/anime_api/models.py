@@ -96,7 +96,7 @@ class Base(models.Model):
     )
     episode_title = models.CharField(max_length=500)
     description = models.TextField(max_length=700, blank=True, null=True)
-    episode_release_date = models.DateField(auto_now_add=True)
+    release_date = models.DateField(auto_now_add=True)
     publish = models.BooleanField(default=True)
     likes = models.ManyToManyField(
         CreatorProfile,

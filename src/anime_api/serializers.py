@@ -72,6 +72,8 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
             "likes",
             "tags",
             "seasons",
+            "start_date",
+            "end_date",
             "typeof",
         ]
 
@@ -219,6 +221,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
             "creative_type",
             "tags",
             "thumbnail",
+            "release_date",
             "typeof",
         ]
 
@@ -255,6 +258,7 @@ class StoryCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "likes",
             "season",
             "season_number",
+            "release_date",
             "typeof",
         ]
 
@@ -350,7 +354,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "season",
             "episode_number",
             "episode_title",
-            "episode_release_date",
+            "release_date",
             "user_has_liked",
             "likes",
             "description",
@@ -461,7 +465,7 @@ class SeriesFavoriteSerializer(serializers.ModelSerializer):
 class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
     """A Model Serializer for Anime Model"""
 
-    creator = serializers.ReadOnlyField(source="series.creator.company_name")
+    creator = serializers.ReadOnlyField(source="series.creator.creator.username")
     url = serializers.HyperlinkedIdentityField(
         view_name="animes:anime-detail", lookup_field="pk"
     )
@@ -661,7 +665,7 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "episode_number",
             "episode_title",
             "season",
-            "episode_release_date",
+            "release_date",
             "user_has_liked",
             "publish",
             "tags",
@@ -884,6 +888,7 @@ class TextCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "creator",
             "tags",
+            "release_date",
             "likes",
             "typeof",
         ]
@@ -926,6 +931,7 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "content",
             "synopsis",
             "thumbnail",
+            "release_date",
             "tags",
             "likes",
             "typeof",
@@ -970,6 +976,7 @@ class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "illustration",
             "tags",
+            "release_date",
             "likes",
             "typeof",
         ]
@@ -1011,6 +1018,7 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "synopsis",
             "illustration",
             "tags",
+            "release_date",
             "likes",
             "typeof",
         ]
@@ -1108,6 +1116,7 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "video_file",
             "tags",
+            "release_date",
             "creator",
             "likes",
             "typeof",

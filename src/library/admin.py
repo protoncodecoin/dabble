@@ -13,10 +13,14 @@ class AdminBook(admin.ModelAdmin):
         "added_on",
         "book_category",
         "added_by",
+        "chapters",
+        "pages",
     ]
     list_filter = [
         "added_on",
         "updated_on",
         "book_category",
+        "chapters",
+        "pages",
     ]
     search_fields = ["title", "description"]
