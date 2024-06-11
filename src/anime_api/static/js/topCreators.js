@@ -12,6 +12,8 @@ const fetchTopCreators = async () => {
     const jsonData = await res.json();
     const results = jsonData.results;
 
+    console.log(results);
+
     // render Data and display in the browser
     renderHTML(results);
   } catch (error) {

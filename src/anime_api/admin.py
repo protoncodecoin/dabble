@@ -55,6 +55,7 @@ class SeasonAdmin(admin.ModelAdmin):
 
     list_display = ["series", "season_number", "release_date", "id"]
     list_display_links = ["series"]
+    # prepopulated_fields = {"slug": ("series", "season_number",)}
     # show_facets = admin.ShowFacets.ALWAYS
 
 

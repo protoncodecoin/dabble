@@ -245,8 +245,8 @@ class CreatorViewSet(
             permission_classes = [permissions.IsAuthenticated]
 
         if self.action == "update":
-            # This is done to prevent normal user from making full update including creator* field having FK to the AUTH_USER_MODEL.
-            # This will be implemented later
+            # This is done to prevent normal user from making full update including creator* field having FK to the
+            # AUTH_USER_MODEL. This will be implemented later
             permission_classes = [permissions.IsAdminUser]
 
         return [permission() for permission in permission_classes]
@@ -265,12 +265,12 @@ class CreatorViewSet(
                 # anime_likes_count=Count("anime_related__likes"),
                 recent_anime=Count(
                     "anime_related",
-                    filter=Q(anime_related__episode_release_date__gte=one_month_ago),
+                    filter=Q(anime_related__episode_release_date__lte=one_month_ago),
                 ),
                 recent_written_stories=Count(
                     "writtenstory_related",
                     filter=Q(
-                        writtenstory_related__episode_release_date__gte=one_month_ago
+                        writtenstory_related__episode_release_date__lte=one_month_ago
                     ),
                 ),
             )

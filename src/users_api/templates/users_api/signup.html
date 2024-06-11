@@ -29,10 +29,11 @@
 
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <input class="info" type="text" placeholder="Username">
-          <input class="info" type="email" placeholder="Email">
-          <input class="info" type="password" placeholder="Password">
-          
+<!--          <input class="info" type="text" placeholder="Username" name="username">-->
+          <input class="info" type="email" placeholder="Email" name="email">
+          <input class="info" type="password" placeholder="Password" name="password1">
+          <input class="info" type="password" placeholder="Confirm Password" name="password2">
+
           <div class="button-center">
             <button class="btn-1 show-modal submit" type="submit">Create Account</button>
           </div>

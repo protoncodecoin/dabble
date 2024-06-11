@@ -61,6 +61,7 @@ class Season(models.Model):
     )
     series = models.ForeignKey(Series, on_delete=models.CASCADE, related_name="season")
     season_number = models.IntegerField()
+    slug = models.SlugField(blank=True)
     obj_type = models.CharField(max_length=10, choices=OBJ_TYPE, default="Anime")
     release_date = models.DateTimeField(auto_now_add=True)
     typeof = models.CharField(max_length=6, default="season")
@@ -71,6 +72,11 @@ class Season(models.Model):
     class Meta:
         verbose_name_plural = "Season"
         ordering = ["release_date"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.series.series_name + "-"+ str(self.season_number))
+        return super().save(*args, **kwargs)
 
 
 class Base(models.Model):

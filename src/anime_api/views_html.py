@@ -171,6 +171,9 @@ def detail_post_count(request, content_type, id, slug):
 
 @csrf_exempt
 def post_ranking(request):
+    """
+    Return posts by ranking. Also returns trending posts.
+    """
     # get post ranking dictionary
     anime_rank = r.zrange("anime_ranking", 0, -1, desc=True)[:10]
     anime_ranking_ids = [int(id) for id in anime_rank]
@@ -268,11 +271,11 @@ def post_ranking(request):
 
     return JsonResponse(
         {
-            "anime_most_viewed": anime_serializer.data[:1],
-            "writtenstory_most_viewed": story_serializer.data[:1],
-            "video_most_viewed": video_serializer.data[:1],
-            "text_most_viewed": text_serializer.data[:1],
-            "design_most_viewed": design_serializer.data[:1],
+            "anime_most_viewed": anime_serializer.data[:3],
+            "writtenstory_most_viewed": story_serializer.data[:3],
+            "video_most_viewed": video_serializer.data[:3],
+            "text_most_viewed": text_serializer.data[:3],
+            "design_most_viewed": design_serializer.data[:3],
             "anime_trends": anime_trend_serializer.data,
             "story_trends": story_trend_serializer.data,
             "design_trends": design_trend_serializer.data,
@@ -285,5 +288,5 @@ def post_ranking(request):
 
 
 @csrf_exempt
-def tending_posts(request):
-    return JsonResponse({"trending": "trending"})
+def recently_viewed(request):
+    return JsonResponse({"recently_viewed": "this is the recently viewed post"})

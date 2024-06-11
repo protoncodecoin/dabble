@@ -24,6 +24,7 @@ const mostViewedPost = async () => {
     if (!res.ok) throw new Error(res.statusText);
 
     const jsonData = await res.json();
+    console.log(jsonData);
     const {
       anime_most_viewed,
       writtenstory_most_viewed,

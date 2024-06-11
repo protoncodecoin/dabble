@@ -607,7 +607,7 @@ class FavoritedAPIView(APIView):
 
 
 class SeriesListAPI(generics.ListAPIView):
-    """Return all Series in DD to the endpoint"""
+    """Return all Series in DB to the endpoint"""
 
     # permission_classes = [
     #     permissions.CreatorAllStaffAllButEditOrReadOnly,
@@ -617,6 +617,21 @@ class SeriesListAPI(generics.ListAPIView):
     # renderer_classes = [CustomJSONRenderer]
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
+
+    def get_queryset(self):
+        """
+        This view returns a list of all series created by the user
+        """
+        queryset = Series.objects.all()
+        user_id = self.request.query_params.get("id")
+        user_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+            print(queryset.filter(creator=user_id))
+        elif user_slug is not None:
+            queryset = queryset.filter(creator__creator__username=user_slug)
+        return queryset
 
 
 class SeriesCreateAPI(generics.CreateAPIView):
@@ -646,6 +661,19 @@ class StoryListAPI(generics.ListAPIView):
     serializer_class = StorySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^series__series_name", "^episode_title", "^description"]
+
+    def get_queryset(self):
+        queryset = WrittenStory.objects.all()
+
+        user_id = self.request.query_params.get("id")
+        story_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(series__creator=user_id)
+        elif story_slug is not None:
+            queryset = queryset.filter(slug=story_slug)
+
+        return queryset
 
 
 class StoryCreateAPI(generics.ListCreateAPIView):
@@ -690,6 +718,23 @@ class AnimeListAPI(generics.ListAPIView):
     # permission_classes = [permissions.CreatorAllStaffAllButEditOrReadOnly]
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+        queryset = Anime.objects.all()
+
+        user_id = self.request.query_params.get("id")
+        anime_slug = self.request.query_params.get("slug")
+
+        print("user id: ", user_id)
+
+        if user_id is not None and not user_id == "":
+            queryset = queryset.filter(series__creator=user_id)
+        elif anime_slug is not None:
+            queryset =  queryset.filter(slug=anime_slug)
+        return queryset
 
     def top_anime(self, request):
         """
@@ -746,6 +791,22 @@ class SeasonListAPI(generics.ListAPIView):
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
 
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Season.objects.all()
+
+        user_id = self.request.query_params.get("user_id")
+        season_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(series__creator=user_id)
+        elif season_slug is not None:
+            queryset = queryset.filter(slug=season_slug)
+        return queryset
+
 
 class SeasonCreateAPI(generics.CreateAPIView):
     """View for creating new season object"""
@@ -791,9 +852,25 @@ class TextCreateAPIView(generics.ListCreateAPIView):
     View to create text object.
     """
 
-    queryset = Text.objects.all()
+    # queryset = Text.objects.all()
     serializer_class = TextCreateSerializer
     # renderer_classes = [CustomJSONRenderer]
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Text.objects.all()
+
+        user_id = self.request.query_params.get("user_id")
+        text_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+        elif text_slug is not None:
+            queryset = queryset.filter(slug=text_slug)
+        return queryset
 
     # def list(self, request):
     #     queryset = self.get_queryset()
@@ -846,8 +923,25 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     Delete: pk
     """
 
-    queryset = Design.objects.all()
+    # queryset = Design.objects.all()
     serializer_class = DesignDetailSerializer
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Season.objects.all()
+
+        user_id = self.request.query_params.get("user_id")
+        design_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+        elif design_slug is not None:
+            queryset = queryset.filter(slug=design_slug)
+        return queryset
+      
 
     def delete(self, request, *args, **kwargs):
         design = self.get_object()
@@ -865,9 +959,25 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
     """
     list and create design/illustration object
     """
-
-    queryset = Video.objects.all()
+    # queryset = Video.objects.all()
     serializer_class = VideoCreateSerializer
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Video.objects.all()
+
+        user_id = self.request.query_params.get("user_id")
+        video_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+        elif video_slug is not None:
+            queryset = queryset.filter(slug=video_slug)
+        return queryset
+
 
     # def list(self, request):
     #     queryset = self.get_queryset()
