@@ -14,7 +14,7 @@ function slideSideBar() {
   sideBar.style.width = "170px";
   // sideBar.style.paddingLeft = '10px'
   sideBar.style.alignItems = "start";
-  toggleButton.src = "/static/icons/backarrow 2icons.svg";
+  toggleButton.src = "static/icons/backarrow 2icons.svg";
 
   for (let t = 0; t < sideText.length; t++) {
     sideText[t].classList.remove("hide");
@@ -31,7 +31,7 @@ function unSlideSideBar() {
   sideBar.style.width = "65px";
   // sideBar.style.paddingLeft = '20px'
   sideBar.style.alignItems = "center";
-  toggleButton.src = "/static/icons/arrow 2icons.svg";
+  toggleButton.src = "static/icons/arrow 2icons.svg";
 
   for (let t = 0; t < sideText.length; t++) {
     sideText[t].classList.add("hide");

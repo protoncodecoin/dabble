@@ -15,6 +15,7 @@ class AdminBook(admin.ModelAdmin):
         "added_by",
         "chapters",
         "pages",
+        "author",
     ]
     list_filter = [
         "added_on",
@@ -22,5 +23,6 @@ class AdminBook(admin.ModelAdmin):
         "book_category",
         "chapters",
         "pages",
+        "author",
     ]
     search_fields = ["title", "description"]

@@ -198,7 +198,7 @@ REST_FRAMEWORK = {
         "drf_social_oauth2.authentication.SocialAuthentication",
     ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 3,
+    "PAGE_SIZE": 1,
 }
 
 SIMPLE_JWT = {

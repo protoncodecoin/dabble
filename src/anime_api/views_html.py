@@ -26,7 +26,7 @@ r = redis.Redis(
 
 def index(request):
 
-    return render(request, "anime_api/index.html")
+    return render(request, "anime_api/index.html", {"page": "home", "selection": "home"})
 
 
 def profile(request, id, slug):
@@ -37,6 +37,7 @@ def profile(request, id, slug):
             "id": id,
             "slug": slug,
             "section": "profile",
+            "selection": "profile",
         },
     )
 
@@ -70,6 +71,7 @@ def detail_post_count(request, content_type, id, slug):
             {
                 "total_views": total_views,
                 "post": post,
+                  "selction": "detail",
             },
         )
 
@@ -89,6 +91,7 @@ def detail_post_count(request, content_type, id, slug):
             {
                 "total_views": total_views,
                 "post": post,
+                "selction": "detail",
             },
         )
 
@@ -126,6 +129,7 @@ def detail_post_count(request, content_type, id, slug):
             {
                 "total_views": total_views,
                 "post": post,
+                  "selction": "detail",
             },
         )
 
@@ -144,6 +148,7 @@ def detail_post_count(request, content_type, id, slug):
             {
                 "total_views": total_views,
                 "post": post,
+                  "selction": "detail",
             },
         )
 
@@ -163,6 +168,7 @@ def detail_post_count(request, content_type, id, slug):
             {
                 "total_views": total_views,
                 "post": post,
+                  "selction": "detail",
             },
         )
 
@@ -290,3 +296,6 @@ def post_ranking(request):
 @csrf_exempt
 def recently_viewed(request):
     return JsonResponse({"recently_viewed": "this is the recently viewed post"})
+
+def gallery(request):
+    return render(request, "anime_api/gallery.html", {"selection": "tour"})

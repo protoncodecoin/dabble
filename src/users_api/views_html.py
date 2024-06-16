@@ -39,7 +39,7 @@ def user_login(request):
             login(request, user)
             messages.success(request, "login was succesful")
             return redirect("anime_html:index")
-    return render(request, "users_api/login.html")
+    return render(request, "users_api/login.html", {"selection": "login"})
 
 
 def signup(request):
@@ -101,7 +101,7 @@ def signup(request):
             "Your account has been created successfully🥳🎊! Please check your email to confirm your email address and activate your account.",
         )
         return redirect("users_html:login")
-    return render(request, "users_api/signup.html")
+    return render(request, "users_api/signup.html", {"selection": "signup"})
 
 
 def activate(request, uidb64, token):

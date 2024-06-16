@@ -39,13 +39,13 @@ function renderTrendsHTML(data) {
     .filter((el) => el !== "None")
     .map((el) => {
       return `
-         <div class="trend-card">
-            <img src="${el.thumbnail || el.illustration}" alt="${
-        el.title || el.episode_title
-      }" />
-            <p>${el.title || el.episode_title}</p>
-        </div>
-        `;
+
+                <div class="trend-card">
+                  <a href="${el.id || el.pk}/${el.typeof}">
+                    <img src="${el.thumbnail || el.illustration}" alt="${el.episode_title}" />
+                  <p>${el.title || el.episode_title}</p>
+                  </a>
+                </div>`
     })
     .join("");
   rootTrends.insertAdjacentHTML("beforeend", trendshtmlDATA);

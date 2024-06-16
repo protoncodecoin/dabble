@@ -5,19 +5,64 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dabble |{% block title %} {% endblock%}</title>
-  {% comment %} <link rel="stylesheet" href="{% static 'css/login.css'%}"> {% endcomment %}
-  {% comment %} <link rel="stylesheet" href="{% static 'css/signup.css'%}"> {% endcomment %}
+  <title> Dabble |{% block title %} {% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  {% if selection == "signup" %}
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+  {% else %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  {% endif %}
+
 </head>
 <body>
-  <div class="side-bar">
-    <div class="side-bar">
-      <a class="ico" href="{% url 'anime_html:index' %}"><img src="{% static 'icons/home darkicons.svg' %}" alt=""></a>
-  </div>
-  </div>
+ {% include 'partials/_navigationbar.htm' %}
+
+  
+{% for message in messages %}
+    {% if message.error %}
+    <div class="auth-alert error">
+        {{ message }}
+        
+      </div>
+
+      {% elif message.success %}
+      <div class="auth-alert success">
+
+        {{ message }}
+
+      {% endif %}
+        
+      </div>
+      {% endfor %}
+
+
   {% block content %}
 
   {% endblock %}
-  <script src="{%static 'js/formvalidation.js' %}"></script>
-  </body>
+
+
+<script src="{% static 'formvalidation.js' %}"></script>
+<script src="{% static 'js/sidebar.js' %}"></script>
+</body>
 </html>
+
+
+
+<!-- {% for message in messages %}
+      <div class="auth-alert error">
+        {% if message.success %}
+        {{ message }}
+
+        {% else %}
+        {{ message }}
+        {% endif %}
+        
+      </div>
+      {% endfor %} -->
+
+
+<!-- 
+      <input class="info" type="email" placeholder="Email" name="email">
+      <input class="info" type="password" placeholder="Password" name="password1">
+      <input class="info" type="password" placeholder="Confirm Password" name="password2"> -->

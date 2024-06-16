@@ -46,6 +46,7 @@ urlpatterns = [
     # RENDER HTML URLS
     path("users/m/", include("users_api.urls_html", namespace="users_html")),
     path("", include("anime_api.urls_html", namespace="anime_html")),
+    path("books/", include("library.urls_html", namespace="library_html")),
     # END OF RENDER HTML URLS
     path("api/v1/auth/register/", RegisterView.as_view(), name="rest_register"),
     path(

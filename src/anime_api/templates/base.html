@@ -6,33 +6,66 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dabble | Home</title>
-    <link rel="stylesheet" href="{% static "css/index.css" %}"/>
+
+    {% if selection == "home" %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    {% elif selection == "profile" %}
+    <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
+    {% elif selection == "tour" %}
+    <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
+    {% endif %}
   </head>
   <body>
+<!-- 
+    <div class="side-bar" id="side-bar">
 
-    <!-- Navigation bar-->
-    {% include 'partials/_navbar.html' %}
+      <button class="side-bar-toggle" id="side-bar-toggle">
+        <img id="side-toggle-img" src="{% static 'icons/arrow 2icons.svg' %}" alt="" />
+      </button>
 
-        <div class="main" id="main-view">
-        <!-- Top navigational bar-->
-        {% include 'partials/_topnav.html' %}
+      <a class="s-ico active" href="index.html">
+        <img src="{% static 'iocns/homeicons.svg' %}" alt="" />
+        <span class="s-text hide">Home</span>
+      </a>
+      <a class="s-ico" href="profilepage.html">
+        <img src="{% static 'icons/profile icon darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Profile</span>
+      </a>
+      <a class="s-ico">
+        <img src="{% static 'icons/library darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Library</span>
+      </a>
+      <a class="s-ico">
+        <img src="{% static 'icons/profile darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Exhibition</span>
+      </a>
+      <a class="s-ico">
+        <img src="{% static 'icons/virtual tour darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Virtual Tour</span>
+      </a>
+      <a class="s-ico">
+        <img src="{% static 'icons/settings darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Settings</span>
+      </a>
+      <a class="s-ico">
+        <img src="{% static 'icons/Post darkicons.svg' %}" alt="" />
+        <span class="s-text hide">Post</span>
+      </a>
+    </div> -->
+    <!-- Navigation bar -->
+     {% include 'partials/_navigationbar.htm' %}
 
-      <div class="content">
-        <div class="content-main">
-          <div class="banner">
-            <img src="{% static 'images/cloudy.jpg' %}" alt="" />
-          </div>
-          {% block content %}
+    <div class="main" id="main-view">
+      <!-- Top navigational bar -->
+      {% include 'partials/_topnavigationbar.htm' %}
 
-          {% endblock %}
+      {% block content %}
 
-        <!-- CONTENT RIGHT -->
-        <!-- sidebar navigational bar-->
-        {% include "partials/_sidebar.html" %}
-      </div>
+      {% endblock %}
+
     </div>
+    {% block include_js %}
+    {% endblock %}
+    <script src="{% static 'js/sidebar.js' %}"></script>
   </body>
-  <script src="{% static 'js/recommendedBooks.js' %}"></script>
-  <script src="{% static 'js/postController.js' %}"></script>
-  <script src="{% static 'js/trendsController.js' %}"></script>
 </html>

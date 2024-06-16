@@ -25,7 +25,7 @@ class Series(models.Model):
     series_name = models.CharField(max_length=200, unique=True)
     series_poster = models.ImageField(
         upload_to="series/posters/%Y/%m/",
-        default="default/series.jpg",
+        default="default/default.jpg",
     )
     synopsis = models.TextField(max_length=500)
     start_date = models.DateTimeField(auto_now_add=True)
@@ -127,7 +127,7 @@ class WrittenStory(Base):
     """Database Model for Story"""
 
     thumbnail = models.ImageField(
-        upload_to="stories/thumbnails/%Y/%m/", default="default/story.jfif", blank=True
+        upload_to="stories/thumbnails/%Y/%m/", default="default/default.jpg", blank=True
     )
     content = models.TextField(blank=False)
     favorited_by = models.ManyToManyField(
@@ -152,7 +152,7 @@ class Anime(Base):
     )
     video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
     favorited_by = models.ManyToManyField(
-        CreatorProfile, blank=True, related_name="favorite_animes"
+        CreatorProfile, blank=True, related_name="favorite_animes", symmetrical=False
     )
     typeof = models.CharField(max_length=5, default="anime")
 
@@ -180,7 +180,7 @@ class Text(models.Model):
         auto_now_add=True,
     )
     thumbnail = models.ImageField(
-        upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
+        upload_to="singles/poster/%Y/%m/", default="default/default.jpg", blank=True
     )
     content = models.TextField()
     likes = models.ManyToManyField(
@@ -219,7 +219,7 @@ class Video(models.Model):
         auto_now_add=True,
     )
     thumbnail = models.ImageField(
-        upload_to="singles/poster/%Y/%m/", default="default/singles.jfif", blank=True
+        upload_to="singles/poster/%Y/%m/", default="default/default.jpg", blank=True
     )
     likes = models.ManyToManyField(
         CreatorProfile, related_name="liked_videos", blank=True, symmetrical=False

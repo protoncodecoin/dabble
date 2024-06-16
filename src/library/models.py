@@ -29,6 +29,7 @@ class Book(models.Model):
     )
     pages = models.IntegerField(default=0)
     chapters = models.IntegerField(default=0)
+    author = models.CharField(blank=True)
     added_on = models.DateTimeField(auto_now_add=True, blank=True)
     updated_on = models.DateTimeField(auto_now=True)
     favorited_by = models.ManyToManyField(

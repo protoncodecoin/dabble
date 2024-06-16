@@ -437,11 +437,14 @@ class StoryFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = WrittenStory
         fields = [
+            "id",
             "series_name",
             "episode_title",
             "episode_number",
             "thumbnail",
             "episode_url",
+            "slug",
+            "typeof",
         ]
 
 
@@ -456,9 +459,12 @@ class SeriesFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Series
         fields = [
+            "id",
             "series_name",
             "series_poster",
             "episode_url",
+            "slug",
+            "typeof",
         ]
 
 
@@ -634,11 +640,14 @@ class AnimeFavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Anime
         fields = [
+            "id",
             "series_name",
             "episode_title",
             "episode_number",
             "thumbnail",
             "episode_url",
+            "typeof",
+            "slug",
         ]
 
 

@@ -574,6 +574,7 @@ class FavoritedAPIView(APIView):
         user = request.user
         try:
             user_profile = CreatorProfile.objects.get(creator=user)
+            print("=========", user_profile , "this is the user's favorite 😝😜😝")
         except CreatorProfile.DoesNotExist:
             return Response(
                 {"message": "User Profile does not exist"},
@@ -597,9 +598,9 @@ class FavoritedAPIView(APIView):
         return Response(
             {
                 "results": [
-                    {"anime": anime_serializer.data},
-                    {"stories": stories_serializer.data},
-                    {"series": series_serializer.data},
+                    anime_serializer.data,
+                     stories_serializer.data,
+                    series_serializer.data,
                 ]
             },
             status=status.HTTP_200_OK,

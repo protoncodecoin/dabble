@@ -9,9 +9,12 @@ const creatorProgrammeEl = document.getElementById("creator-programme");
 const creatorBioEl = document.getElementById("biography");
 const allCreatorPostsEl = document.getElementById("allCreatorPosts");
 const numOfWorksEl = document.getElementById("numOfWorks");
+const postsBtn = document.getElementById("post-tab")
+const watchlistEl = document.getElementById("watchlist-container");
+
 // const csrftoken = Cookies.get("csrftoken");
 
-const getData = async function (baseURL) {
+const getPostData = async function (baseURL) {
   try {
     const url = baseURL;
     // let access_token = window.localStorage.getItem("dabble_access");
@@ -38,7 +41,6 @@ const getData = async function (baseURL) {
 };
 
 
-
 const creatorProfileController = async () => {
   try {
     const res = await fetch(`${creatorURL}/${id}`);
@@ -56,6 +58,7 @@ const creatorProfileController = async () => {
 
     // profile pic
     profilePicEl.src = logo;
+    profilePicEl.alt = `Profile of ${username}`;
 
     // profile username
     creatorNameEl.textContent = username;
@@ -72,6 +75,62 @@ const creatorProfileController = async () => {
   }
 };
 
+
+/**
+ * @param {Array} favorites data to render in the browser
+ */
+const renderUserFavorites =  (favorites) => {
+
+  console.log(favorites, "this is the favorites data that was passed")
+
+  const renderFavData = favorites.map((el =>{
+    console.log(el, " from the favorites render function***/**/*")
+    switch (el.typeof){
+  
+      case "anime":
+        return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk }/${el.slug}/"><img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
+                <p>${el.series_name} | ${el.episode_title }</p></a>
+              </div>`
+;
+      case "writtenstory":
+             return `<div class="book-card">
+                <img src="${el.thumbnail}" alt="${el.series_name} - ${el.episode_title}" />
+                <p>${el.episode_title}</p>
+                <p>${username}</p>
+              <button><a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/">Read</a></button>
+            </div>
+            `;
+;
+      case "text":
+      case "video":
+      case "design":
+        return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+                <p>${el.title}</p></a>
+              </div>`;
+      
+      case 'book':
+        return `
+        
+          <div class="book-card">
+          <img src="${el.cover}" alt=${el.title}"" />
+          <p>${el.title}</p>
+          <p>${el.author}</p>
+          <button><a href="books/${el.id}/${el.slug}/${el.category}">Read</a></button>
+        </div>
+        `;
+
+      default:
+        console.log("Something wasn't rendered in the all posts of the profile section.");
+    }
+  })).join("")
+
+  watchlistEl.insertAdjacentHTML("afterbegin", renderFavData);
+}
+
+
+
 const creatorAllFavorites = async () => {
   try {
     const res = await fetch(allFavoritesURL, { credentials: "include" });
@@ -79,7 +138,12 @@ const creatorAllFavorites = async () => {
     if (!res.ok) throw new Error(res.statusText);
 
     const favJson = await res.json();
-    console.log("This is the favorite data: ", favJson);
+    // const results = favJson.results.map((el) => el)[0].anime[0];
+    const results = favJson.results.map((el) => el).map((el) => el).flat()
+        console.log("This is the favorite data****: ", results);
+
+    renderUserFavorites(results)
+
   } catch (error) {
     console.log(error);
   }
@@ -94,11 +158,11 @@ const allPostsOfCreator = async () =>{
   const query_param = `?id=${user_id}`;
 
   const resData = await Promise.all([
-    await getData(`/content/anime/${query_param}`),
-    await getData(`/content/stories/${query_param}`),
-    await getData(`/content/textcontent/${query_param}`),
-    await getData(`/content/designcontent/${query_param}`),
-    await getData(`/content/videocontent/${query_param}`),
+    await getPostData(`/content/anime/${query_param}`),
+    await getPostData(`/content/stories/${query_param}`),
+    await getPostData(`/content/textcontent/${query_param}`),
+    await getPostData(`/content/designcontent/${query_param}`),
+    await getPostData(`/content/videocontent/${query_param}`),
   ]);
 
   console.log("all posts of creator", resData);
@@ -109,16 +173,21 @@ const allPostsOfCreator = async () =>{
   renderAllUserPosts(results);
 }
 
+
+/**
+ * 
+ * @param {Array} postData data to render in the browser 
+ */
 const renderAllUserPosts = (postData) => {
 
   numOfWorksEl.textContent = postData.length > 1 ? `${postData.length} artworks` : `${postData.length} artwork`;
 
   const renderedPostHtml = postData.map((el) => {
     switch (el.typeof){
-
+  
       case "anime":
         return ` <div class="page-content-card">
-                <a href="${el.id || el.pk }/${el.slug}"><img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
+                <a href="/${el.typeof}/${el.id || el.pk }/${el.slug}/"><img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
                 <p>${el.series_name} | ${el.episode_title }</p></a>
               </div>`
 ;
@@ -127,7 +196,7 @@ const renderAllUserPosts = (postData) => {
                 <img src="${el.thumbnail}" alt="${el.series_name} - ${el.episode_title}" />
                 <p>${el.episode_title}</p>
                 <p>${username}</p>
-              <button><a href="${el.id || el.pk}/${el.slug}">Read</a></button>
+              <button><a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/">Read</a></button>
             </div>
             `;
 ;
@@ -135,7 +204,7 @@ const renderAllUserPosts = (postData) => {
       case "video":
       case "design":
         return ` <div class="page-content-card">
-                <a href="${el.id || el.pk}/${el.slug}"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+                <a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
                 <p>${el.title}</p></a>
               </div>`;
 
@@ -148,7 +217,5 @@ const renderAllUserPosts = (postData) => {
 }
 
 creatorProfileController();
-creatorAllFavorites();
 allPostsOfCreator()
-// console.log(`${allFavoritesURL}?${URLparam.toString()}`);
-console.log("From the profile controller js file")
+creatorAllFavorites();
