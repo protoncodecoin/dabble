@@ -12,7 +12,7 @@ urlpatterns = [
         views.toggle_like,
         name="like_and_unlike",
     ),
-    path("action/favorite/all/", views.FavoritedAPIView.as_view()),
+    path("action/favorite/<int:user_id>/all/", views.FavoritedAPIView.as_view()),
     path(
         "action/favorite/<str:content_type>/<str:content_id>/",
         views.toggle_favorite,

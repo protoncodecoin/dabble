@@ -1,5 +1,5 @@
 const creatorURL = "http://127.0.0.1:8000/userprofiles";
-const allFavoritesURL = "/content/action/favorite/all/";
+const allFavoritesURL = "/content/action/favorite";
 const urlParamater = window.location.href.split("/");
 const id = urlParamater[3];
 const username = urlParamater[4];
@@ -9,7 +9,7 @@ const creatorProgrammeEl = document.getElementById("creator-programme");
 const creatorBioEl = document.getElementById("biography");
 const allCreatorPostsEl = document.getElementById("allCreatorPosts");
 const numOfWorksEl = document.getElementById("numOfWorks");
-const postsBtn = document.getElementById("post-tab")
+const postsBtn = document.getElementById("post-tab");
 const watchlistEl = document.getElementById("watchlist-container");
 
 // const csrftoken = Cookies.get("csrftoken");
@@ -39,7 +39,6 @@ const getPostData = async function (baseURL) {
     console.log(error);
   }
 };
-
 
 const creatorProfileController = async () => {
   try {
@@ -75,43 +74,49 @@ const creatorProfileController = async () => {
   }
 };
 
-
 /**
  * @param {Array} favorites data to render in the browser
  */
-const renderUserFavorites =  (favorites) => {
+const renderUserFavorites = (favorites) => {
+  console.log(favorites, "this is the favorites data that was passed");
 
-  console.log(favorites, "this is the favorites data that was passed")
-
-  const renderFavData = favorites.map((el =>{
-    console.log(el, " from the favorites render function***/**/*")
-    switch (el.typeof){
-  
-      case "anime":
-        return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk }/${el.slug}/"><img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
-                <p>${el.series_name} | ${el.episode_title }</p></a>
-              </div>`
-;
-      case "writtenstory":
-             return `<div class="book-card">
-                <img src="${el.thumbnail}" alt="${el.series_name} - ${el.episode_title}" />
+  const renderFavData = favorites
+    .map((el) => {
+      console.log(el, " from the favorites render function***/**/*");
+      switch (el.typeof) {
+        case "anime":
+          return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/"><img src="${el.thumbnail}" alt="${el.series_name}-${
+            el.episode_title
+          }" />
+                <p>${el.series_name} | ${el.episode_title}</p></a>
+              </div>`;
+        case "writtenstory":
+          return `<div class="book-card">
+                <img src="${el.thumbnail}" alt="${el.series_name} - ${
+            el.episode_title
+          }" />
                 <p>${el.episode_title}</p>
                 <p>${username}</p>
-              <button><a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/">Read</a></button>
+              <button><a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/">Read</a></button>
             </div>
             `;
-;
-      case "text":
-      case "video":
-      case "design":
-        return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+        case "text":
+        case "video":
+        case "design":
+          return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
                 <p>${el.title}</p></a>
               </div>`;
-      
-      case 'book':
-        return `
+
+        case "book":
+          return `
         
           <div class="book-card">
           <img src="${el.cover}" alt=${el.title}"" />
@@ -121,29 +126,34 @@ const renderUserFavorites =  (favorites) => {
         </div>
         `;
 
-      default:
-        console.log("Something wasn't rendered in the all posts of the profile section.");
-    }
-  })).join("")
+        default:
+          console.log(
+            "Something wasn't rendered in the all posts of the profile section."
+          );
+      }
+    })
+    .join("");
 
   watchlistEl.insertAdjacentHTML("afterbegin", renderFavData);
-}
-
-
+};
 
 const creatorAllFavorites = async () => {
   try {
-    const res = await fetch(allFavoritesURL, { credentials: "include" });
+    const res = await fetch(`${allFavoritesURL}/${id}/all/`, {
+      credentials: "include",
+    });
 
     if (!res.ok) throw new Error(res.statusText);
 
     const favJson = await res.json();
     // const results = favJson.results.map((el) => el)[0].anime[0];
-    const results = favJson.results.map((el) => el).map((el) => el).flat()
-        console.log("This is the favorite data****: ", results);
+    const results = favJson.results
+      .map((el) => el)
+      .map((el) => el)
+      .flat();
+    console.log("This is the favorite data****: ", results);
 
-    renderUserFavorites(results)
-
+    renderUserFavorites(results);
   } catch (error) {
     console.log(error);
   }
@@ -153,7 +163,7 @@ const creatorAllFavorites = async () => {
  * Get all user's post from the API
  * Includes "writtenstories, animations, textcontent, videocontent, designcontent"
  */
-const allPostsOfCreator = async () =>{
+const allPostsOfCreator = async () => {
   const user_id = id;
   const query_param = `?id=${user_id}`;
 
@@ -166,56 +176,68 @@ const allPostsOfCreator = async () =>{
   ]);
 
   console.log("all posts of creator", resData);
-  
-  const results = resData.map((el) => el.results).flat()
-  console.log(results, "this is the result")
+
+  const results = resData.map((el) => el.results).flat();
+  console.log(results, "this is the result");
 
   renderAllUserPosts(results);
-}
-
+};
 
 /**
- * 
- * @param {Array} postData data to render in the browser 
+ *
+ * @param {Array} postData data to render in the browser
  */
 const renderAllUserPosts = (postData) => {
+  numOfWorksEl.textContent =
+    postData.length > 1
+      ? `${postData.length} artworks`
+      : `${postData.length} artwork`;
 
-  numOfWorksEl.textContent = postData.length > 1 ? `${postData.length} artworks` : `${postData.length} artwork`;
-
-  const renderedPostHtml = postData.map((el) => {
-    switch (el.typeof){
-  
-      case "anime":
-        return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk }/${el.slug}/"><img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
-                <p>${el.series_name} | ${el.episode_title }</p></a>
-              </div>`
-;
-      case "writtenstory":
-             return `<div class="book-card">
-                <img src="${el.thumbnail}" alt="${el.series_name} - ${el.episode_title}" />
+  const renderedPostHtml = postData
+    .map((el) => {
+      switch (el.typeof) {
+        case "anime":
+          return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/"><img src="${el.thumbnail}" alt="${el.series_name}-${
+            el.episode_title
+          }" />
+                <p>${el.series_name} | ${el.episode_title}</p></a>
+              </div>`;
+        case "writtenstory":
+          return `<div class="book-card">
+                <img src="${el.thumbnail}" alt="${el.series_name} - ${
+            el.episode_title
+          }" />
                 <p>${el.episode_title}</p>
                 <p>${username}</p>
-              <button><a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/">Read</a></button>
+              <button><a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/">Read</a></button>
             </div>
             `;
-;
-      case "text":
-      case "video":
-      case "design":
-        return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${el.slug}/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+        case "text":
+        case "video":
+        case "design":
+          return ` <div class="page-content-card">
+                <a href="/${el.typeof}/${el.id || el.pk}/${
+            el.slug
+          }/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
                 <p>${el.title}</p></a>
               </div>`;
 
-      default:
-        console.log("Something wasn't rendered in the all posts of the profile section.");
-    }
-  }).join("");
+        default:
+          console.log(
+            "Something wasn't rendered in the all posts of the profile section."
+          );
+      }
+    })
+    .join("");
 
   allCreatorPostsEl.insertAdjacentHTML("afterbegin", renderedPostHtml);
-}
+};
 
 creatorProfileController();
-allPostsOfCreator()
+allPostsOfCreator();
 creatorAllFavorites();

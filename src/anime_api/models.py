@@ -75,7 +75,7 @@ class Season(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.series.series_name + "-"+ str(self.season_number))
+            self.slug = slugify(self.series.series_name + "-" + str(self.season_number))
         return super().save(*args, **kwargs)
 
 
@@ -102,7 +102,6 @@ class Base(models.Model):
         CreatorProfile,
         related_name="%(class)s_like",
         blank=True,
-        symmetrical=False,
     )
     tags = TaggableManager(blank=True)
 
@@ -152,7 +151,9 @@ class Anime(Base):
     )
     video_file = models.FileField(upload_to="animations/video/%Y/%m/", blank=False)
     favorited_by = models.ManyToManyField(
-        CreatorProfile, blank=True, related_name="favorite_animes", symmetrical=False
+        CreatorProfile,
+        blank=True,
+        related_name="favorite_animes",
     )
     typeof = models.CharField(max_length=5, default="anime")
 
@@ -222,7 +223,9 @@ class Video(models.Model):
         upload_to="singles/poster/%Y/%m/", default="default/default.jpg", blank=True
     )
     likes = models.ManyToManyField(
-        CreatorProfile, related_name="liked_videos", blank=True, symmetrical=False
+        CreatorProfile,
+        related_name="liked_videos",
+        blank=True,
     )
     video_file = models.FileField(
         upload_to="singles/video/%Y/%m/",

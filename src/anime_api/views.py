@@ -567,14 +567,14 @@ class FavoritedAPIView(APIView):
 
     """
 
-    def get(self, request, format=None):
+    def get(self, request, user_id, format=None):
         """
         Return a list of all user favorites.
         """
-        user = request.user
+        user = user_id
         try:
-            user_profile = CreatorProfile.objects.get(creator=user)
-            print("=========", user_profile , "this is the user's favorite 😝😜😝")
+            user_profile = CreatorProfile.objects.get(id=user)
+
         except CreatorProfile.DoesNotExist:
             return Response(
                 {"message": "User Profile does not exist"},
@@ -599,7 +599,7 @@ class FavoritedAPIView(APIView):
             {
                 "results": [
                     anime_serializer.data,
-                     stories_serializer.data,
+                    stories_serializer.data,
                     series_serializer.data,
                 ]
             },
@@ -734,7 +734,7 @@ class AnimeListAPI(generics.ListAPIView):
         if user_id is not None and not user_id == "":
             queryset = queryset.filter(series__creator=user_id)
         elif anime_slug is not None:
-            queryset =  queryset.filter(slug=anime_slug)
+            queryset = queryset.filter(slug=anime_slug)
         return queryset
 
     def top_anime(self, request):
@@ -942,7 +942,6 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         elif design_slug is not None:
             queryset = queryset.filter(slug=design_slug)
         return queryset
-      
 
     def delete(self, request, *args, **kwargs):
         design = self.get_object()
@@ -960,6 +959,7 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
     """
     list and create design/illustration object
     """
+
     # queryset = Video.objects.all()
     serializer_class = VideoCreateSerializer
 
@@ -978,7 +978,6 @@ class VideoCreateListAPIView(generics.ListCreateAPIView):
         elif video_slug is not None:
             queryset = queryset.filter(slug=video_slug)
         return queryset
-
 
     # def list(self, request):
     #     queryset = self.get_queryset()
