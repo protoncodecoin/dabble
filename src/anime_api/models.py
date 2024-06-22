@@ -187,6 +187,11 @@ class Text(models.Model):
     likes = models.ManyToManyField(
         CreatorProfile, related_name="liked_text", blank=True
     )
+    favorited_by = models.ManyToManyField(
+        CreatorProfile,
+        blank=True,
+        related_name="favorite_text",
+    )
     tags = TaggableManager(blank=True)
     typeof = models.CharField(max_length=4, default="text")
 
@@ -230,6 +235,11 @@ class Video(models.Model):
     video_file = models.FileField(
         upload_to="singles/video/%Y/%m/",
     )
+    favorited_by = models.ManyToManyField(
+        CreatorProfile,
+        blank=True,
+        related_name="favorite_video",
+    )
     tags = TaggableManager(blank=True)
     typeof = models.CharField(max_length=5, default="video")
 
@@ -267,6 +277,11 @@ class Design(models.Model):
     )
     illustration = models.ImageField(
         upload_to="singles/designs/%Y/%m/",
+    )
+    favorited_by = models.ManyToManyField(
+        CreatorProfile,
+        blank=True,
+        related_name="favorite_design",
     )
     tags = TaggableManager(blank=True)
     typeof = models.CharField(max_length=6, default="design")

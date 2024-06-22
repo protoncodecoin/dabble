@@ -43,7 +43,11 @@ urlpatterns = [
     # Text
     path("textcontent/create/", views.TextCreateAPIView.as_view()),
     path("textcontent/", views.TextCreateAPIView.as_view()),
-    path("textcontent/<int:pk>/", views.TextUpdateDeleteAPIView.as_view()),
+    path(
+        "textcontent/<int:pk>/",
+        views.TextUpdateDeleteAPIView.as_view(),
+        name="text-detail",
+    ),
     # Design/Illustration
     path("designcontent/", views.DesignCreateListAPIView.as_view()),
     path("designcontent/<int:pk>/", views.DesignDetailAPIView.as_view()),

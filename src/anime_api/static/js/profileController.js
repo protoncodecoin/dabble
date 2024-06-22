@@ -151,7 +151,6 @@ const creatorAllFavorites = async () => {
       .map((el) => el)
       .map((el) => el)
       .flat();
-    console.log("This is the favorite data****: ", results);
 
     renderUserFavorites(results);
   } catch (error) {

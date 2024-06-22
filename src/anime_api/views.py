@@ -1,10 +1,8 @@
 from datetime import timedelta
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.db.models import Q, F, Count, Sum
 from django.utils import timezone
 
-import redis
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
@@ -45,6 +43,9 @@ from .serializers import (
     AnimeFavoriteSerializer,
     StoryFavoriteSerializer,
     SeriesFavoriteSerializer,
+    TextFavoriteSerializer,
+    VideoFavoriteSerializer,
+    DesignFavoriteSerializer,
 )
 
 from anime_api import models
@@ -583,6 +584,9 @@ class FavoritedAPIView(APIView):
         anime = models.Anime.objects.filter(favorited_by=user_profile)
         stories = models.WrittenStory.objects.filter(favorited_by=user_profile)
         series = models.Series.objects.filter(favorited_by=user_profile)
+        text = models.Text.objects.filter(favorited_by=user_profile)
+        video = models.Video.objects.filter(favorited_by=user_profile)
+        design = models.Design.objects.filter(favorited_by=user_profile)
 
         anime_serializer = AnimeFavoriteSerializer(
             anime, many=True, context={"request": request}
@@ -595,12 +599,18 @@ class FavoritedAPIView(APIView):
             many=True,
             context={"request": request},
         )
+        text_serializer = TextFavoriteSerializer(text, many=True)
+        video_serializer = VideoFavoriteSerializer(video, many=True)
+        design_serializer = DesignFavoriteSerializer(design, many=True)
         return Response(
             {
                 "results": [
                     anime_serializer.data,
                     stories_serializer.data,
                     series_serializer.data,
+                    text_serializer.data,
+                    video_serializer.data,
+                    design_serializer.data,
                 ]
             },
             status=status.HTTP_200_OK,

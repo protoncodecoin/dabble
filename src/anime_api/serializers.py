@@ -1155,3 +1155,54 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         raise serializers.ValidationError(
             "You do not have the permission to perform this action."
         )
+
+
+class TextFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    class Meta:
+        model = Text
+        fields = [
+            "id",
+            "title",
+            "synopsis",
+            "thumbnail",
+            "typeof",
+            "slug",
+        ]
+
+
+class DesignFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    class Meta:
+        model = Design
+        fields = [
+            "id",
+            "title",
+            "synopsis",
+            "illustration",
+            "typeof",
+            "slug",
+        ]
+
+
+class VideoFavoriteSerializer(serializers.ModelSerializer):
+    """
+    Serializers user favorites
+    """
+
+    class Meta:
+        model = Video
+        fields = [
+            "id",
+            "title",
+            "synopsis",
+            "thumbnail",
+            "typeof",
+            "slug",
+        ]
