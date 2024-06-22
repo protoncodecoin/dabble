@@ -6,6 +6,11 @@ from . import views
 app_name = "animes"
 
 urlpatterns = [
+    path(
+        "filter/similarity/<str:content_type>/<int:content_id>/",
+        views.filter_by_similarity,
+        name="filter_by_fimilarity",
+    ),
     path("search/<str:contenttype>/", views.search, name="search"),
     path(
         "action/like/<str:content_type>/<str:content_id>/",
@@ -41,8 +46,12 @@ urlpatterns = [
     path("season/<int:pk>/", views.SeasonDetailAPIView.as_view(), name="season-detail"),
     # New Media
     # Text
-    path("textcontent/create/", views.TextCreateAPIView.as_view()),
-    path("textcontent/", views.TextCreateAPIView.as_view()),
+    path(
+        "textcontent/create/",
+        views.TextCreateAPIView.as_view(),
+        name="create_text_content",
+    ),
+    path("textcontent/", views.TextCreateAPIView.as_view(), name="list_text_content"),
     path(
         "textcontent/<int:pk>/",
         views.TextUpdateDeleteAPIView.as_view(),

@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.utils import timezone
+from django.db.models import Count
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -1017,3 +1018,138 @@ class VideoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
             )
 
         return self.destroy(request, *args, **kwargs)
+
+
+@api_view(["GET"])
+def filter_by_similarity(request, content_type, content_id):
+    """
+    param:
+        content_type: model
+    Filter posts by similarity by using tags captured from the url.
+    """
+    content_type_mapping = {
+        "series": models.Series,
+        "anime": models.Anime,
+        "story": models.WrittenStory,
+        # "creator": CreatorProfile,
+        "text": models.Text,
+        "video": models.Video,
+        "design": models.Design,
+    }
+    target_content = content_type_mapping.get(content_type)
+
+    if target_content == models.Anime:
+        try:
+            anime_obj = Anime.objects.get(id=content_id)
+        except Anime.DoesNotExist:
+            return Response({"results": []}, status=200)
+
+        # Retrive ids of the anime obj
+        anime_tag_ids = anime_obj.tags.values_list("id", flat=True)
+
+        # Get all anime with same tags from the database
+        similar_animation = Anime.objects.filter(tags__in=anime_tag_ids).exclude(
+            id=anime_obj.id
+        )
+        similar_animation = similar_animation.annotate(
+            same_tags=Count("tags")
+        ).order_by("same_tags")
+
+        animation_serializer = AnimeSerializer(
+            similar_animation, many=True, context={"request": request}
+        )
+        return Response({"resutls": animation_serializer.data}, status=200)
+
+    elif target_content == models.WrittenStory:
+        try:
+            writtenstory_obj = WrittenStory.objects.get(id=content_id)
+        except WrittenStory.DoesNotExist:
+            return Response({"results": []}, status=200)
+
+        # Retrieve ids of the written story obj
+        written_story_ids = writtenstory_obj.tags.values_list("id", flat=True)
+
+        # Get all written stories with same tags from the database
+        similar_stories = WrittenStory.objects.filter(
+            tags__in=written_story_ids
+        ).exclude(id=writtenstory_obj.id)
+        similar_stories = similar_stories.annotate(same_tags=Count("tags")).order_by(
+            "same_tags"
+        )
+        # serialize the data
+        written_stories_serializer = StorySerializer(
+            similar_stories, many=True, context={"request": request}
+        )
+        return Response({"results": written_stories_serializer.data}, status=200)
+
+    elif target_content == models.Text:
+        try:
+            text_obj = Text.objects.get(id=content_id)
+        except Text.DoesNotExist:
+            return Response({"results": []}, status=200)
+
+        # Retrieve ids of the text obj
+        text_tags_ids = text_obj.tags.values_list("id", flat=True)
+
+        # Get all text from the database with same tags
+        similar_texts = Text.objects.filter(tags__in=text_tags_ids).exclude(
+            id=text_obj.id
+        )
+        similar_texts = similar_texts.annotate(similar_tags=Count("tags")).order_by(
+            "similar_tags"
+        )
+
+        # serialize data
+        similar_text_serializer = TextCreateSerializer(
+            similar_texts, many=True, context={"request": request}
+        )
+        return Response({"results": similar_text_serializer.data}, status=200)
+
+    elif target_content == models.Video:
+        try:
+            video_obj = Video.objects.get(id=content_id)
+        except Video.DoesNotExist:
+            return Response({"results": []}, status=200)
+
+        video_tags_id = video_obj.tags.values_list("id", flat=True)
+
+        # Get all text from the database with same tags
+        similar_videos = Video.objects.filter(tags__in=video_tags_id).exclude(
+            id=video_obj.id
+        )
+        similar_videos = similar_videos.annotate(similar_tags=Count("tags")).order_by(
+            "similar_tags"
+        )
+
+        # serialize data
+        similar_video_serializer = VideoCreateSerializer(
+            similar_videos, many=True, context={"request": request}
+        )
+
+        return Response({"results": similar_video_serializer.data})
+
+    elif target_content == models.Design:
+        try:
+            design_obj = Design.objects.get(id=content_id)
+        except Design.DoesNotExist:
+            return Response({"results": []}, status=200)
+
+        # Get the tags of the design obj
+        design_tags_id = design_obj.tags.values_list("id", flat=True)
+
+        # Get all other designs with similar tags
+        similar_designs = Design.objects.filter(tags__in=design_tags_id).exclude(
+            id=design_obj.id
+        )
+        similar_designs = similar_designs.annotate(similar_tags=Count("tags")).order_by(
+            "similar_tags"
+        )
+
+        # serialize the data
+        similar_design_serializer = DesignSerializer(
+            similar_designs, many=True, context={"request": request}
+        )
+
+        return Response({"results": similar_design_serializer.data}, status=200)
+
+    return Response({"error": "invalid content type provided"}, status=400)
