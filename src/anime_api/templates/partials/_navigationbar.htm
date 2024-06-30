@@ -52,7 +52,7 @@
     <img src="{% static 'icons/settings darkicons.svg' %}" alt="" />
     <span class="s-text hide">Settings</span>
   </a>
-  <a class="s-ico {% if selection == 'post'%} active {% endif %}">
+  <a class="s-ico {% if selection == 'post'%} active {% endif %}" href="{% url 'anime_html:dashbaord' %}">
     <img src="{% static 'icons/Post darkicons.svg' %}" alt="" />
     <span class="s-text hide">Post</span>
   </a>

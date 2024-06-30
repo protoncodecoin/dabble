@@ -7,6 +7,11 @@ app_name = "animes"
 
 urlpatterns = [
     path(
+        "episodes/<str:content_type>/<int:season_id>/",
+        views.subsequent_episodes,
+        name="subsequent_episodes",
+    ),
+    path(
         "filter/similarity/<str:content_type>/<int:content_id>/",
         views.filter_by_similarity,
         name="filter_by_fimilarity",

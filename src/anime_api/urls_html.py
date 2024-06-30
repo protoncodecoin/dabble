@@ -6,6 +6,7 @@ app_name = "anime_html"
 
 urlpatterns = [
     path("", views_html.index, name="index"),
+    path("dashboard/", views_html.dashboard, name="dashbaord"),
     path(
         "<content_type>/<int:id>/<slug:slug>/",
         views_html.detail_post_count,

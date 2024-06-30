@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+      <!-- Dashboard Top navigational bar -->
+       {% include 'partials/_dashboardtopnav.html' %}
+
+       <!-- Main -->
+      <div class="overlay hidden"></div>
+      <!-- Navigation -->
+      <div class="post-nav">
+        <button class="current post-tab">Posts</button>
+        <button class="series-tab">Series</button>
+        <button class="stories-tab">Stories</button>
+        <button class="videos-tab">Videos</button>
+      </div>
+      <hr>
+
+      <!-- page content -->
+      <section class="post-section" style="background-color: red; height:300px"></section>
+      <section class="series-section hidden" style="background-color: rgb(89, 0, 255); height:300px"></section>
+      <section class="stories-section hidden" style="background-color: rgb(14, 207, 56); height:300px"></section>
+      <section class="videos-section hidden" style="background-color: rgb(217, 255, 0); height:300px"></section>
+
+    </div>
+  
+    <!-- MODAL -->
+    <div class="pop-modal modal hidden">
+        
+        <div class="left-side">
+          <div class="left-main">
+            <h3>Add New</h3>
+
+          <button class="left-btn selected" id="create-tab">Create Post</button>
+          <button class="left-btn" id="upload-tab">Upload Series</button>
+          </div>
+
+          <div class="vertical-hr"></div>
+        </div>
+
+        <div class="right-side">
+          
+          <div class="right-post-nav">
+            <button class="current post-nav-video">Video</button>
+            <button class="post-nav-story">Stories</button>
+            <button class="post-nav-image">Image</button> 
+          </div>
+          <hr>
+
+          <!-- create video -->
+          <form class="create create-video" id="create-single-video">
+             
+            {% comment %} <input type="text" name="title" id="" placeholder="Title"> {% endcomment %}
+
+
+            <textarea name="title" cols="30" rows="3" placeholder="Caption"></textarea>
+
+            <div class="upload-button">
+              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="thumbnail" placeholder="">
+            </div>
+
+            <div class="upload-button">
+              <input class="" type="file" accept="" name="video_file" placeholder="">
+            </div>
+   
+            <!-- <button>
+              <input
+              class="file-input"
+              type="file"
+              id=""
+              name="fileInput"
+              accept=""
+              />
+              <label for="fileInput">Add Video</label>
+            </button> -->
+            
+            <div class="tags">
+              <label for="tags" >Tags</label>
+            <input type="text" name="tags" id="" placeholder="Separate with commas">
+            </div>
+
+            <button type="submit" class="post-btn">Post</button>
+            <button class="cancel-btn close-modal">Cancel</button>
+          </form>
+
+          <!-- create story -->
+          <form class="hidden create create-story">
+             
+            <input type="text" name="" id="" placeholder="Title">
+
+
+            <textarea name="" id="" cols="30" rows="3" placeholder="Synopsis"></textarea>
+
+            <textarea name="" id="" cols="30" rows="3" placeholder="Story"></textarea>
+
+            <!-- <button>Add Thumbnail</button> -->
+            
+            
+            <div class="tags">
+              <label for="tags" >Tags</label>
+            <input type="text" name="tags" id="" placeholder="Separate with commas">
+            </div>
+
+            <button type="submit" class="post-btn">Post</button>
+            <button class="cancel-btn close-modal">Cancel</button>
+          </form>
+
+          <!-- create image -->
+          <form class="hidden create create-image">
+             
+            <input type="text" name="" id="" placeholder="Title">
+
+
+            <textarea name="" id="" cols="30" rows="3" placeholder="Caption"></textarea>
+
+            <!-- <button>Add Image</button> -->
+            <div class="upload-button">
+              <input class="image" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
+            </div>
+            
+            <div class="tags">
+              <label for="tags" >Tags</label>
+            <input type="text" name="tags" id="" placeholder="Separate with commas">
+            </div>
+
+            <button type="submit" class="post-btn">Post</button>
+            <button class="cancel-btn close-modal">Cancel</button>
+          </form>
+
+          <!-- Upload video -->
+          <form class="hidden upload upload-video">
+            <div class="post-form">
+              <div class="form-left">
+               <input type="text" name="title" placeholder="Title">
+
+              <div class="small">
+                <label for="season#">Season Number:</label>
+                <input type="number" name="season#" id="">
+              </div>
+
+              <textarea name="description" placeholder="Description" id="" cols="20" rows="3"></textarea>
+              </div>
+
+              <div class="form-right">
+              <input type="text" name="title" placeholder="Episode Title">
+
+              <div class="small">
+                <label for="episode#">Episode Number:</label>
+                <input type="number" name="episode#" id="">
+              </div>
+              </div> 
+            </div>
+
+            <div class="upload-button">
+              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
+            </div>
+
+            <div class="upload-button">
+              <input class="" type="file" accept="" name="imageInput" placeholder="">
+            </div>
+             
+
+            <!-- <button>Add Thumbnail</button>
+            <button>Add Videos</button> -->
+
+            <div class="tags">
+              <label for="tags" >Tags</label>
+            <input type="text" name="tags" id="" placeholder="Separate with commas">
+            </div>
+          
+            <div class="publish-box"><input type="checkbox"> <label>Publish</label></div>
+
+            <button type="submit" class="post-btn">Post</button>
+            <button class="cancel-btn close-modal">Cancel</button>
+          </form>
+
+          <!-- Upload story -->
+          <form class="hidden upload upload-story">
+             
+            <input type="text" name="" id="" placeholder="Series Title">
+
+            <textarea name="" id="" cols="30" rows="3" placeholder="Synopsis"></textarea>
+
+            <textarea name="" id="" cols="30" rows="5" placeholder="Story"></textarea>
+
+            <!-- <button>Add Thumbnail</button> -->
+            <div class="upload-button">
+              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
+            </div>
+            
+            <div class="tags">
+              <label for="tags" >Tags</label>
+            <input type="text" name="tags" id="" placeholder="Separate with commas">
+            </div>
+
+            <button type="submit" class="post-btn">Post</button>
+            <button class="cancel-btn close-modal">Cancel</button>
+          </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block include_js %}
+<script>
+    const csrf_token = "{{ csrf_token }}";
+    const creatorName = "{{ request.user.creator_profile.id }}"
+    {% comment %} const creatorProfile = "{{ request.user.creator_profile.id }}" {% endcomment %}
+    {% comment %} console.log(creatorProfile) {% endcomment %}
+    
+</script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'js/postCreation.js' %}"></script>
+{% endblock %}

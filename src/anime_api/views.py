@@ -1025,7 +1025,7 @@ def filter_by_similarity(request, content_type, content_id):
     """
     param:
         content_type: model
-    Filter posts by similarity by using tags captured from the url.
+    Filter posts by similarity by using tags.
     """
     content_type_mapping = {
         "series": models.Series,
@@ -1049,7 +1049,7 @@ def filter_by_similarity(request, content_type, content_id):
 
         # Get all anime with same tags from the database
         similar_animation = Anime.objects.filter(tags__in=anime_tag_ids).exclude(
-            id=anime_obj.id
+            id=anime_obj.id  # type: ignore
         )
         similar_animation = similar_animation.annotate(
             same_tags=Count("tags")
@@ -1153,3 +1153,47 @@ def filter_by_similarity(request, content_type, content_id):
         return Response({"results": similar_design_serializer.data}, status=200)
 
     return Response({"error": "invalid content type provided"}, status=400)
+
+
+@api_view(["GET"])
+def subsequent_episodes(request, content_type, season_id):
+    """Returns a list of episodes related to the season object
+
+    Args:
+        content_type (str): model
+        season_id (int): id of the episode selected to get related season
+    """
+
+    content_type_mapping = {"anime": models.Anime, "story": models.WrittenStory}
+
+    target_content = content_type_mapping.get(content_type)
+    try:
+        season_obj = Season.objects.get(id=season_id)
+
+    except Season.DoesNotExist:
+        return Response({"error": "Invalid season obj provided"})
+
+    if target_content == models.Anime:
+
+        anime_season_result = season_obj.anime_season.all()
+
+        # serialize the data
+        anime_season_serializer = AnimeSerializer(
+            anime_season_result, many=True, context={"request": request}
+        )
+        return Response({"results": anime_season_serializer.data}, status=200)
+
+    elif target_content == models.WrittenStory:
+        story_season_results = season_obj.writtenstory_season.all()
+
+        # serialize the data
+        story_season_serializer = StorySerializer(
+            story_season_results, many=True, context={"request": request}
+        )
+        return Response({"results": story_season_serializer.data}, status=200)
+    return Response({"error": "invalid content type provided"}, status=400)
+
+
+@api_view
+def comment_on_post(request):
+    pass

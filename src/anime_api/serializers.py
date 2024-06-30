@@ -422,8 +422,28 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             content_type=target_content_type, object_id=obj.id
         )
 
-        all_comments = {comment.comment: comment.user.email for comment in comments}
-        return all_comments
+        all_comments = {
+            comment.text: comment.user.creator.username for comment in comments
+        }
+
+        comments_reply = {}
+        for i, c in enumerate(comments):
+
+            if c.parent:
+                comments_reply[i] = {
+                    c.text: c.user.creator.username,
+                    "reply": {
+                        c.parent.text: (
+                            c.parent.user.creator.username if c.parent else None
+                        ),
+                    },
+                }
+            else:
+                comments_reply[i] = {
+                    c.text: c.user.creator.username,
+                }
+
+        return comments_reply
 
 
 class StoryFavoriteSerializer(serializers.ModelSerializer):
@@ -1081,6 +1101,7 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get("request")
         req_user = request.user
+        print(request, "------")
 
         if req_user.is_creator:
             try:

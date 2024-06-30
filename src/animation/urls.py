@@ -44,6 +44,7 @@ from users_api.urls import router
 urlpatterns = [
     path("admin/", admin.site.urls),
     # RENDER HTML URLS
+    path("socialize/", include("chat.urls", namespace="chat")),
     path("users/m/", include("users_api.urls_html", namespace="users_html")),
     path("", include("anime_api.urls_html", namespace="anime_html")),
     path("books/", include("library.urls_html", namespace="library_html")),

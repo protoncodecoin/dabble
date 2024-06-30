@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
     {% elif selection == "tour" %}
     <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
+    {% elif selection == "dashboard"%}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+
     {% endif %}
   </head>
   <body>
@@ -57,7 +60,7 @@
 
     <div class="main" id="main-view">
       <!-- Top navigational bar -->
-      {% include 'partials/_topnavigationbar.htm' %}
+      {% comment %} {% include 'partials/_topnavigationbar.htm' %} {% endcomment %}
 
       {% block content %}
 
