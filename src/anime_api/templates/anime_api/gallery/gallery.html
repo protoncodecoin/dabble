@@ -1,39 +1,44 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %} Gallery {% endblock %}
+
 {% block content %}
+
       <div class="container">
         <div class="column">
-          <a href="postpage.html">
+          <a href="{% url 'anime_html:gallery_animation' %}">
             <h3>Animation</h3>
           <img src="{% static 'images/(23).jpg' %}" alt="" />
           </a>
         </div>
-        <div class="column"><a href="postpage.html">
-          <h3>Design</h3>
+
+        <div class="column"><a href="{% url 'anime_html:gallery_film' %}">
+          <h3>Videography</h3>
         <img src="{% static 'images/(14).jpg' %}" alt="" />
-        </a></div>
+        </a>
+      </div>
         <div class="column">
-          <a href="postpage.html">
-            <h3>Film</h3>
+          <a href="{% url 'anime_html:gallery_illustration' %}">
+            <h3>Design/Illustrations</h3>
           <img src="{% static 'images/(13).jpg' %}" alt="" />
           </a>
         </div>
         <div class="column">
-          <a href="postpage.html">
-            <h3>Illustrator</h3>
+          <a href="{% url 'anime_html:gallery_stories' %}">
+            <h3>Written Stories</h3>
           <img src="{% static 'images/(18).jpg' %}" alt="" />
           </a>
         </div>
         <div class="column">
           <a href="postpage.html">
-            <h3>Photography</h3>
+            <h3>Trends</h3>
           <img src="{% static 'images/(12).jpg' %}" alt="" />
           </a>
         </div>
         <div class="column">
-          <a href="postpage.html">
-            <h3>Stories</h3>
+          <a href="{% url 'anime_html:gallery_randoms' %}">
+            <h3>Randoms</h3>
           <img src="{% static 'images/(17).jpg' %}" alt="" />
           </a>
         </div>

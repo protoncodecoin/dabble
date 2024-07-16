@@ -519,7 +519,7 @@ class AnimeSerializer(TaggitSerializer, serializers.ModelSerializer):
             "description",
             "likes",
             "thumbnail",
-            # "video_file",
+            "video_file",
             "season",
             "season_number",
             "creator",

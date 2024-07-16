@@ -86,6 +86,7 @@ class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
             "company_website",
             "biography",
             "creator_logo",
+            "background_image",
             # "following",
             # "followers",
         ]
@@ -110,6 +111,7 @@ class RCreatorSerializerDetail(serializers.HyperlinkedModelSerializer):
             "creator_logo",
             "following",
             "followers",
+            "background_image",
         ]
 
 

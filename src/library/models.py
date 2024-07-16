@@ -3,15 +3,16 @@ from users_api.models import CreatorProfile
 
 from django.utils.text import slugify
 
+
 # Create your models here.
 class Book(models.Model):
     """Model for Book"""
 
     CATEGORY_CHOICES = [
-        ("OTHER", "Others"),
-        ("HISTORY", "History"),
-        ("DESIGN/ILLUSTRATION", "Design/Illustration"),
-        ("ANIMATION/VIDEOGRAPHY", "Animation/Videography"),
+        ("other", "Others"),
+        ("history", "History"),
+        ("design-illustration", "Design/Illustration"),
+        ("animation-videography", "Animation/Videography"),
     ]
 
     added_by = models.ForeignKey(CreatorProfile, on_delete=models.SET_NULL, null=True)
@@ -25,7 +26,7 @@ class Book(models.Model):
     book_description = models.TextField(max_length=150, blank=True)
     book = models.FileField(upload_to="books/%Y/%m/")
     book_category = models.CharField(
-        max_length=100, choices=CATEGORY_CHOICES, default="OTHER"
+        max_length=100, choices=CATEGORY_CHOICES, default="other"
     )
     pages = models.IntegerField(default=0)
     chapters = models.IntegerField(default=0)
@@ -44,7 +45,7 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)

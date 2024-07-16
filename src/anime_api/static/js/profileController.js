@@ -7,10 +7,11 @@ const profilePicEl = document.getElementById("profile-pic");
 const creatorNameEl = document.getElementById("creator-name");
 const creatorProgrammeEl = document.getElementById("creator-programme");
 const creatorBioEl = document.getElementById("biography");
-const allCreatorPostsEl = document.getElementById("allCreatorPosts");
+const allCreatorPostsEl = document.querySelector(".allCreatorPosts");
 const numOfWorksEl = document.getElementById("numOfWorks");
 const postsBtn = document.getElementById("post-tab");
-const watchlistEl = document.getElementById("watchlist-container");
+const watchlistEl = document.querySelector(".watchlist-container");
+const bannerEl = document.querySelector("#banner");
 
 // const csrftoken = Cookies.get("csrftoken");
 
@@ -53,11 +54,16 @@ const creatorProfileController = async () => {
       creator_logo: logo,
       programme = "Not available",
       biography,
+      background_image,
     } = creatorResData;
 
     // profile pic
     profilePicEl.src = logo;
     profilePicEl.alt = `Profile of ${username}`;
+
+    // banner pic
+    bannerEl.src = background_image;
+    bannerEl.alt = `Banner of ${username}`;
 
     // profile username
     creatorNameEl.textContent = username;

@@ -2,8 +2,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .pagination import CustomPagination
+
 from .models import Book
 from .serializers import BookSerializer, BookDetailSerializer
+from .filters import BooksFilter
 
 from anime_api import permissions
 
@@ -25,12 +30,19 @@ class BookListAPIView(generics.ListAPIView):
 
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    pagination_class = CustomPagination
+    page_size = 1
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = BooksFilter
 
-    def list(self, request):
-        """List all books"""
-        queryset = self.get_queryset()
-        serializer = BookSerializer(queryset, many=True)
-        return Response({"result": serializer.data}, status=status.HTTP_200_OK)
+    # filterset_fields = ["book_category"]
+
+    # def list(self, request):
+    #     """List all books"""
+    #     queryset = self.get_queryset()
+    #     serializer = BookSerializer(queryset, many=True)
+    #     page = self.paginate_queryset(serializer.data)
+    #     return self.get_paginated_response(page)
 
 
 class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):

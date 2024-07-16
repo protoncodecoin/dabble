@@ -5,16 +5,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dabble | Home</title>
+    <title>Dabble |{% block title %}{% endblock %}</title>
 
     {% if selection == "home" %}
     <link rel="stylesheet" href="{% static 'css/index.css' %}" />
     {% elif selection == "profile" %}
     <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
-    {% elif selection == "tour" %}
+    {% elif selection == "exhibition" %}
     <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
     {% elif selection == "dashboard"%}
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+    {% elif selection == "gallery_animation"%}
+    <link rel="stylesheet" href="{% static 'css/gallery_tabs.css' %}" />
+    {% elif selection == "library"%}
+    <link rel="stylesheet" href="{% static 'css/library.css' %}" />
 
     {% endif %}
   </head>

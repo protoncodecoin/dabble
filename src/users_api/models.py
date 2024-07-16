@@ -36,6 +36,9 @@ class CreatorProfile(models.Model):
         on_delete=models.CASCADE,
     )
     slug = models.SlugField(blank=True, max_length=200)
+    background_image = models.ImageField(
+        upload_to="creatorProfile/I%Y/%m/%d", blank=True, default="default/default.jpg"
+    )
     programme = models.CharField(max_length=100, blank=True)
     company_name = models.CharField(max_length=200, blank=True, null=True)
     company_website = models.URLField(blank=True, null=True)
@@ -43,7 +46,7 @@ class CreatorProfile(models.Model):
     creator_logo = models.ImageField(
         upload_to="creatorProfile/%Y/%m/%d/",
         blank=True,
-        default="default/creator_default.jfif",
+        default="default/default.jpg",
     )
     following = models.ManyToManyField(
         "self", through="Follow", symmetrical=False, related_name="followers"

@@ -305,4 +305,46 @@ def recently_viewed(request):
 
 
 def gallery(request):
-    return render(request, "anime_api/gallery.html", {"selection": "tour"})
+    return render(
+        request, "anime_api/gallery/gallery.html", {"selection": "exhibition"}
+    )
+
+
+def gallery_animation(request):
+    return render(
+        request,
+        "anime_api/gallery/animation.html",
+        {"selection": "gallery_animation", "sub_selection": "animation"},
+    )
+
+
+def gallery_film(request):
+    return render(
+        request,
+        "anime_api/gallery/film.html",
+        {"selection": "gallery_animation", "sub_selection": "film"},
+    )
+
+
+def gallery_illustration(request):
+    return render(
+        request,
+        "anime_api/gallery/illustrations.html",
+        {"selection": "gallery_animation", "sub_selection": "illustrations"},
+    )
+
+
+def gallery_stories(request):
+    return render(
+        request,
+        "anime_api/gallery/stories.html",
+        {"selection": "gallery_animation", "sub_selection": "written_stories"},
+    )
+
+
+def gallery_randoms(request):
+    return render(
+        request,
+        "anime_api/gallery/randoms.html",
+        {"selection": "gallery_animation", "sub_selection": "random"},
+    )

@@ -12,12 +12,12 @@
     <span class="s-text hide">Home</span>
   </a>
 
-  <a class="s-ico {% if selection == 'library'%} active {% endif %}">
+  <a class="s-ico {% if selection == 'library'%} active {% endif %}" href="{%  url 'lib:library' %}">
     <img src="{% static 'icons/library darkicons.svg' %}" alt="" />
     <span class="s-text hide">Library</span>
   </a>
 
-  <a class="s-ico {% if selection == 'exhibition'%} active {% endif %}" >
+  <a class="s-ico {% if selection == 'exhibition'%} active {% endif %}" href="{%  url 'anime_html:gallery' %}" >
     <img src="{% static 'icons/profile darkicons.svg' %}" alt="" />
     <span class="s-text hide">Exhibition</span>
   </a>
@@ -26,6 +26,7 @@
     <img src="{% static 'icons/virtual tour darkicons.svg' %}" alt="" />
     <span class="s-text hide">Virtual Tour</span>
   </a>
+
   {% else %}
    <a class="s-ico {% if selection == 'home'%} active {% endif %}" href="{% url 'anime_html:index' %}">
     <img src="{% static 'icons/homeicons.svg' %}" alt="" />
@@ -36,7 +37,7 @@
     <img src="{% static 'icons/profile icon darkicons.svg' %}" alt="" />
     <span class="s-text hide">Profile</span>
   </a>
-  <a class="s-ico {% if selection == 'library'%} active {% endif %}">
+  <a class="s-ico {% if selection == 'library'%} active {% endif %}" href="{%  url 'lib:library' %}">
     <img src="{% static 'icons/library darkicons.svg' %}" alt="" />
     <span class="s-text hide">Library</span>
   </a>

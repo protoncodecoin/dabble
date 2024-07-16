@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <!-- Top navigational bar -->
+     {% include 'partials/_topnavigationbar.htm' %}
+
+
+     <!-- Section 1 -->
+      <section class="section-1">
+        <div class="container">
+          <button class="post-btn-1 post-btn">
+            <img src="/Icons/betterico.svg" alt="" class="ico" />
+          </button>
+          <div class="posts categories_post" id="books__container">
+            <div class="post-card crd" data-category="animation">
+              <a href="#" class="crd" data-category="animation">
+                <img src="{% static 'images/(7).jpg' %}" alt="animation" data-category="animation" class="crd"/>
+              <p data-category="animation" class="crd">Animation Books</p>
+              </a>
+            </div>
+
+            <div class="post-card crd" data-category="photography">
+              <a href="#" class="crd" data-category="photography">
+                 <img src="{% static 'images/(9).jpg' %}" alt="photography" class="crd" data-category="photography"/>
+              <p class="crd" data-category="photography">Photography Books</p>
+              </a>
+            </div>
+
+            <div class="post-card crd" data-category="typography">
+              <a href="#" class="crd" data-category="typography">
+                 <img src="{% static 'images/(8).jpg' %}" alt="Typography" data-category="photography" />
+              <p class="crd" data-category="typography">Typography Books</p>
+              </a>
+            </div>
+
+            <div class="post-card crd"  data-category="design">
+              <a href="#" class="crd" data-category="design">
+                 <img src="{% static 'images/(10).jpg' %}" alt="design" data-category="photography" />
+              <p class="crd" data-category="design">Design Books</p>
+              </a>
+            </div>
+          </div>
+          
+          <button class="post-btn-2 post-btn">
+            <img src="/Icons/betterico2.svg" alt="" class="ico" />
+          </button>
+        </div>
+      </section>
+
+
+      <!-- Section 2 -->
+      <section class="section-2">
+        <h3>[[]] Books</h3>
+        <div class="container">
+        <button class="post-btn-1 post-btn">
+          <img src="/Icons/betterico.svg" alt="" class="ico" />
+        </button>
+        <div class="posts">
+          <div class="book-card">
+             <img src="{% static 'images/(2).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(5).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(7).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(12).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(18).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(19).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+             <img src="{% static 'images/(2).jpg' %}" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+        </div>
+        
+        <button class="post-btn-2 post-btn">
+          <img src="/Icons/betterico2.svg" alt="" class="ico" />
+        </button>
+        </div> 
+      </section>
+
+      <!-- Sectin 3 -->
+      <section class="section-3">
+        <h3>Books to Read</h3>
+
+        <div class="books" id="books_container">
+          {% comment %} <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div>
+          <div class="book-post">
+            <img src="/Images/ (15).jpg" alt="">
+            <p>Best Book Ever</p>
+            <button>
+              <a href="#">Read</a></button>
+          </div> {% endcomment %}
+          
+        </div>
+
+           <div class="loaderx">
+               <div class="inner-circle"></div>
+            </div>
+
+      </section>
+
+{% endblock %}
+
+{% block include_js %}
+      <script src="{% static 'js/library.js' %}"></script>
+{% endblock %}
