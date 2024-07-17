@@ -1,25 +1,9 @@
-const rootElementPost = document.getElementById("rootPost");
+const rootElementPost = document.getElementById("list_post_root");
 const postBaseURL = "127.0.0.7:8000/";
 let blockRequest = false;
 let emptyPage = false;
 
 const stateURLS = {
-  animation: {
-    pageNum: 1,
-    offset: 3,
-    limit: 3,
-    nextURL: `http://127.0.0.1:8000/content/anime`,
-    previousURL: "",
-  },
-
-  writtenstory: {
-    pageNum: 1,
-    offset: 3,
-    limit: 3,
-    nextURL: `http://127.0.0.1:8000/content/stories`,
-    previousURL: "",
-  },
-
   textContent: {
     pageNum: 1,
     offset: 3,
@@ -43,48 +27,23 @@ const stateURLS = {
     nextURL: `http://127.0.0.1:8000/content/designcontent`,
     previousURL: "",
   },
-
-  books: {
-    pageNum: 1,
-    offset: 3,
-    limit: 3,
-    nextURL: "",
-    previousURL: "",
-  },
-};
-
-/**
- *
- * @param {Object} state Checks if there is a value in the state to make a next
- * @returns bool
- */
-const hasMorePosts = function (state) {
-  if (state.nextURL) return true;
-  return false;
-};
-
-/**
- *Swaps each selected element in the array with a randomly selected element from the remaining un-shuffled portion of the array.
- *@param {array} array The array to be shuffled
- *
- */
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
 };
 
 /**
  * Concatenates postBaseURL with endpoint to fetch data from the restAPI. eg: 0.0.0.0:8000/endpoint
- * Do not authentication and errors returned from the server.
+ * Do not authentication and errrors returned from the server.
  * @param {string} postBaseURL - base url of the restapi. This is set by default but can be overwritten.
  */
 const getData = async function (postBaseURL) {
   try {
     const url = postBaseURL;
+    // let access_token = window.localStorage.getItem("dabble_access");
+    // const data = await fetch(url, {
+    //   headers: {
+    //     "Content-type": "application/json",
+    //     AUthorization: `Bearer ${access_token}`,
+    //   },
+    // });
     const data = await fetch(url);
 
     if (!data.ok)
@@ -106,8 +65,6 @@ const getData = async function (postBaseURL) {
  */
 const getPostController = async function () {
   const resData = await Promise.all([
-    await getData(`/content/anime/?limit=${stateURLS.animation.limit}`),
-    await getData(`/content/stories/?limit=${stateURLS.writtenstory.limit}`),
     await getData(`/content/textcontent/?limit=${stateURLS.textContent.limit}`),
     await getData(
       `/content/designcontent/?limit=${stateURLS.designContent.limit}`
@@ -115,7 +72,6 @@ const getPostController = async function () {
     await getData(
       `/content/videocontent/?limit=${stateURLS.videoContent.limit}`
     ),
-    // await getData(`library/books`),
   ]);
 
   const result = resData.map((el) => el);
@@ -134,12 +90,6 @@ const getPostController = async function () {
  */
 const fetchMorePosts = async () => {
   const resData = await Promise.all([
-    await getData(
-      `/content/anime/?limit=${stateURLS.animation.limit}&offset=${stateURLS.animation.offset}`
-    ),
-    await getData(
-      `/content/stories/?limit=${stateURLS.writtenstory.limit}&offset=${stateURLS.writtenstory.offset}`
-    ),
     await getData(
       `/content/textcontent/?limit=${stateURLS.textContent.limit}&offset=${stateURLS.textContent.offset}`
     ),
@@ -165,8 +115,6 @@ const fetchMorePosts = async () => {
     return;
   } else {
     // increase offset by the number of limit
-    stateURLS.animation.offset += stateURLS.animation.limit;
-    stateURLS.writtenstory.offset += stateURLS.writtenstory.limit;
     stateURLS.textContent.offset += stateURLS.textContent.limit;
     stateURLS.designContent.offset += stateURLS.designContent.limit;
     stateURLS.videoContent.offset += stateURLS.videoContent.limit;

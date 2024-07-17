@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}| library {% endblock %}
 {% load static %}
+
 
 {% block content %}
 
@@ -14,6 +16,12 @@
             <img src="/Icons/betterico.svg" alt="" class="ico" />
           </button>
           <div class="posts categories_post" id="books__container">
+            <div class="post-card crd" data-category="general">
+              <a href="#" class="crd" data-category="general">
+                <img src="{% static 'images/(15).jpg' %}" alt="general" data-category="general" class="crd"/>
+              <p data-category="general" class="crd">General</p>
+              </a>
+            </div>
             <div class="post-card crd" data-category="animation">
               <a href="#" class="crd" data-category="animation">
                 <img src="{% static 'images/(7).jpg' %}" alt="animation" data-category="animation" class="crd"/>
@@ -30,15 +38,21 @@
 
             <div class="post-card crd" data-category="typography">
               <a href="#" class="crd" data-category="typography">
-                 <img src="{% static 'images/(8).jpg' %}" alt="Typography" data-category="photography" />
+                 <img src="{% static 'images/(8).jpg' %}" alt="Typography" data-category="typography" class="crd"/>
               <p class="crd" data-category="typography">Typography Books</p>
               </a>
             </div>
 
-            <div class="post-card crd"  data-category="design">
-              <a href="#" class="crd" data-category="design">
-                 <img src="{% static 'images/(10).jpg' %}" alt="design" data-category="photography" />
-              <p class="crd" data-category="design">Design Books</p>
+            <div class="post-card crd"  data-category="design-illustration">
+              <a href="#" class="crd" data-category="design-illustration">
+                 <img src="{% static 'images/(10).jpg' %}" alt="design-illustration" data-category="design-illustration" class="crd" />
+              <p class="crd" data-category="design-illustration">Design/Illustration Books</p>
+              </a>
+            </div>
+            <div class="post-card crd"  data-category="other">
+              <a href="#" class="crd" data-category="other">
+                 <img src="{% static 'images/(11).jpg' %}" alt="other" data-category="other" class="crd"/>
+              <p class="crd" data-category="other">Other Books</p>
               </a>
             </div>
           </div>

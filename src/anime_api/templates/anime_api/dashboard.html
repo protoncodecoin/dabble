@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+
+{% block title %}| Dashboard {% endblock %}
 {% load static %}
 
 {% block content %}
@@ -18,12 +20,341 @@
       <hr>
 
       <!-- page content -->
-      <section class="post-section" style="background-color: red; height:300px"></section>
-      <section class="series-section hidden" style="background-color: rgb(89, 0, 255); height:300px"></section>
-      <section class="stories-section hidden" style="background-color: rgb(14, 207, 56); height:300px"></section>
-      <section class="videos-section hidden" style="background-color: rgb(217, 255, 0); height:300px"></section>
+      <section class="post-section">
+        <div class="posts" id="list_post_root">
+          {% comment %} <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div> {% endcomment %}
+        </div>
+      </section>
+
+        <!-- Series/Playlist -->
+      <section class="series-section hidden" >
+        <div class="posts" id="series_container">
+          {% comment %} <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div> {% endcomment %}
+        </div>
+      </section>
+
+      <!-- written stories -->
+      <section class="stories-section hidden">
+        <div class="posts" id="written_stories_root">
+          {% comment %} <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div>
+          <div class="book-card">
+            <img src="/Images/ (16).jpg" alt="" />
+            <p>Machine's Way</p>
+            <p>Ronald Awudi</p>
+            <button><a href="postpage.html">Read</a></button>
+          </div> {% endcomment %}
+        </div>
+      </section>
+
+      <section class="videos-section hidden" >
+        <div class="posts">
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          <div class="page-content-card">
+            <a href="postpage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            <p>Character Modeling In 3D</p>
+            </a>
+          </div>
+          
+        </div>
+      </section>
 
     </div>
+
+    <!-- Loader animation -->
+        <div class="loaderx">
+               <div class="inner-circle"></div>
+        </div>
   
     <!-- MODAL -->
     <div class="pop-modal modal hidden">
@@ -204,13 +535,16 @@
 {% endblock %}
 
 {% block include_js %}
-<script>
-    const csrf_token = "{{ csrf_token }}";
-    const creatorName = "{{ request.user.creator_profile.id }}"
-    {% comment %} const creatorProfile = "{{ request.user.creator_profile.id }}" {% endcomment %}
-    {% comment %} console.log(creatorProfile) {% endcomment %}
-    
-</script>
-    <script src="{% static 'js/dashboard.js' %}"></script>
-    <script src="{% static 'js/postCreation.js' %}"></script>
+  <script>
+      const csrf_token = "{{ csrf_token }}";
+      const creatorName = "{{ request.user.creator_profile.id }}"
+      {% comment %} const creatorProfile = "{{ request.user.creator_profile.id }}" {% endcomment %}
+      {% comment %} console.log(creatorProfile) {% endcomment %}
+      
+  </script>
+  <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+  <script src="{% static 'js/dashboard/createposts.js' %}"></script>
+  <script src="{% static 'js/dashboard/listposts.js' %}"></script>
+  <script src="{% static 'js/dashboard/listseries.js' %}"></script>
+  <script src="{% static 'js/dashboard/listwrittenstories.js' %}"></script>
 {% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.utils import timezone
 from django.db.models import Count
+from django.conf import settings
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -58,8 +59,7 @@ from users_api.serializers import (
 )
 
 from library.models import Book
-
-from django.conf import settings
+from library.pagination import CustomPagination
 
 # connect to redis
 # r = redis.Redis(
@@ -621,13 +621,10 @@ class FavoritedAPIView(APIView):
 class SeriesListAPI(generics.ListAPIView):
     """Return all Series in DB to the endpoint"""
 
-    # permission_classes = [
-    #     permissions.CreatorAllStaffAllButEditOrReadOnly,
-    # ]
     queryset = Series.objects.all()
     serializer_class = SeriesSerializer
-    # renderer_classes = [CustomJSONRenderer]
     filter_backends = [filters.SearchFilter]
+    pagination_class = CustomPagination
     search_fields = ["^series_name", "^synopsis", "creator__company_name"]
 
     def get_queryset(self):
@@ -672,6 +669,7 @@ class StoryListAPI(generics.ListAPIView):
     queryset = WrittenStory.objects.filter(publish=True)
     serializer_class = StorySerializer
     filter_backends = [filters.SearchFilter]
+    pagination_class = CustomPagination
     search_fields = ["^series__series_name", "^episode_title", "^description"]
 
     def get_queryset(self):
