@@ -230,7 +230,11 @@ window.addEventListener(
     // const validRequestURLs = [];
     console.log("The value of empty page from the top is: ", emptyPage);
 
-    if (scrollTop + clientHeight >= scrollHeight - 5 && !blockRequest) {
+    if (
+      scrollTop + clientHeight >= scrollHeight - 5 &&
+      !blockRequest &&
+      !emptyPage
+    ) {
       blockRequest = true;
 
       // call fetchMorePosts to get more data from the backend

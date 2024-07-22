@@ -231,11 +231,12 @@ def post_ranking(request):
     design_serializer = SimpleDesignSerializer(design_most_viewed, many=True)
 
     # MOST TRENDING
-    week_ago = timezone.now() - timedelta(days=7)
+    week_ago = timezone.now() - timedelta(days=2)
 
     top_anime_trends = (
         anime_trends.annotate(
-            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -244,7 +245,8 @@ def post_ranking(request):
 
     top_story_trends = (
         story_trends.annotate(
-            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -253,10 +255,8 @@ def post_ranking(request):
 
     top_design_trends = (
         design_trends.annotate(
-            likes_count=Count(
-                "likes",
-                filter=Q(release_date__gte=week_ago),
-            )
+            # likes_count=Count("likes", filter=Q(release_date__gte=week_ago))
+            likes_count=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(likes_count__gt=0)
         .order_by("-likes_count")
@@ -265,7 +265,8 @@ def post_ranking(request):
 
     top_video_trends = (
         video_trends.annotate(
-            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -274,7 +275,8 @@ def post_ranking(request):
 
     top_text_trends = (
         text_trends.annotate(
-            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")

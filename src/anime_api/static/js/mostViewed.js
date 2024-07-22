@@ -1,6 +1,7 @@
 const mostViewedURL = "viewed/most_viewed/";
 const rootMostViewed = document.getElementById("rootMostViewed");
 
+console.log(mostViewedURL);
 /**
  *
  * @param {Array} data Returns none if data is empty
@@ -34,11 +35,11 @@ const mostViewedPost = async () => {
     } = jsonData;
 
     const mergedData = [
-      ...anime_most_viewed,
-      ...writtenstory_most_viewed,
-      ...video_most_viewed,
-      ...text_most_viewed,
-      ...design_most_viewed,
+      ...anime_most_viewed.slice(1, 2),
+      ...writtenstory_most_viewed.slice(1, 2),
+      ...video_most_viewed.slice(1, 2),
+      ...text_most_viewed.slice(1, 2),
+      ...design_most_viewed.slice(1, 2),
     ];
 
     const newRank = filterData(mergedData);
