@@ -156,7 +156,7 @@ const fetchMorePosts = async () => {
 
   const result = resData.map((el) => el);
   const flattenResult = result.map((el) => el.results).flat();
-  console.log("length of the data gotten is: 😍", result, flattenResult);
+  console.log("new flat: ", flattenResult);
   if (flattenResult.length === 0) {
     emptyPage = true;
     console.log(
@@ -170,6 +170,12 @@ const fetchMorePosts = async () => {
     stateURLS.textContent.offset += stateURLS.textContent.limit;
     stateURLS.designContent.offset += stateURLS.designContent.limit;
     stateURLS.videoContent.offset += stateURLS.videoContent.limit;
+
+    console.log(stateURLS.animation.offset);
+    console.log(stateURLS.writtenstory.offset);
+    console.log(stateURLS.textContent.offset);
+    console.log(stateURLS.designContent.offset);
+    console.log(stateURLS.videoContent.offset);
     renderRequestedPosts(flattenResult);
   }
 };
@@ -228,7 +234,7 @@ window.addEventListener(
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
     // const validRequestURLs = [];
-    console.log("The value of empty page from the top is: ", emptyPage);
+    // console.log("The value of empty page from the top is: ", emptyPage);
 
     if (
       scrollTop + clientHeight >= scrollHeight - 5 &&
@@ -241,7 +247,7 @@ window.addEventListener(
       fetchMorePosts();
     }
     {
-      console.log("The value of empty page is now: ", emptyPage);
+      console.log("empty: ", emptyPage);
     }
   },
   { passive: true }
