@@ -8,11 +8,16 @@ console.log(mostViewedURL);
  * @returns {Array}
  */
 const filterData = (data) => {
+  console.log("========================")
+  console.log(data)
   let result = [];
-  if (data.length !== 0 || data.length < 0) {
+  if (data.length !== 0 || data.length > 0) {
     for (let i = 0; i < data.length; i++) {
       result.push(data[i]);
     }
+    console.log("===============")
+    console.log(result)
+    console.log("============")
     return result;
   }
   return "None";
@@ -34,13 +39,17 @@ const mostViewedPost = async () => {
       design_most_viewed,
     } = jsonData;
 
+    console.log(design_most_viewed)
+
     const mergedData = [
-      ...anime_most_viewed.slice(1, 2),
-      ...writtenstory_most_viewed.slice(1, 2),
-      ...video_most_viewed.slice(1, 2),
-      ...text_most_viewed.slice(1, 2),
-      ...design_most_viewed.slice(1, 2),
+      ...anime_most_viewed.slice(0, 1),
+      ...writtenstory_most_viewed.slice(0, 1),
+      ...video_most_viewed.slice(0, 1),
+      ...text_most_viewed.slice(0, 1),
+      ...design_most_viewed.slice(0, 1),
     ];
+
+    console.log("merged", mergedData)
 
     const newRank = filterData(mergedData);
 

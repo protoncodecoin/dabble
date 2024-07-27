@@ -1,11 +1,15 @@
 const booksContainer = document.querySelector("#books_container");
 const loaderEl = document.querySelector(".loaderx");
 const innerCircleEl = document.querySelector(".inner-circle");
+const authenticatedUser = document.querySelector("#request-user")
+const userFavBooksEl = document.querySelector("#fav_books");
 let currentPage = 1;
 let total = 0;
 let limit = 7;
 let filteredResStatus = true;
 let currentURL = `/library/books`;
+
+
 
 const getBooks = async (page, limit, url = currentURL) => {
   let URL = url.endsWith("&")
@@ -32,8 +36,8 @@ const showBooks = (books) => {
     books.length <= 0
       ? 0
       : books
-          .map((el) => {
-            return `
+        .map((el) => {
+          return `
         <div class="book-post">
             <img src="${el.cover}" alt="${el.title}">
             <p>${el.title}</p>
@@ -41,8 +45,8 @@ const showBooks = (books) => {
               <a href="#">Read</a></button>
           </div>
     `;
-          })
-          .join("");
+        })
+        .join("");
 
   htmlData == 0
     ? (booksContainer.innerHTML = "<h3>No content</h3>")
@@ -125,13 +129,13 @@ document
  *
  * @param {Array} books render list of filtered books in the browser
  */
-const showFilteredBooks = (books) => {
+const showFilteredBooks = (books, rootContainerEl = booksContainer) => {
   const htmlData =
     books <= 0
       ? 0
       : books
-          .map((el) => {
-            return `
+        .map((el) => {
+          return `
         <div class="book-post">
             <img src="${el.cover}" alt="${el.title}">
             <p>${el.title}</p>
@@ -139,14 +143,14 @@ const showFilteredBooks = (books) => {
               <a href="#">Read</a></button>
           </div>
     `;
-          })
-          .join("");
+        })
+        .join("");
 
   if (htmlData) {
-    booksContainer.innerHTML = ""; // Clear previous books
-    booksContainer.insertAdjacentHTML("beforeend", htmlData);
+    rootContainerEl.innerHTML = ""; // Clear previous books
+    rootContainerEl.insertAdjacentHTML("beforeend", htmlData);
   } else {
-    booksContainer.innerHTML = `
+    rootContainerEl.innerHTML = `
       <div style='padding:10px;margin:20px;text-align:center;'>
           <h2 style='margin: 0 auto;'>No Content Yet</h2>
       </div>
@@ -154,6 +158,45 @@ const showFilteredBooks = (books) => {
     // booksContainer.textContent = "<h2>No Content </h2>";
   }
 };
+
+/**
+ * Get books authenticated user has added to their favorite 
+ */
+const favoritedBooks = async () => {
+  const authUserId = authenticatedUser.textContent;
+  if (authUserId) {
+    try {
+      showLoader()
+
+      const resData = await fetch(`/library/books/${authUserId}/favorites`);
+
+      if (!resData.ok) throw Error("'something went wrong", resData.statusText, resData.status);
+
+      const jsonData = await resData.json();
+
+      console.log("favoritedbooks: ", jsonData.results)
+
+      // render books in the DOM
+      showFilteredBooks(jsonData.results, userFavBooksEl);
+
+    } catch (error) {
+      console.log("An error occurred", error)
+    } finally {
+      hideLoader()
+    }
+  } else {
+    // either user is not authenticated or user hasn't added any books to favorite
+    userFavBooksEl.innerHTML = `
+     <div style='padding:10px;margin:20px;text-align:center;'>
+          <h2 style='margin: 0 auto;'>No Books Added to Favorites Yet!.</h2>
+      </div>
+    
+    `
+  }
+
+
+}
+
 
 window.addEventListener(
   "scroll",
@@ -174,3 +217,4 @@ window.addEventListener(
 );
 
 loadBooks(currentPage, limit);
+favoritedBooks()

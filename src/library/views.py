@@ -4,6 +4,8 @@ from rest_framework import generics
 
 from django_filters.rest_framework import DjangoFilterBackend
 
+from users_api.models import CreatorProfile
+
 from .pagination import CustomPagination
 
 from .models import Book
@@ -61,3 +63,28 @@ class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 #     def get(self, request):
 #         """Get book"""
+
+
+class FavoriteBooks(generics.ListAPIView):
+    """Return a list of all user favorited books."""
+
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    pagination_class = CustomPagination
+
+    def get(self, request, user_id, format=None):
+        user = user_id
+        try:
+            user_profile = CreatorProfile.objects.get(id=user)
+        except CreatorProfile.DoesNotExist:
+            return Response(
+                {"message": "User Profile does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        books = Book.objects.filter(favorited_by=user_profile)
+        books_serializer = BookSerializer(books, many=True)
+        return Response(
+            {"results": books_serializer.data},
+            status=status.HTTP_200_OK,
+        )

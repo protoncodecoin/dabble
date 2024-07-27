@@ -71,8 +71,8 @@
         <button class="post-btn-1 post-btn">
           <img src="/Icons/betterico.svg" alt="" class="ico" />
         </button>
-        <div class="posts">
-          <div class="book-card">
+        <div class="posts" id="fav_books">
+          {% comment %} <div class="book-card">
              <img src="{% static 'images/(2).jpg' %}" alt="" />
             <p>Machine's Way</p>
             <p>Ronald Awudi</p>
@@ -113,7 +113,7 @@
             <p>Machine's Way</p>
             <p>Ronald Awudi</p>
             <button><a href="postpage.html">Read</a></button>
-          </div>
+          </div> {% endcomment %}
         </div>
         
         <button class="post-btn-2 post-btn">
@@ -259,5 +259,6 @@
 {% endblock %}
 
 {% block include_js %}
+      {{ request.user.creator_profile.id|json_script:"request-user"}};
       <script src="{% static 'js/library.js' %}"></script>
 {% endblock %}

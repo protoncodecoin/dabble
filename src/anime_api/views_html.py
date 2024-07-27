@@ -13,6 +13,7 @@ from users_api.models import CreatorProfile
 from .views_serializer import (
     SimpleDesignSerializer,
     SimpleAnimeSerializer,
+    SimpleAnimeSerializerWithTrends,
     SimpleWrittenStory,
     SimpleVideoSerializer,
     SimpleTextSerializer,
@@ -64,7 +65,7 @@ def detail_post_count(request, content_type, id, slug):
 
     if target_content == models.Anime:
         post = get_object_or_404(models.Anime, id=id)
-        total_views = r.incr(f"anime:{post}:views")
+        total_views = r.incr(f"anime:{post.id}:views")
 
         # increment total anime views by 1
         r.zincrby("anime_ranking", 1, post.id)
@@ -83,7 +84,7 @@ def detail_post_count(request, content_type, id, slug):
 
     elif target_content == models.WrittenStory:
         post = get_object_or_404(models.WrittenStory, id=id)
-        total_views = r.incr(f"writtenstories:{post}:views")
+        total_views = r.incr(f"writtenstories:{post.id}:views")
 
         # increment total writtenstory views by 1
         r.zincrby("writtenstory_ranking", 1, post.id)
@@ -122,7 +123,7 @@ def detail_post_count(request, content_type, id, slug):
 
     elif target_content == models.Video:
         post = get_object_or_404(models.Video, id=id)
-        total_views = r.incr(f"video:{post}:views")
+        total_views = r.incr(f"video:{post.id}:views")
 
         # increment total video views by 1
         r.zincrby("video_ranking", 1, post.id)
@@ -141,7 +142,7 @@ def detail_post_count(request, content_type, id, slug):
 
     elif target_content == models.Text:
         post = get_object_or_404(models.Text, id=id)
-        total_views = r.incr(f"text:{post}:views")
+        total_views = r.incr(f"text:{post.id}:views")
         # increment total text views by 1
         r.zincrby("text_ranking", 1, post.id)
 
@@ -235,18 +236,20 @@ def post_ranking(request):
 
     top_anime_trends = (
         anime_trends.annotate(
-            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
-            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
     )
-    anime_trend_serializer = SimpleAnimeSerializer(top_anime_trends, many=True)
+    anime_trend_serializer = SimpleAnimeSerializerWithTrends(
+        top_anime_trends, many=True
+    )
 
     top_story_trends = (
         story_trends.annotate(
-            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
-            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -255,8 +258,8 @@ def post_ranking(request):
 
     top_design_trends = (
         design_trends.annotate(
-            # likes_count=Count("likes", filter=Q(release_date__gte=week_ago))
-            likes_count=Count("likes", filter=Q(release_date__lte=week_ago))
+            likes_count=Count("likes", filter=Q(release_date__gte=week_ago))
+            # likes_count=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(likes_count__gt=0)
         .order_by("-likes_count")
@@ -265,8 +268,8 @@ def post_ranking(request):
 
     top_video_trends = (
         video_trends.annotate(
-            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
-            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")
@@ -275,8 +278,8 @@ def post_ranking(request):
 
     top_text_trends = (
         text_trends.annotate(
-            # count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
-            count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
+            count_likes=Count("likes", filter=Q(release_date__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
         )
         .filter(count_likes__gt=0)
         .order_by("-count_likes")

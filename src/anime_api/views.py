@@ -60,6 +60,7 @@ from users_api.serializers import (
 
 from library.models import Book
 from library.pagination import CustomPagination
+from library.serializers import BookSerializer
 
 # connect to redis
 # r = redis.Redis(
@@ -588,6 +589,7 @@ class FavoritedAPIView(APIView):
         text = models.Text.objects.filter(favorited_by=user_profile)
         video = models.Video.objects.filter(favorited_by=user_profile)
         design = models.Design.objects.filter(favorited_by=user_profile)
+        books = Book.objects.filter(favorited_by=user_profile)
 
         anime_serializer = AnimeFavoriteSerializer(
             anime, many=True, context={"request": request}
@@ -603,6 +605,7 @@ class FavoritedAPIView(APIView):
         text_serializer = TextFavoriteSerializer(text, many=True)
         video_serializer = VideoFavoriteSerializer(video, many=True)
         design_serializer = DesignFavoriteSerializer(design, many=True)
+        books_serializer = BookSerializer(books, many=True)
         return Response(
             {
                 "results": [
@@ -612,6 +615,7 @@ class FavoritedAPIView(APIView):
                     text_serializer.data,
                     video_serializer.data,
                     design_serializer.data,
+                    books_serializer.data
                 ]
             },
             status=status.HTTP_200_OK,

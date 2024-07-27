@@ -11,9 +11,8 @@ const renderBooks = (booksData) => {
             <img src="${el.cover}" alt="${el.title}" />
             <p>${el.title || "Not Specified"}</p>
             <p>${el.author || "Not Specified"}</p>
-            <button><a href="/books/${el.id || el.pk}/${el.slug}/${
-        el.book_category
-      }/">Read</a></button>
+            <button><a href="/books/${el.id || el.pk}/${el.slug}/${el.book_category
+        }/">Read</a></button>
         </div>
         `;
     })

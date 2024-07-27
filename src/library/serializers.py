@@ -73,7 +73,7 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "added_on",
             "updated_on",
             "book",
-            "external_links",
+            "external_link",
         ]
         read_only_fields = ["added_on", "updated_on"]
 
