@@ -97,7 +97,7 @@ urlpatterns = [
     path("callback/google", GoogleRedirectURIView.as_view(), name="google_redirect"),
     # API URLS
     path("content/", include("anime_api.urls", namespace="animes")),
-    path("comments/", include("comment_system.urls", namespace="comments")),
+    path("comment/", include("comment_system.urls", namespace="comment")),
     path("library/", include("library.urls", namespace="library")),
     # USER ROUTERS
     path("", include(router.urls)),

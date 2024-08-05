@@ -9,12 +9,14 @@ from .models import Comment
 class CommentAdmin(admin.ModelAdmin):
     list_display = [
         "user",
-        "created",
+        "date_posted",
+        "id",
         "is_approved",
+        "parent",
     ]
 
     list_filter = [
-        "created",
+        "date_posted",
         "is_approved",
     ]
     search_fields = ["comment"]
