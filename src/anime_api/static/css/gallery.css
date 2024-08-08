@@ -6,8 +6,30 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
+:root {
+  --bg: #fff;
+  --main-bg: #fff;
+  --card-bg: #eeeeee;
+  --card-hover-bg: #cecece;
+  --card-text: #000;
+  --content-right-bg: #eeeeee;
+  --sidebar-text: #242424;
+  --image-border-hover: #242424;
+}
+
+.dark-mode {
+  --bg: #000;
+  --main-bg: #0c0c0c;
+  --card-bg: #444444;
+  --card-hover-bg: #383838;
+  --card-text: #fff;
+  --content-right-bg: #707070;
+  --sidebar-text: #fafafa;
+  --image-border-hover: #fff;
+}
+
 body {
-  background-color: #dbdbdb;
+  background-color: var(--bg);
   position: relative;
 }
 
@@ -81,7 +103,7 @@ body {
 }
 
 .side-bar .s-text {
-  color: #242424;
+  color: var(--sidebar-text);
   font-size: 13px;
   height: 20px;
   transition: 0.1s;
@@ -107,9 +129,9 @@ body {
   margin-left: 65px;
   min-height: 100vh;
   border-radius: 20px;
-  background-color: #eeeeeec0;
-  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
+  background-color: var(--main-bg);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  transition: 0.1s;
 }
 
 .top-nav {
@@ -125,11 +147,27 @@ body {
   align-items: center;
   justify-content: space-between;
   background-color: inherit;
-  z-index: 7;
+  /* opacity: 0.7; */
+  z-index: 2;
 }
 
 .top-nav .dabble-ico {
   cursor: pointer;
+  height: 30px;
+  display: flex;
+}
+
+.dabble-ico img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dabble-ico p {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--card-text);
 }
 
 .top-nav .search-bar {
@@ -142,8 +180,9 @@ body {
 .top-nav input {
   width: 80%;
   border-radius: 30px;
-  background-color: #e6e6e6e7;
+  background-color: transparent;
   outline: none;
+  color: var(--card-text);
   border: 1px solid gray;
   height: 36px;
   padding: 5px 15px;
@@ -169,32 +208,58 @@ body {
   border-radius: 20px;
   border: none;
   background-color: transparent;
-  color: rgb(119, 118, 118);
-  font-size: 13px;
+  /* color: rgb(119, 118, 118); */
+  /* font-size: 13px; */
   transition: 0.3s;
   cursor: pointer;
-  display: none;
+  /* display: none; */
+}
+
+.search-btn:active {
+  transform: scale(1.2);
+}
+
+.top-nav .search-btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
 }
 
 .mode,
 .sign {
   color: white;
   background-color: black;
-  padding: 7px 10px;
   border-radius: 5px;
   font-size: 12px;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.mode img {
+  height: 20px;
+  /* padding: 3px 7px; */
 }
 
 .sign {
   margin-left: 15px;
   border-radius: 12px;
-  transition: 0.3s;
   padding: 7px 17px;
 }
 
+.mode:hover,
 .sign:hover {
+  transform: scale(1.1);
   background-color: #fd5050;
 }
 
@@ -239,7 +304,7 @@ body {
   object-position: center;
   /* transition: 0.3s; */
 }
- 
+
 /*.column img:hover {
   transform: scale(1.1);
 } */
@@ -256,9 +321,8 @@ body {
   transition: 0.3s;
 }
 
-.column:hover h3{
+.column:hover h3 {
   font-size: 1.3rem;
   /* left: 50%; */
-  top: 20%; 
+  top: 20%;
 }
-

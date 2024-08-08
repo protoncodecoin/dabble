@@ -1,12 +1,35 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --bg: #fff;
+  --main-bg: #fff;
+  --card-bg: #eeeeee;
+  --card-hover-bg: #cecece;
+  --card-text: #000;
+  --content-right-bg: #eeeeee;
+  --sidebar-text: #242424;
+  --image-border-hover: #242424;
+}
+
+.dark-mode {
+  --bg: #000;
+  --main-bg: #0c0c0c;
+  --card-bg: #444444;
+  --card-hover-bg: #383838;
+  --card-text: #fff;
+  --content-right-bg: #707070;
+  --sidebar-text: #fafafa;
+  --image-border-hover: #fff;
 }
 
 body {
-  background-color: #dbdbdb;
+  background-color: var(--bg);
   position: relative;
 }
 
@@ -50,7 +73,6 @@ body {
   text-decoration: none;
 }
 
-
 .side-bar .ico-expanded {
   display: flex;
   width: 100%;
@@ -80,8 +102,8 @@ body {
   background-color: #ff6969;
 }
 
-.side-bar .s-text{
-  color: #242424;
+.side-bar .s-text {
+  color: var(--sidebar-text);
   font-size: 13px;
   height: 20px;
   transition: 0.1s;
@@ -107,9 +129,9 @@ body {
   margin-left: 65px;
   min-height: 100vh;
   border-radius: 20px;
-  background-color: #eeeeeec0;
-  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
+  background-color: var(--main-bg);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  transition: 0.1s;
 }
 
 .top-nav {
@@ -125,11 +147,27 @@ body {
   align-items: center;
   justify-content: space-between;
   background-color: inherit;
-  z-index: 7;
+  /* opacity: 0.7; */
+  z-index: 2;
 }
 
 .top-nav .dabble-ico {
   cursor: pointer;
+  height: 30px;
+  display: flex;
+}
+
+.dabble-ico img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dabble-ico p {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--card-text);
 }
 
 .top-nav .search-bar {
@@ -142,8 +180,9 @@ body {
 .top-nav input {
   width: 80%;
   border-radius: 30px;
-  background-color: #e6e6e6e7;
+  background-color: transparent;
   outline: none;
+  color: var(--card-text);
   border: 1px solid gray;
   height: 36px;
   padding: 5px 15px;
@@ -169,31 +208,58 @@ body {
   border-radius: 20px;
   border: none;
   background-color: transparent;
-  color: rgb(119, 118, 118);
-  font-size: 13px;
+  /* color: rgb(119, 118, 118); */
+  /* font-size: 13px; */
   transition: 0.3s;
   cursor: pointer;
-  display: none;
+  /* display: none; */
 }
 
-.mode, .sign {
+.search-btn:active {
+  transform: scale(1.2);
+}
+
+.top-nav .search-btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.mode,
+.sign {
   color: white;
   background-color: black;
-  padding: 7px 10px;
   border-radius: 5px;
   font-size: 12px;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.mode img {
+  height: 20px;
+  /* padding: 3px 7px; */
 }
 
 .sign {
   margin-left: 15px;
   border-radius: 12px;
-  transition: 0.3s;
   padding: 7px 17px;
 }
 
+.mode:hover,
 .sign:hover {
+  transform: scale(1.1);
   background-color: #fd5050;
 }
 
@@ -237,7 +303,7 @@ h3 {
   width: 20px;
   border-radius: 50%;
   transition: 0.3s;
-  z-index: 3;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,7 +320,6 @@ h3 {
 .post-btn-2 {
   right: -10px;
 }
-
 
 .container .ico {
   height: 18px;
@@ -275,14 +340,14 @@ h3 {
   display: none;
 }
 
-
-.post-card{
+.post-card {
   height: 90px;
   border-radius: 20px;
   overflow: hidden;
   flex-basis: 30%;
-  min-width: 30%;
+  min-width: 32.5%;
   position: relative;
+  transition: 0.3s;
 }
 
 .post-card img {
@@ -290,6 +355,7 @@ h3 {
   object-position: top;
   width: 100%;
   height: 120px;
+  transition: 0.3s;
 }
 
 .post-card p {
@@ -302,37 +368,47 @@ h3 {
   padding: 3px 7px;
 }
 
-
-
 /* BOOKS */
 /* BOOKS */
 /* BOOKS */
 
 .section-2 {
   width: 96%;
-  margin: 10px auto ;
+  margin: 10px auto;
 }
 
 .book-card {
   margin-top: 50px;
   height: 90px;
-  min-width: 300px;
-  background-color: #cecece;
+  min-width: 32.5%;
+  background-color: var(--card-bg);
   overflow: visible;
   position: relative;
   box-shadow: none;
   padding: 10px;
   border-radius: 20px;
+  transition: 0.3s;
 }
 
-.book-card img{
+.book-card img:hover,
+.post-card img:hover{
+  transform: scale(1.1);
+}
+
+
+.book-post:hover {
+  transform: scale(1.1);
+}
+
+.book-card img {
   object-fit: cover;
   position: absolute;
   width: 30%;
   height: 120px;
   top: -40px;
-  left: 20px;
+  left: 40px; 
   border-radius: 10px;
+  transition: 0.3s;
 }
 
 .book-card p,
@@ -340,6 +416,9 @@ h3 {
   margin-left: 50%;
   text-align: justify;
   font-size: 0.8rem;
+  color: var(--card-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .book-card button {
@@ -350,7 +429,6 @@ h3 {
   border: none;
   transition: 0.3s;
   width: fit-content;
-
 }
 
 .book-card a {
@@ -366,28 +444,35 @@ h3 {
   top: 60%;
 }
 
-
-
 /* SECTION 3 */
 /* SECTION 3 */
 /* SECTION 3 */
 
 .section-3 {
   width: 96%;
-  margin: 20px auto ;
+  margin: 20px auto;
 }
 
-.section-3 h3{
+.section-3 h3 {
   margin-bottom: 10px;
 }
 
+.books {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
 .book-post {
-  display: inline-block;
-  width: 175px;
+  /* display: inline-block; */
+  min-width: 18%;
+  flex-basis: 18%;
   /* height: 0px; */
   border-radius: 20px;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   margin-bottom: 15px;
+  transition: 0.3s;
 }
 
 .book-post img {
@@ -401,81 +486,28 @@ h3 {
 
 .book-post p {
   text-align: center;
+  text-wrap: nowrap;
   font-size: 0.9rem;
+  color: var(--card-text);
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.book-post a{
+.book-post a {
   text-decoration: none;
-  color: black;
+  color: var(--card-text);
 }
 
-.book-post button{
+.book-post button {
   width: 100%;
   border: none;
   padding: 3px 30px;
   margin: 5px 0 0;
   border-radius: 20px;
-  background-color: #b3b3b3;
-  transition: 0.3s
+  background-color: var(--card-bg);
+  transition: 0.3s;
 }
 
 .book-post button:hover {
-  background-color: #aaaaaa;
+  background-color: var(--card-hover-bg);
 }
-
-
-.loaderx {
-  display: none;
-  margin: 0 auto;
-  display: flex;
-  width: 60px;
-  height: 60px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: linear-gradient(0deg, #FFFFFF 50%, #FF5C35 100%);
-  animation: spin 1s linear infinite;
-}
-
-.inner-circle {
-  display: none;
-  width: 80%;
-  height: 80%;
-  background-color: white;
-  border-radius: 50%;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0);
-  }
-  to{
-    transform: rotate(360deg);
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
