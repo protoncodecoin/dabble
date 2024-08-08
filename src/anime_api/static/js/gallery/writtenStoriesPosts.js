@@ -5,7 +5,7 @@ const postAnimationContainerEl = document.querySelector("#gallery_stories");
 const throttleTime = 1000;
 let throttleTimer = false;
 let offset = 0;
-let limit = 1;
+let limit = 10;
 let blockAnimationRequest = false;
 let emptyAnimationPage = false;
 let totalPosts;

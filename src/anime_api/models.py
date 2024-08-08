@@ -297,3 +297,43 @@ class Design(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Photography(models.Model):
+    creator = models.ForeignKey(
+        CreatorProfile,
+        on_delete=models.CASCADE,
+        related_name="%(class)s_related",
+    )
+    slug = models.SlugField(blank=True, max_length=300)
+    title = models.CharField(
+        max_length=150,
+    )
+    date_posted = models.DateTimeField(
+        auto_now_add=True,
+    )
+    likes = models.ManyToManyField(
+        CreatorProfile, related_name="liked_photography", blank=True
+    )
+    image = models.ImageField(
+        upload_to="singles/photography/%Y/%m/",
+    )
+    favorited_by = models.ManyToManyField(
+        CreatorProfile,
+        blank=True,
+        related_name="photography",
+    )
+    tags = TaggableManager(blank=True)
+    typeof = models.CharField(max_length=15, default="photography")
+
+    class Meta:
+        verbose_name = "Photography"
+        verbose_name_plural = "Photography"
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)

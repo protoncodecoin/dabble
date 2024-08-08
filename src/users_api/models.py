@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.text import slugify
+from taggit.managers import TaggableManager
 
 from django.conf import settings
 
@@ -52,6 +53,7 @@ class CreatorProfile(models.Model):
         "self", through="Follow", symmetrical=False, related_name="followers"
     )
     total_likes = models.IntegerField(default=0)
+    interests = TaggableManager()
 
     def __str__(self):
         """Readable representation of the User Profile model"""

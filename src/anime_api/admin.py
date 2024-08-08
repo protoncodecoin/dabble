@@ -1,6 +1,15 @@
 from django.contrib import admin
 
-from .models import Series, WrittenStory, Anime, Season, Video, Text, Design
+from .models import (
+    Photography,
+    Series,
+    WrittenStory,
+    Anime,
+    Season,
+    Video,
+    Text,
+    Design,
+)
 
 
 # Register your models here.
@@ -115,3 +124,22 @@ class DesignAdmin(admin.ModelAdmin):
     list_display_links = ["title"]
     prepopulated_fields = {"slug": ("title",)}
     # show_facets = admin.ShowFacets.ALWAYS
+
+
+@admin.register(Photography)
+class PhotographyAdmin(admin.ModelAdmin):
+    """Register Photography model to admin site"""
+
+    list_display = [
+        "title",
+        "id",
+        "creator",
+        "date_posted",
+    ]
+
+    list_filter = [
+        "date_posted",
+        "creator",
+    ]
+    list_display_links = ["title"]
+    prepopulated_fields = {"slug": ("title",)}

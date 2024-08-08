@@ -8,16 +8,12 @@ console.log(mostViewedURL);
  * @returns {Array}
  */
 const filterData = (data) => {
-  console.log("========================")
-  console.log(data)
   let result = [];
   if (data.length !== 0 || data.length > 0) {
     for (let i = 0; i < data.length; i++) {
       result.push(data[i]);
     }
-    console.log("===============")
-    console.log(result)
-    console.log("============")
+
     return result;
   }
   return "None";
@@ -48,8 +44,6 @@ const mostViewedPost = async () => {
       ...text_most_viewed.slice(0, 1),
       ...design_most_viewed.slice(0, 1),
     ];
-
-    console.log("merged", mergedData)
 
     const newRank = filterData(mergedData);
 

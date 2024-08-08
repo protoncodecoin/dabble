@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="{% static 'css/gallery_tabs.css' %}" />
     {% elif selection == "library"%}
     <link rel="stylesheet" href="{% static 'css/library.css' %}" />
-
+    {% elif selection == "chat" %}
+        <link rel="stylesheet" href="{% static 'css/chatpage.css' %}" />
     {% endif %}
   </head>
   <body>
@@ -73,6 +74,24 @@
     </div>
     {% block include_js %}
     {% endblock %}
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // DOM loaded
+
+    {% block domready %}
+
+    {% endblock %}
+      })
+    </script>
+
     <script src="{% static 'js/sidebar.js' %}"></script>
+      <script>
+      const csrf_token = "{{ csrf_token }}";
+      const creatorName = "{{ request.user.creator_profile.id }}"
+      {% comment %} const creatorProfile = "{{ request.user.creator_profile.id }}" {% endcomment %}
+      {% comment %} console.log(creatorProfile) {% endcomment %}
+      
+  </script>
   </body>
 </html>

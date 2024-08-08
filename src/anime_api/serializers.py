@@ -16,6 +16,7 @@ from .models import (
     Text,
     Design,
     Video,
+    Photography,
 )
 
 from comment_system.models import Comment
@@ -1068,7 +1069,7 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                         title = validated_data.get("title")
                         generated_name = f"{title}.{extension}"
                         validated_data.get("illustration").name = generated_name
-                        print(validated_data.get("illustration").name)
+
                 return super().update(instance, validated_data)
             raise serializers.ValidationError(
                 "You do not have the required permission."
@@ -1093,6 +1094,7 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
             "thumbnail",
             "synopsis",
             "video_file",
+            "release_date",
             "tags",
             "likes",
             "typeof",
@@ -1176,6 +1178,94 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         raise serializers.ValidationError(
             "You do not have the permission to perform this action."
         )
+
+
+class PhotographyCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
+    """Serializer to create photography"""
+
+    tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
+
+    class Meta:
+        model = Photography
+        fields = [
+            "creator",
+            "id",
+            "slug",
+            "title",
+            "image",
+            "tags",
+            "date_posted",
+            "likes",
+            # "typeof",
+        ]
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            try:
+                creator_prof = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if validated_data.get("creator") == creator_prof:
+
+                title = validated_data.get("title")
+                extension = validated_data.get("image").name.split(".")[-1]
+                generated_name = f"{title}.{extension}"
+                validated_data.get("image").name = generated_name
+                return super().create(validated_data)
+            raise serializers.ValidationError("Invalid ID Provided")
+        raise serializers.ValidationError("You don't have the permission")
+
+
+class PhotographyDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
+    """Detail serialize photography model data"""
+
+    tags = TagListSerializerField()
+    likes = serializers.HyperlinkedRelatedField(
+        many=True, read_only=True, view_name="creatorprofile-detail"
+    )
+
+    class Meta:
+        model = Photography
+        fields = [
+            "id",
+            "slug",
+            "creator",
+            "title",
+            "date_posted",
+            "likes",
+            "image",
+            "tags",
+            "typeof",
+        ]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        req_user = request.user
+
+        if req_user.is_creator:
+            try:
+                req_creator = CreatorProfile.objects.get(creator=req_user)
+            except CreatorProfile.DoesNotExist:
+                raise serializers.ValidationError("User does not exist")
+            if req_creator == instance.creator:
+                if validated_data.get("image"):
+                    extension = validated_data.get("image").name.split(".")[-1]
+                    if validated_data.get("title"):
+                        title = validated_data.get("title")
+                        generated_name = f"{title}.{extension}"
+                        validated_data.get("image").name = generated_name
+                        print(validated_data.get("image").name)
+                return super().update(instance, validated_data)
+            raise serializers.ValidationError(
+                "You do not have the required permission."
+            )
+        raise serializers.ValidationError("You do not have the required permission.")
 
 
 class TextFavoriteSerializer(serializers.ModelSerializer):

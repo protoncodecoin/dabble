@@ -1,36 +1,45 @@
 from django.contrib import admin
 
-from .models import Message, Room
+from .models import GroupMessage, Message, UserChannel
 
 # Register your models here.
 
 
+@admin.register(GroupMessage)
+class GroupMessageAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "user",
+        "created_at",
+        "is_appropriate",
+        "sent_on",
+    ]
+    list_filter = [
+        "is_appropriate",
+        "created_at",
+        "user",
+        "sent_on",
+    ]
+    search_fields = ["text"]
+
+
 @admin.register(Message)
-class MessageAdmin(admin.ModelAdmin):
+class MessagAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "user",
-        "created_at",
-        "is_appropriate",
-    ]
-    list_filter = [
-        "is_appropriate",
-        "created_at",
-        "user",
-    ]
-
-
-@admin.register(Room)
-class RoomAdmin(admin.ModelAdmin):
-    list_display = [
-        "id",
-        "name",
-        "host",
-        "is_approved",
+        "from_user",
+        "to_who",
+        "sent_on",
+        "has_been_seen",
     ]
 
     list_filter = [
-        "id",
-        "name",
-        "is_approved",
+        "has_been_seen",
+        "sent_on",
     ]
+    search_fields = ["message"]
+
+
+@admin.register(UserChannel)
+class UserChannelsAdmin(admin.ModelAdmin):
+    list_display = ["user"]

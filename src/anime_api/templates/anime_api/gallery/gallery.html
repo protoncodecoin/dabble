@@ -31,17 +31,17 @@
           </a>
         </div>
         <div class="column">
-          <a href="postpage.html">
-            <h3>Trends</h3>
+          <a href="{% url 'anime_html:gallery_photography' %}">
+            <h3>Photography</h3>
           <img src="{% static 'images/(12).jpg' %}" alt="" />
           </a>
         </div>
-        <div class="column">
+        {% comment %} <div class="column">
           <a href="{% url 'anime_html:gallery_randoms' %}">
             <h3>Randoms</h3>
           <img src="{% static 'images/(17).jpg' %}" alt="" />
           </a>
-        </div>
+        </div> {% endcomment %}
       </div>
 
 {% endblock %}

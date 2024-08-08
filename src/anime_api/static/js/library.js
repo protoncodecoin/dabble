@@ -5,7 +5,7 @@ const authenticatedUser = document.querySelector("#request-user")
 const userFavBooksEl = document.querySelector("#fav_books");
 let currentPage = 1;
 let total = 0;
-let limit = 7;
+let limit = 10;
 let filteredResStatus = true;
 let currentURL = `/library/books`;
 

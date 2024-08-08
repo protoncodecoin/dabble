@@ -5,7 +5,7 @@ const postAnimationContainerEl = document.querySelector("#gallery_animation");
 const throttleTime = 1000;
 let throttleTimer = false;
 let offset = 0;
-let limit = 1;
+let limit = 10;
 let blockAnimationRequest = false;
 let emptyAnimationPage = false;
 let totalPosts;
@@ -179,5 +179,3 @@ postAnimationContainerEl.addEventListener("click", function (e) {
     console.log(e.target);
   }
 });
-
-console.log("hi there ----------");

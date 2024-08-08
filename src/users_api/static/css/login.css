@@ -56,7 +56,7 @@ body {
 .image-bg {
   flex-basis: 45%;
   border-radius: 20px;
-  background-image: url(/Images/cloudy.jpg);
+  /* background-image: url(/Images/cloudy.jpg); */
   height: 95%;
   width: 100%;
 }

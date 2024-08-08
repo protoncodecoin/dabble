@@ -1,0 +1,559 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #fff;
+  position: relative;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 65px;
+  height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s;
+}
+
+.side-bar-toggle {
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+  background-color: transparent;
+  transition: 0.15s;
+}
+
+.side-bar-toggle img {
+  height: 20px;
+}
+
+.side-bar-toggle:active {
+  margin-left: 3px;
+}
+
+.side-bar .s-ico {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: 0.5s;
+  text-decoration: none;
+}
+
+.side-bar .ico-expanded {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.side-bar .active {
+  background-color: #ff6969;
+}
+
+.side-bar .s-ico img {
+  height: 17px;
+  width: 20px;
+}
+
+.side-bar .s-ico:hover {
+  background-color: #f8a2a2;
+}
+
+.side-bar .active:hover {
+  background-color: #ff6969;
+}
+
+.side-bar .s-text {
+  color: #242424;
+  font-size: 13px;
+  height: 20px;
+  transition: 0.1s;
+}
+
+.active .s-text {
+  color: #dbdbdb;
+}
+
+.hide {
+  display: none;
+}
+
+/* MAIN */
+/* MAIN */
+/* MAIN */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  /* crthyv */
+  margin-left: 65px;
+  min-height: 100vh;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  transition: 0.1s;
+}
+
+.top-nav {
+  width: 100%;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.3);
+  /* border-bottom: 1px solid #cacaca; */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 15px 25px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: inherit;
+  z-index: 2;
+}
+
+.top-nav .dabble-ico {
+  cursor: pointer;
+  height: 30px;
+  width: 5%;
+}
+
+.dabble-ico img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.top-nav .search-bar {
+  width: 40%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.top-nav input {
+  width: 80%;
+  border-radius: 30px;
+  background-color: transparent;
+  outline: none;
+  border: 1px solid gray;
+  height: 36px;
+  padding: 5px 15px;
+  font-size: 15px;
+  transition: 0.3s;
+  margin: auto;
+}
+
+.top-nav input:hover {
+  width: 100%;
+}
+
+.top-nav input:focus {
+  width: 100%;
+}
+
+.top-nav .search-btn {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  width: 40px;
+  height: 30px;
+  border-radius: 20px;
+  border: none;
+  background-color: transparent;
+  color: rgb(119, 118, 118);
+  font-size: 13px;
+  transition: 0.3s;
+  cursor: pointer;
+  display: none;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.mode,
+.sign {
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.mode img {
+  height: 20px;
+  /* padding: 3px 7px; */
+}
+
+.sign {
+  margin-left: 15px;
+  border-radius: 12px;
+  padding: 7px 17px;
+}
+
+.mode:hover,
+.sign:hover {
+  transform: scale(1.1);
+  background-color: #fd5050;
+}
+
+/* dubious lines of code */
+.sign a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* body */
+/* body */
+/* body */
+
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.chat-page {
+  position: relative;
+  /* margin-top: 550px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 45%;
+  border: 1px solid gray;
+  margin: 10px auto;
+  border-radius: 30px;
+  min-height: 550px;
+  max-height: 550px;
+  background-color: #eeee;
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  border-bottom: 1px solid gray;
+  margin-bottom: 10px;
+}
+
+.header div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header div img {
+  position: absolute;
+  bottom: -30px;
+}
+
+.header img {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  border: 5px solid #fd5050;
+}
+
+.header h4 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  display: inline-block;
+  margin-left: 60px;
+}
+
+.header p {
+  font-size: 0.9rem;
+}
+
+.group-chat .header {
+  justify-content: center;
+}
+
+.group-chat .header h4 {
+  margin: 0;
+}
+
+.body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 30px;
+  /* min-height: 400px; */
+  max-height: 420px;
+  overflow: scroll;
+}
+
+.body::-webkit-scrollbar {
+  display: none;
+}
+
+.left-row,
+.right-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  /* background-color: rgb(233, 72, 72); */
+  /* height: 120px; */
+  /* margin: 5px 20px; */
+  padding: 10px;
+}
+
+.left-row img,
+.right-row img {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 3px solid #fd5050;
+  margin-bottom: 5px;
+  transition: 0.3s;
+}
+
+.left-row img:hover,
+.right-row img:hover {
+  transform: scale(1.1);
+}
+
+.right-row {
+  align-items: end;
+}
+
+.left-row .bubble {
+  border-top-left-radius: 0;
+  margin-left: 30px;
+}
+
+.name-img {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.right-row .bubble {
+  border-top-right-radius: 0;
+  margin-right: 30px;
+}
+
+.bubble {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  padding: 10px;
+  min-width: 20%;
+  max-width: 50%;
+  background-color: white;
+  transition: 0.3s;
+}
+
+.bubble:hover {
+  transform: scale(1.05);
+}
+
+.time {
+  font-size: 0.7rem;
+  color: grey;
+}
+
+.left-row .time {
+  margin-left: 30px;
+}
+
+.right-row .time {
+  margin-right: 30px;
+}
+
+.text-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  gap: 10px;
+  /* left: 0; */
+}
+
+.text-input input {
+  height: 40px;
+  border-radius: 20px;
+  background-color: #fff;
+  border: none;
+  width: 65%;
+  outline: none;
+  padding: 10px;
+  padding-left: 20px;
+}
+
+.text-input button {
+  height: 35px;
+  padding: 5px 10px;
+  background-color: #000;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+.text-input button:hover {
+  background-color: #fd5050;
+}
+
+.private-chat {
+  width: 100%;
+  min-height: 300px;
+  max-height: 300px;
+}
+
+.private-chat .body {
+  max-height: 230px;
+}
+
+.chat-list {
+  position: relative;
+  /* margin-top: 550px; */
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 100vh;
+  width: 45%;
+  border: 1px solid gray;
+  margin: 10px auto;
+  border-radius: 30px;
+  min-height: 550px;
+  max-height: 550px;
+  background-color: #eeee;
+  overflow-y: scroll;
+  padding: 20px;
+}
+
+.chat-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Accordions */
+
+.accordions {
+  width: 100%;
+}
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  margin: 7px 0 0;
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active {
+  /* background-color: #ccc; */
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+  margin: 0 0 8px;
+  background-color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 15px;
+  padding: 15px 30px;
+  width: 100%;
+  /* border: 1px solid black; */
+  background-color: #fff;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.list-item:hover {
+  transform: scale(1.05);
+}
+
+.active:hover {
+  transform: scale(1);
+}
+
+.list-item img {
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  border: 5px solid #fd5050;
+}
+
+.name-chat h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.name-chat p {
+  font-size: 0.85rem;
+  transition: 0.3s;
+}

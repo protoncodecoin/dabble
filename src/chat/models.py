@@ -1,33 +1,41 @@
 from django.db import models
 from users_api.models import CreatorProfile
+from django.conf import settings
 
 
-# Create your models here.
-class Room(models.Model):
-    name = models.CharField(max_length=255, null=False, blank=False, unique=True)
-    host = models.ForeignKey(
-        CreatorProfile, on_delete=models.CASCADE, related_name="rooms"
+class GroupMessage(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="messages"
     )
-    current_users = models.ManyToManyField(
-        CreatorProfile, related_name="current_rooms", blank=True
-    )
-    is_approved = models.BooleanField(default=False)
+    text = models.TextField(max_length=500, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_appropriate = models.BooleanField(default=True)
+    sent_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Room({self.name} {self.host})"
+        return f"{self.user} sent a message on {self.sent_on}"
 
 
 class Message(models.Model):
-    room = models.ForeignKey(
-        "chat.Room", on_delete=models.CASCADE, related_name="messages"
+    from_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="from_msg"
     )
-    text = models.TextField(max_length=500, blank=True)
-    image = models.ImageField(blank=True, null=True, upload_to="group/images/%Y/%m/")
-    user = models.ForeignKey(
-        CreatorProfile, on_delete=models.CASCADE, related_name="messages"
+    to_who = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="to_who"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_appropriate = models.BooleanField(default=True)
+    message = models.TextField()
+    sent_on = models.DateTimeField(auto_now_add=True)
+    has_been_seen = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Message({self.user} {self.room})"
+        return f"{self.from_user} sent a message to {self.to_who}"
+
+    class Meta:
+        ordering = ["sent_on"]
+
+
+class UserChannel(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_channel"
+    )
+    channel_name = models.TextField()

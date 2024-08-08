@@ -3,7 +3,7 @@ const loadTrigger = document.getElementById("load-trigger");
 const throttleTime = 1000;
 let throttleTimer = false;
 let offset = 0;
-let limit = 5;
+let limit = 10;
 let blockAnimationRequest = false;
 let emptyAnimationPage = false;
 
@@ -177,4 +177,4 @@ postVideoContainerEl.addEventListener("click", function (e) {
   }
 });
 
-console.log("hi there ----------");
+

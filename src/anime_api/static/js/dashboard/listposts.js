@@ -6,24 +6,24 @@ let emptyPage = false;
 const stateURLS = {
   textContent: {
     pageNum: 1,
-    offset: 3,
-    limit: 3,
+    offset: 10,
+    limit: 10,
     nextURL: `http://127.0.0.1:8000/content/textcontent`,
     previousURL: "",
   },
 
   videoContent: {
     pageNum: 1,
-    offset: 3,
-    limit: 3,
+    offset: 10,
+    limit: 10,
     nextURL: `http://127.0.0.1:8000/content/videocontent`,
     previousURL: "",
   },
 
   designContent: {
     pageNum: 1,
-    offset: 3,
-    limit: 3,
+    offset: 10,
+    limit: 10,
     nextURL: `http://127.0.0.1:8000/content/designcontent`,
     previousURL: "",
   },

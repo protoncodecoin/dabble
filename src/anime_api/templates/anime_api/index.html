@@ -195,9 +195,14 @@
 {% endblock %}
 
 {% block include_js %}
+    <script>
+        csrf_token = "{{ csrf_token }}";
+        {% comment %} const creatorName = "{{ request.user.creator_profile.id }}"; {% endcomment %}
+    </script>
     <script  src="{% static 'js/topCreators.js' %}"></script>
     <script src="{% static 'js/mostViewed.js' %}"></script>
     <script src="{% static 'js/recommendedBooks.js' %}"></script>
-    <script src="{% static 'js/postController.js' %}"></script>
+    <script src="{% static 'js/postController1.js' %}"></script>
     <script src="{% static 'js/trendsController.js' %}"></script>
+
 {% endblock %}

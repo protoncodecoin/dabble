@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.utils import timezone
 from django.db.models import Count
-from django.conf import settings
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,8 +10,13 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework import filters
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
+from anime_api.pagination import RecommendationPagination
 
 from .models import (
+    Photography,
     Series,
     WrittenStory,
     Anime,
@@ -26,6 +30,8 @@ from comment_system.models import Comment
 from comment_system.serializers import CommentSerializer
 
 from .serializers import (
+    PhotographyCreateSerializer,
+    PhotographyDetailSerializer,
     SeriesSerializer,
     SeriesDetailSerializer,
     StorySerializer,
@@ -61,6 +67,7 @@ from users_api.serializers import (
 from library.models import Book
 from library.pagination import CustomPagination
 from library.serializers import BookSerializer
+
 
 # connect to redis
 # r = redis.Redis(
@@ -615,7 +622,7 @@ class FavoritedAPIView(APIView):
                     text_serializer.data,
                     video_serializer.data,
                     design_serializer.data,
-                    books_serializer.data
+                    books_serializer.data,
                 ]
             },
             status=status.HTTP_200_OK,
@@ -945,7 +952,7 @@ class DesignDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
         """
 
-        queryset = Season.objects.all()
+        queryset = Design.objects.all()
 
         user_id = self.request.query_params.get("id")
         design_slug = self.request.query_params.get("slug")
@@ -1194,6 +1201,177 @@ def subsequent_episodes(request, content_type, season_id):
         )
         return Response({"results": story_season_serializer.data}, status=200)
     return Response({"error": "invalid content type provided"}, status=400)
+
+
+class RecommdationSystem(APIView):
+    pagination_class = RecommendationPagination
+
+    def get(self, request, *args, **kwargs):
+
+        user = request.user
+        combined_data = None
+        paginator = self.pagination_class()
+        count = 0
+        # get user profile
+        try:
+            user_profile = CreatorProfile.objects.get(creator=user)
+        except CreatorProfile.DoesNotExist:
+            return Response({"error": "resource not found"})
+
+            # get user interests
+        user_interest = user_profile.interests.all()
+
+        interests = [i.name for i in user_interest]
+
+        # to keep track of the video data from skits so that the same data won't be appended by videography
+        data_state = []
+
+        for interest in interests:
+            if interest == "skits":
+                # get data from textcontent and video content model
+                # filter them by lastest post (release_date)
+                text_data = Text.objects.all().order_by("-release_date")
+
+                # combine queryset to paginate
+                combined_data = (
+                    text_data
+                    if not combined_data
+                    else list(combined_data) + list(text_data)
+                )
+
+                video_data = Video.objects.all().order_by("-release_date")
+
+                # combine queryset to paginate
+                combined_data = (
+                    video_data
+                    if not combined_data
+                    else list(combined_data) + list(video_data)
+                )
+
+                data_state.append("skits")
+
+            if interest == "videography" and "skits" not in data_state:
+
+                video_data = Video.objects.all().order_by("-release_date")
+                # combine queryset to paginate
+                combined_data = (
+                    video_data
+                    if not combined_data
+                    else list(combined_data) + list(video_data)
+                )
+
+            if interest == "animation":
+                # get data from anime model
+                # filter the returned data by latest post (release data)
+                animation_data = Anime.objects.all().order_by("-release_date")
+
+                # combine queryset to paginate
+                combined_data = (
+                    animation_data
+                    if not combined_data
+                    else list(combined_data) + list(animation_data)
+                )
+                # count += animation_data.count()
+
+            if interest == "writtenstories":
+                # data data from writtenstories model
+                # filter the returned data by latest post (release_date)
+                written_stories = WrittenStory.objects.all().order_by("-release_date")
+
+                # combine queryset to paginate
+                combined_data = (
+                    written_stories
+                    if not combined_data
+                    else list(combined_data) + list(written_stories)
+                )
+
+        # paginate the combined querset
+        page = paginator.paginate_queryset(combined_data, request, view=self)
+
+        # serialize the paginated data
+        if page is not None:
+            # Determine the serializer to use for each object
+            serialized_data = []
+            for obj in page:
+                if isinstance(obj, Anime):
+                    serialized_data.append(
+                        AnimeSerializer(obj, context={"request": request}).data
+                    )
+                elif isinstance(obj, Text):
+                    serialized_data.append(
+                        TextCreateSerializer(obj, context={"request": request}).data
+                    )
+                elif isinstance(obj, Video):
+                    serialized_data.append(
+                        VideoCreateSerializer(obj, context={"request": request}).data
+                    )
+                elif isinstance(obj, WrittenStory):
+                    serialized_data.append(
+                        StoryCreateSerializer(obj, context={"request": request}).data
+                    )
+
+            # Get the paginated response witth the total count
+            total_count = len(combined_data)
+            return paginator.get_paginated_response(serialized_data, total_count)
+
+        return Response({"message": []})
+
+    def paginate_queryset(self, queryset, request, view=None):
+        paginator = self.pagination_class()
+        paginated_queryset = paginator.paginate_queryset(queryset, request, view)
+        return paginated_queryset
+
+
+class PhotographyCreateListAPIView(generics.ListCreateAPIView):
+    """
+    list and create design/illustration object
+    """
+
+    queryset = Photography.objects.all()
+    serializer_class = PhotographyCreateSerializer
+
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serailizer = DesignSerializer(queryset, many=True, context={"request": request})
+    #     return Response({"result": serailizer.data}, status=status.HTTP_200_OK)
+
+
+class PhotographyDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve: pk
+    Update: pk
+    Delete: pk
+    """
+
+    # queryset = Design.objects.all()
+    serializer_class = PhotographyDetailSerializer
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Photography.objects.all()
+
+        user_id = self.request.query_params.get("id")
+        design_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+        elif design_slug is not None:
+            queryset = queryset.filter(slug=design_slug)
+        return queryset
+
+    def delete(self, request, *args, **kwargs):
+        design = self.get_object()
+        req_user_prof = CreatorProfile.objects.get(creator=request.user)
+
+        if design.creator != req_user_prof:
+            return Response(
+                {"detail": "You do not have the permission to delete this content"}
+            )
+
+        return self.destroy(request, *args, **kwargs)
 
 
 @api_view

@@ -347,9 +347,9 @@ def gallery_stories(request):
     )
 
 
-def gallery_randoms(request):
+def photography(request):
     return render(
         request,
-        "anime_api/gallery/randoms.html",
-        {"selection": "gallery_animation", "sub_selection": "random"},
+        "anime_api/gallery/photography.html",
+        {"selection": "gallery_animation", "sub_selection": "photography"},
     )

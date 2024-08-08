@@ -32,8 +32,8 @@ urlpatterns = [
         name="gallery_stories",
     ),
     path(
-        "gallery/randoms/",
-        views_html.gallery_randoms,
-        name="gallery_randoms",
+        "gallery/photography/",
+        views_html.photography,
+        name="gallery_photography",
     ),
 ]

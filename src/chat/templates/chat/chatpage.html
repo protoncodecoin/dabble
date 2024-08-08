@@ -1,0 +1,460 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Chat {% endblock %}
+
+{% block content %}
+
+      <!-- Top navigational bar -->
+      {% include 'partials/_topnavigationbar.htm' %}
+
+    <div class="pages">
+
+      <div class="chat-page group-chat">
+        <div class="header">
+          <h4>Group Chat</h4>
+        </div>
+
+        <div class="body" id="group_chat">
+          {% for message in latest_messages %}
+            <div class=" {% if message.user == request.user %} right-row {% else %} left-row {% endif %}">
+                <div class="name-img">
+                  <a href="{% if message.user == request.user %} {% url 'anime_html:profile_page' request.user.creator_profile.id request.user.creator_profile.slug %} {% else %} {% url 'anime_html:profile_page' message.user.creator_profile.id message.user.creator_profile.slug %} {% endif %}">
+                    <img src="/media/{% if request.user == message.user %}{{ request.user.creator_profile.creator_logo }} {% else %}{{ message.user.creator_profile.creator_logo }} {% endif %}" alt="" />
+                  </a>
+                  <p>{% if message.user == request.user %} Me {% else %} {{message.user.username }} {% endif %}</p>
+                </div>
+                <div class="bubble">
+                  {{ message.text }}
+                </div>
+                <p class="time">
+                  {{ message.sent_on|date:"Y.m.d H:i A"}}
+                </p>
+              </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-input">
+          <input type="text" id="group_text_field" placeholder="Enter a message...">
+          <button type="submit" id="group_send_button">Send</button>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <!-- RIGHT -->
+      <!-- RIGHT -->
+
+
+      <div class="chat-list">
+
+
+        <div class="accordions" id="accordion_container">
+
+          {% for friend in friends %}
+
+          <button class="accordion list-item px-chat-component" data-id="{{ friend.id }}">
+            <img src="/media/{{ friend.creator_profile.creator_logo }}" alt="">
+            <div class="name-chat">
+              <h4><a href="profilepage.html">{{ friend.username }}</a></h4>
+              <p>How do you make yur photographs so beautiful? Lorem ipsum do sicing elit. Sapiente, modi?</p>
+            </div>
+          </button>
+          <div class="panel">
+            <div class="chat-page private-chat">
+              <div class="body" id='chat-body'>
+                {% comment %} <div class="left-row">
+                  <div class="bubble">
+                    heyy
+                  </div>
+                  <p class="time">
+                    9:31am
+                  </p>
+                </div>
+                <div class="right-row">
+                  <div class="bubble">
+                    hi, whats up?
+                  </div>
+                  <p class="time">
+                    9:36am
+                  </p>
+                </div>
+                <div class="left-row">
+                  <div class="bubble">
+                    Nm, you?
+                  </div>
+                  <p class="time">
+                    9:37am
+                  </p>
+                </div>
+                <div class="right-row">
+                  <div class="bubble">
+                    finishing a new design
+                  </div>
+                  <p class="time">
+                    9:40am
+                  </p>
+                </div>
+                <div class="right-row">
+                  <div class="bubble">
+                    Ill upload it soon😏
+                  </div>
+                  <p class="time">
+                    9:41am
+                  </p>
+                </div>
+                <div class="left-row">
+                  <div class="bubble">
+                    Awesome, cant wait to see it. Let me know when its up
+                  </div>
+                  <p class="time">
+                    9:44am
+                  </p>
+                </div> {% endcomment %}
+              </div>
+
+              <div class="text-input">
+                <input type="text" id="user-input" placeholder="Enter a message...">
+                <button type="submit" id="submit-btn">Send</button>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+{% endblock %}
+
+{% block include_js %}
+
+<script>
+  const chat_csrf_token = "{{ csrf_token }}";
+</script>
+<!-- Accordion -->
+<script>
+    let acc = document.getElementsByClassName("accordion");
+    let i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        let panel = this.nextElementSibling;
+
+        if (this.classList.contains('active')) {
+          this.querySelector('p').style.display = 'none'
+        } else this.querySelector('p').style.display = 'block'
+
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  </script>
+
+    {% comment %} <script>
+          document.querySelector("#accordion_container").addEventListener("click", function(e){
+        if (e.target.classList.contains("px-chat-component")){
+            //
+            console.log(e.target.dataset.id);
+            console.log("hi there. This is a sanity check");
+        }
+    })
+  </script> {% endcomment %}
+  
+  
+
+  {{ request.user.username|json_script:"request-user"}}
+  
+
+  {% endblock %}
+
+  {% block domready %}
+    const groupUrl = 'ws://' + window.location.host + '/ws/chat/room/all/';
+    
+    const groupChatSocket = new WebSocket(groupUrl);
+
+    groupChatSocket.onmessage = function(event){
+      const data = JSON.parse(event.data);
+      const groupChat = document.getElementById("group_chat");
+
+      const dateOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+      const datetime = new Date(data.datetime).toLocaleString('en', dateOptions);
+
+      const isMe = data.user === requestUser;
+      const source = isMe ? 'right-row' : 'left-row';
+      const name = isMe ? 'Me' : data.user;
+      const user = data.user;
+
+      let msg = source == 'right-row' ? `<div class="right-row">
+            <div class="name-img">
+              <p>${name}</p>
+              <a href="profilepage.html">
+                <img src="/media/{{ request.user.creator_profile.creator_logo }}" alt="">
+              </a>
+            </div>
+            <div class="bubble">
+             ${data.message}
+            </div>
+            <p class="time">
+              ${datetime}
+            </p>
+          </div>
+          ` : `
+          
+          <div class="left-row">
+            <div class="name-img">
+              <a href="profilepage.html">
+                <img src="{% url 'anime_html:profile_page' user.creator_profile.id user.creator_profile.slug  %}" alt="" />
+              </a>
+              <p>${name}</p>
+            </div>
+            <div class="bubble">
+              ${data.message}
+            </div>
+            <p class="time">
+              ${datetime}
+            </p>
+          </div>
+          `;
+
+      groupChat.insertAdjacentHTML("beforeend", msg)
+      groupChat.scrollTop = groupChat.scrollHeight;
+
+    }
+
+    {% comment %} Close socket {% endcomment %}
+    groupChatSocket.onclose = function(event){
+      console.log("Chat socket closed unexpectedly");
+    }
+
+    const input = document.getElementById("group_text_field");
+    const submitButton = document.getElementById("group_send_button");
+
+    submitButton.addEventListener("click", function(event){
+      const message = input.value;
+      if(message){
+        // send message in JSON format
+        groupChatSocket.send(JSON.stringify({"message": message}));
+
+        // clear input
+        input.value = "";
+      }
+    })
+    
+    input.addEventListener("keypress", function(event){
+      if (event.key === "Enter"){
+        // cancel the default action, if needed
+        event.preventDefault();
+        // trigger click event on button
+        submitButton.click();
+      }
+    })
+
+    input.focus();
+
+    const requestUser = JSON.parse(document.getElementById('request-user').textContent);
+
+    {% comment %} // ONE-TO-ONE CHAT {% endcomment %}
+
+const accordionContainerEl = document.querySelector("#accordion_container");
+
+
+accordionContainerEl.addEventListener("click", async function(e){
+    if (e.target.classList.contains("px-chat-component")){
+        // get the id of the user
+        let userID = e.target.dataset.id;
+
+        
+        // instantiate a web socket with the clicked user's id
+         // INDIVIDUAL CHATTING FUNCTIONALITY
+     const chatURL = 'ws://' + window.location.host + `/ws/chat/individual/${userID}/`;
+     const individualSocket = new WebSocket(chatURL);
+
+     // select the input field to get message
+        const curSibling = e.target.nextElementSibling; // button element
+        console.log(curSibling, "curslbiing");
+        
+        if (!curSibling){
+            return;
+        }else {
+
+            // get chat messages from API and render chat in DOM
+            const chatResults = await getChatMessages(+userID);
+            
+            // render chat in DOM
+            const parentChatEl = curSibling.querySelector("#chat-body");
+            renderChat(chatResults, parentChatEl)
+
+
+
+            // select and add click event to the submit btn 
+            let submitBtn = curSibling.querySelector("#submit-btn");
+            submitBtn.addEventListener("click", function(e){
+                const userInput = curSibling.querySelector("#user-input");
+                const userMsg = userInput.value;
+
+                if (userMsg) {
+                    // send message in JSON Format to other user
+                    individualSocket.send(JSON.stringify({"message": userMsg}));
+
+                    // clear input
+                    userInput.value= "";
+                }
+            });
+
+        }
+    
+
+        
+
+    // Listen for new messages from consumer
+      individualSocket.onmessage = function(event){
+        const data = JSON.parse(event.data);
+
+        console.log(data);
+
+        const chatEL = document.querySelector("#chat-body")
+
+        const dateOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+        const datetime = new Date(data.sent_on).toLocaleString('en', dateOptions);
+
+        
+        let chatData = `
+        <div class="left-row">
+            <div class="name-img">
+              <a href="profilepage.html">
+                <img src="{% url 'anime_html:profile_page' user.creator_profile.id user.creator_profile.slug  %}" alt="" />
+              </a>
+              <p>${data.from_user}</p>
+            </div>
+            <div class="bubble">
+              ${data.data}
+            </div>
+            <p class="time">
+              ${datetime}
+            </p>
+          </div>
+        
+        `
+
+        console.log(chatData);
+        chatEL.insertAdjacentHTML("beforeend", chatData);
+
+      }
+
+      // Listen for close event from consumer 
+        individualSocket.onclose = function(event){
+          console.log("Socket close unexpectedly");
+        }
+    }
+})
+
+
+/**
+ * 
+ * @param {number} other_user_id id of the other user to get the messages between authenticated user  
+ */
+const getChatMessages = async (other_user_id) => {
+
+    try {
+        const results = await fetch(`/socialize/chat/messages/?other=${other_user_id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': chat_csrf_token,
+                },
+                credentials: "include"
+            });
+
+        if (!results.ok) {
+            console.log("An error occurred: ", results.status, results.statusText);
+            throw Error("An error occurred");
+        }
+        
+    const jsonData = await results.json();
+
+    const fromUserProfile = jsonData.results[0].from_user.user_profile;
+    const currentUserProfile = jsonData.results[0].to_who.user_profile;
+
+        // get user profile
+    const usersProfiles = await Promise.all([
+        await getProfile(fromUserProfile), 
+        await getProfile(currentUserProfile)
+    ]);
+
+    const resultProfiles = usersProfiles.map((el) => el.creator_logo);
+
+    // renderChat([jsonData, resultProfiles])
+    return [jsonData, resultProfiles];
+
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+const getProfile = async (url) => {
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) throw Error("Could not get Profile");
+
+        const jsonData = await response.json();
+
+        return jsonData;
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+/**
+ * 
+ * @param {Array} data data of chat and user profile images
+ */
+const renderChat =  function (data, parentEl) {
+    console.log(data, 'this is the data passed')
+            // format date
+        const dateOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+        
+        const chatHTML = data[0].length <= 0 ? 0 : data[0].results.map((el) => {
+            
+            const datetime = new Date(el.sent_on).toLocaleString('en', dateOptions);
+            if (el.from_user.username == requestUser){
+            return `
+                <div class="right-row">
+                  <div class="bubble">
+                    ${el.message}
+                  </div>
+                  <p class="time">
+                    ${datetime}
+                  </p>
+                </div>             
+            `
+            }else 
+                return `
+                <div class="left-row">
+                  <div class="bubble">
+                   ${el.message}
+                  </div>
+                  <p class="time">
+                    ${datetime}
+                  </p>
+                </div>               
+                
+                `
+            }
+
+           
+        ).join("");
+        parentEl.innerHTML = "";
+        parentEl.insertAdjacentHTML("beforeend", chatHTML);
+}
+  {% endblock %}

@@ -7,6 +7,11 @@ app_name = "animes"
 
 urlpatterns = [
     path(
+        "recommendation/",
+        views.RecommdationSystem.as_view(),
+        name="recommendation_system",
+    ),
+    path(
         "episodes/<str:content_type>/<int:season_id>/",
         views.subsequent_episodes,
         name="subsequent_episodes",
@@ -65,6 +70,9 @@ urlpatterns = [
     # Design/Illustration
     path("designcontent/", views.DesignCreateListAPIView.as_view()),
     path("designcontent/<int:pk>/", views.DesignDetailAPIView.as_view()),
+    # Photography
+    path("photography/", views.PhotographyCreateListAPIView.as_view()),
+    path("photography/<int:pk>/", views.PhotographyDetailAPIView.as_view()),
     # Video
     path("videocontent/", views.VideoCreateListAPIView.as_view()),
     path("videocontent/<int:pk>/", views.VideoDetailAPIView.as_view()),

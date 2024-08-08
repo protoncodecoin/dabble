@@ -16,6 +16,8 @@ class Book(models.Model):
         ("videography", "Videography"),
         ("photography", "Photography"),
         ("typography", "Typography"),
+        ("advertising", "Advertising"),
+        ("research", "Research"),
     ]
 
     added_by = models.ForeignKey(CreatorProfile, on_delete=models.SET_NULL, null=True)

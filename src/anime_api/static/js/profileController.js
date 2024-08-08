@@ -84,7 +84,7 @@ const creatorProfileController = async () => {
  * @param {Array} favorites data to render in the browser
  */
 const renderUserFavorites = (favorites) => {
-  console.log(favorites, "this is the favorites data that was passed");
+
 
   const renderFavData = favorites
     .map((el) => {
