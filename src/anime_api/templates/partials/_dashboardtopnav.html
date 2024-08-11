@@ -1,9 +1,18 @@
-<div class="top-nav">
-        <div class="dabble-ico">D</div>
-        
+ 
+ {% load static %}
+ 
+ <div class="top-nav">
+        <div class="dabble-ico">
+          <img src="{% static 'icons/dabblelogo.svg' %}" alt="" />
+          <p>| Dashboard</p>
+        </div>
+
         <div class="buttons">
-          <button class="sign show-modal" ><a href="#">[[]] Create</a></button>
-          {% if request.user.is_authenticated %}
+          <button class="mode theme-toggle">
+            <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
+          </button>
+          <button class="sign show-modal"><a href="#">Create</a></button>
+         {% if request.user.is_authenticated %}
             <button class="sign"><a href="{% url 'users_html:logout' %}">Log Out</a></button>
             {% endif %}
         </div>

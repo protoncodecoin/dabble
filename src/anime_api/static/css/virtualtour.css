@@ -1,0 +1,269 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --bg: #fff;
+  --main-bg: #fff;
+  --card-bg: #eeeeee;
+  --card-hover-bg: #cecece;
+  --card-text: #000;
+  --content-right-bg: #eeeeee;
+  --sidebar-text: #242424;
+  --image-border-hover: #242424;
+}
+
+.dark-mode {
+  --bg: #000;
+  --main-bg: #0c0c0c;
+  --card-bg: #444444;
+  --card-hover-bg: #383838;
+  --card-text: #fff;
+  --content-right-bg: #707070;
+  --sidebar-text: #fafafa;
+  --image-border-hover: #fff;
+}
+
+body {
+  background-color: var(--bg);
+  position: relative;
+}
+
+.side-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 65px;
+  height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition: 0.3s;
+}
+
+.side-bar-toggle {
+  border: none;
+  cursor: pointer;
+  margin-bottom: 15px;
+  background-color: transparent;
+  transition: 0.15s;
+}
+
+.side-bar-toggle img {
+  height: 20px;
+}
+
+.side-bar-toggle:active {
+  margin-left: 3px;
+}
+
+.side-bar .s-ico {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: 0.5s;
+  text-decoration: none;
+}
+
+.side-bar .ico-expanded {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.side-bar .active {
+  background-color: #ff6969;
+}
+
+.side-bar .s-ico img {
+  height: 17px;
+  width: 20px;
+}
+
+.side-bar .s-ico:hover {
+  background-color: #f8a2a2;
+}
+
+.side-bar .active:hover {
+  background-color: #ff6969;
+}
+
+.side-bar .s-text {
+  color: var(--sidebar-text);
+  font-size: 13px;
+  height: 20px;
+  transition: 0.1s;
+}
+
+.active .s-text {
+  color: #dbdbdb;
+}
+
+.hide {
+  display: none;
+}
+
+/* MAIN */
+/* MAIN */
+/* MAIN */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+  /* crthyv */
+  margin-left: 65px;
+  min-height: 100vh;
+  border-radius: 20px;
+  background-color: var(--main-bg);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  transition: 0.1s;
+}
+
+.top-nav {
+  width: 100%;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.3);
+  /* border-bottom: 1px solid #cacaca; */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 15px 25px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: inherit;
+  z-index: 2;
+}
+
+.top-nav .dabble-ico {
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+}
+
+.dabble-ico img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dabble-ico p {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--card-text);
+}
+
+.top-nav .search-bar {
+  width: 40%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.top-nav input {
+  width: 80%;
+  border-radius: 30px;
+  background-color: transparent;
+  outline: none;
+  color: var(--card-text);
+  border: 1px solid gray;
+  height: 36px;
+  padding: 5px 15px;
+  font-size: 15px;
+  transition: 0.3s;
+  margin: auto;
+}
+
+.top-nav input:hover {
+  width: 100%;
+}
+
+.top-nav input:focus {
+  width: 100%;
+}
+
+.top-nav .search-btn {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  width: 40px;
+  height: 30px;
+  border-radius: 20px;
+  border: none;
+  background-color: transparent;
+  /* color: rgb(119, 118, 118); */
+  /* font-size: 13px; */
+  transition: 0.3s;
+  cursor: pointer;
+  /* display: none; */
+}
+
+.search-btn:active {
+  transform: scale(1.2);
+}
+
+.top-nav .search-btn img {
+  width: 30px;
+  height: 30px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.mode,
+.sign {
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.mode img {
+  height: 20px;
+  /* padding: 3px 7px; */
+}
+
+.sign {
+  margin-left: 15px;
+  border-radius: 12px;
+  padding: 7px 17px;
+}
+
+.mode:hover,
+.sign:hover {
+  transform: scale(1.1);
+  background-color: #fd5050;
+}
+
+/* dubious lines of code */
+.sign a {
+  text-decoration: none;
+  color: inherit;
+}

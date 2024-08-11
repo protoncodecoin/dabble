@@ -214,13 +214,13 @@ def toggle_like(request, content_id, content_type):
             if not series_instance.likes.filter(pk=user.id).exists():
                 series_instance.likes.add(user)
                 return Response(
-                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "series"}, status=status.HTTP_200_OK
                 )
             else:
                 series_instance.likes.remove(user)
                 return Response(
-                    {"message": "UnLike was successful"},
-                    status=status.HTTP_204_NO_CONTENT,
+                    {"message": False, "content": "series"},
+                    status=status.HTTP_200_OK,
                 )
         elif content_type == "stories":
             try:
@@ -233,15 +233,15 @@ def toggle_like(request, content_id, content_type):
             if not stories_instance.likes.filter(pk=user.id).exists():
                 stories_instance.likes.add(user)
                 return Response(
-                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "stories"}, status=status.HTTP_200_OK
                 )
             else:
                 stories_instance.likes.remove(user)
                 return Response(
-                    {"message": "UnLike was successful"},
-                    status=status.HTTP_204_NO_CONTENT,
+                    {"message": False, "content": "stories"},
+                    status=status.HTTP_200_OK,
                 )
-        elif content_type == "animes":
+        elif content_type == "anime":
             try:
                 anime_instance = Anime.objects.get(id=content_id)
             except Anime.DoesNotExist:
@@ -252,13 +252,13 @@ def toggle_like(request, content_id, content_type):
             if not anime_instance.likes.filter(pk=user.id).exists():
                 anime_instance.likes.add(user)
                 return Response(
-                    {"message": "Like was successful"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "anime"}, status=status.HTTP_200_OK
                 )
             else:
                 anime_instance.likes.remove(user)
                 return Response(
-                    {"message": "UnLike was successful"},
-                    status=status.HTTP_204_NO_CONTENT,
+                    {"message": False, "content": "anime"},
+                    status=status.HTTP_200_OK,
                 )
 
         elif content_type == "text":
@@ -272,12 +272,16 @@ def toggle_like(request, content_id, content_type):
             if not text_instance.likes.filter(pk=user.id).exists():
                 text_instance.likes.add(user)
                 return Response(
-                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                    {"message": True, "status": status.HTTP_200_OK, "content": "text"}
                 )
             else:
                 text_instance.likes.remove(user)
                 return Response(
-                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
+                    {
+                        "message": False,
+                        "content": "text",
+                        "status": status.HTTP_200_OK,
+                    }
                 )
 
         elif content_type == "video":
@@ -291,12 +295,16 @@ def toggle_like(request, content_id, content_type):
             if not video_instance.likes.filter(pk=user.id).exists():
                 video_instance.likes.add(user)
                 return Response(
-                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                    {"message": True, "content": "video", "status": status.HTTP_200_OK}
                 )
             else:
                 video_instance.likes.remove(user)
                 return Response(
-                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
+                    {
+                        "message": False,
+                        "content": "video",
+                        "status": status.HTTP_200_OK,
+                    }
                 )
 
         elif content_type == "design":
@@ -309,12 +317,20 @@ def toggle_like(request, content_id, content_type):
             if not design_instance.likes.filter(pk=user.id).exists():
                 design_instance.likes.add(user)
                 return Response(
-                    {"message": "like was successful", "status": status.HTTP_200_OK}
+                    {
+                        "message": True,
+                        "content": "ddesign",
+                        "status": status.HTTP_200_OK,
+                    }
                 )
             else:
                 design_instance.likes.remove(user)
                 return Response(
-                    {"message": "like removed", "status": status.HTTP_204_NO_CONTENT}
+                    {
+                        "message": False,
+                        "content": "design",
+                        "status": status.HTTP_200_OK,
+                    }
                 )
     return Response(
         {"detail": "content_id missing"}, status=status.HTTP_400_BAD_REQUEST
@@ -416,7 +432,7 @@ def comments(request, content_type, content_id):
             if existing_comment:
                 existing_comment.delete()
                 return Response(
-                    {"message": "Content deleted🚮"}, status=status.HTTP_204_NO_CONTENT
+                    {"message": "Content deleted🚮"}, status=status.HTTP_200_OK
                 )
             return Response(
                 {"message": "Content not found"}, status=status.HTTP_404_NOT_FOUND
@@ -472,6 +488,10 @@ def toggle_favorite(request, content_type, content_id):
             "anime": models.Anime,
             "story": models.WrittenStory,
             "book": Book,
+            "text": Text,
+            "design": Design,
+            "video": Video,
+            "photography": Photography,
         }
         target_content = content_type_mapping.get(content_type)
         if target_content:
@@ -489,12 +509,12 @@ def toggle_favorite(request, content_type, content_id):
                 if anime_obj.favorited_by.filter(id=user_profile.id).exists():
                     anime_obj.favorited_by.remove(user_profile)
                     return Response(
-                        {"message": "anime removed from favorites"},
-                        status=status.HTTP_204_NO_CONTENT,
+                        {"message": False, "content": "anime"},
+                        status=status.HTTP_200_OK,
                     )
                 anime_obj.favorited_by.add(user_profile)
                 return Response(
-                    {"message": "anime added to favorites"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "anime"}, status=status.HTTP_200_OK
                 )
 
             if target_content == models.Series:
@@ -512,12 +532,12 @@ def toggle_favorite(request, content_type, content_id):
                 if series_obj.favorited_by.filter(id=user_profile.id).exists():
                     series_obj.favorited_by.remove(user_profile)
                     return Response(
-                        {"message": "series removed from favorites"},
-                        status=status.HTTP_204_NO_CONTENT,
+                        {"message": False, "content": "series"},
+                        status=status.HTTP_200_OK,
                     )
                 series_obj.favorited_by.add(user_profile)
                 return Response(
-                    {"message": "series added to favorites"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "series"}, status=status.HTTP_200_OK
                 )
 
             if target_content == models.WrittenStory:
@@ -534,12 +554,12 @@ def toggle_favorite(request, content_type, content_id):
                 if story_obj.favorited_by.filter(id=user_profile.id).exists():
                     story_obj.favorited_by.remove(user_profile)
                     return Response(
-                        {"message": "story removed from favorites"},
-                        status=status.HTTP_204_NO_CONTENT,
+                        {"message": False, "content": "story"},
+                        status=status.HTTP_200_OK,
                     )
                 story_obj.favorited_by.add(user_profile)
                 return Response(
-                    {"message": "story added to favorites"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "story"}, status=status.HTTP_200_OK
                 )
 
             if target_content == Book:
@@ -554,12 +574,99 @@ def toggle_favorite(request, content_type, content_id):
                 if book_instance.favorited_by.filter(id=user.id).exists():
                     book_instance.favorited_by.remove(user_profile)
                     return Response(
-                        {"message": "book removed from favorites"},
-                        status=status.HTTP_204_NO_CONTENT,
+                        {"message": False, "content": "book"},
+                        status=status.HTTP_200_OK,
                     )
                 book_instance.favorited_by.add(user_profile)
                 return Response(
-                    {"message": "book added to favorites"}, status=status.HTTP_200_OK
+                    {"message": True, "content": "book"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == Text:
+                try:
+                    text_instance = Text.objects.get(id=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+
+                except (Text.DoesNotExist, CreatorProfile.DoesNotExist):
+                    return Response(
+                        {"message": "text content not found"},
+                        status=status.HTTP_404_NOT_FOUND,
+                    )
+                if text_instance.favorited_by.filter(id=user.id).exists():
+                    text_instance.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": False, "content": "text"},
+                        status=status.HTTP_200_OK,
+                    )
+                text_instance.favorited_by.add(user_profile)
+                return Response(
+                    {"message": True, "content": "text"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == Design:
+                try:
+                    design_instance = Design.objects.get(id=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+
+                except (Design.DoesNotExist, CreatorProfile.DoesNotExist):
+                    print("I do not exist=======")
+                    return Response(
+                        {"message": "design not found"},
+                        status=status.HTTP_404_NOT_FOUND,
+                    )
+                if design_instance.favorited_by.filter(id=user.id).exists():
+                    print("I was removed========")
+                    design_instance.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": False, "content": "design"},
+                        status=status.HTTP_200_OK,
+                    )
+                design_instance.favorited_by.add(user_profile)
+                return Response(
+                    {"message": True, "content": "design"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == Video:
+                try:
+                    video_instance = Video.objects.get(id=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+
+                except Video.DoesNotExist or CreatorProfile.DoesNotExist:
+                    return Response(
+                        {"message": "video content not found"},
+                        status=status.HTTP_404_NOT_FOUND,
+                    )
+                if video_instance.favorited_by.filter(id=user.id).exists():
+                    video_instance.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": False, "content": "video"},
+                        status=status.HTTP_200_OK,
+                    )
+                video_instance.favorited_by.add(user_profile)
+                return Response(
+                    {"message": True, "content": "video"}, status=status.HTTP_200_OK
+                )
+
+            if target_content == Photography:
+                try:
+                    photography = Photography.objects.get(id=content_id)
+                    user_profile = CreatorProfile.objects.get(creator=user)
+
+                except Photography.DoesNotExist or CreatorProfile.DoesNotExist:
+                    return Response(
+                        {"message": "photography content not found"},
+                        status=status.HTTP_404_NOT_FOUND,
+                    )
+                if photography.favorited_by.filter(id=user.id).exists():
+                    photography.favorited_by.remove(user_profile)
+                    return Response(
+                        {"message": False, "content": "photography"},
+                        status=status.HTTP_200_OK,
+                    )
+                photography.favorited_by.add(user_profile)
+                return Response(
+                    {"message": True, "content": "photography"},
+                    status=status.HTTP_200_OK,
                 )
 
         return Response(

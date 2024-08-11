@@ -14,7 +14,7 @@ class Comment(models.Model):
         ContentType,
         blank=True,
         null=True,
-        related_name="target_obj",
+        related_name="post_comments",
         on_delete=models.CASCADE,
     )
     object_id = models.PositiveIntegerField(

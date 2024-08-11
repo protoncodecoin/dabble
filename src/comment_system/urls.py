@@ -5,10 +5,10 @@ from . import views
 app_name = "comments"
 
 urlpatterns = [
-    path("all/", views.CommentAPIView.as_view(), name="all_comments"),
+    path("create/", views.CommentAPIView.as_view(), name="all_comments"),
     path(
-        "<int:pk>/",
-        views.CommentDetailAPIView.as_view(),
+        "all/",
+        views.CommentListAPIView.as_view(),
         name="comment-detail",
     ),
 ]

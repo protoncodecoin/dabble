@@ -16,4 +16,13 @@ urlpatterns = [
         views.follow_and_unfollow,
         name="follow_and_unfollow",
     ),
+    path(
+        "check_follow_status/<int:creator_id>/",
+        views.check_follow_status,
+        name="check_follow_status",
+    ),
+    path(
+        "check_fav_like_status/<str:content_type>/<int:object_id>/",
+        views.check_like_fav_status,
+    ),
 ]

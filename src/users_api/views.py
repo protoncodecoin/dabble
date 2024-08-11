@@ -8,7 +8,15 @@ from django.db.models import F, Q, Count
 
 from rest_framework.views import APIView
 
-from anime_api.models import Series
+from anime_api.models import (
+    Anime,
+    Design,
+    Photography,
+    Series,
+    Text,
+    Video,
+    WrittenStory,
+)
 
 
 from .models import (
@@ -194,7 +202,7 @@ def follow_and_unfollow(request, creator_id):
     if not user_prof.following.filter(pk=creator.id).exists():
         Follow.objects.create(user_from=user_prof, user_to=creator)
         return Response(
-            {"status": "ok", "message": "Successfully Following"},
+            {"status": "ok", "message": True},
             status=status.HTTP_201_CREATED,
         )
     else:
@@ -203,15 +211,89 @@ def follow_and_unfollow(request, creator_id):
                 user_from=user_prof, user_to=creator
             ).first()
         except Follow.DoesNotExist:
+            print("relationship does not exist")
             return Response(
                 {"message": "You don't follow this creator"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+        if follow_relationship is None:
+            return Response(
+                {"message": "error"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         follow_relationship.delete()
         return Response(
-            {"status": "ok", "message": "Not following successful"},
-            status=status.HTTP_204_NO_CONTENT,
+            {"status": "ok", "message": False},
+            status=status.HTTP_200_OK,
         )
+
+
+@api_view(["POST"])
+def check_follow_status(request, creator_id):
+    """
+    Check the status if the authenticated user is following the other user or not
+    """
+    user = request.user
+
+    try:
+        user_prof = CreatorProfile.objects.get(creator=user)
+        creator = CreatorProfile.objects.get(id=creator_id)
+    except CreatorProfile.DoesNotExist:
+        return Response(
+            {
+                "status": "error",
+                "detail": f"Creator with the id of {creator_id} does not exists",
+            },
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if user_prof.following.filter(pk=creator.id).exists():
+        return Response({"message": True}, status=200)
+    else:
+
+        return Response({"message": False}, status=200)
+
+
+@api_view(["POST"])
+def check_like_fav_status(request, content_type, object_id):
+    """
+    Check if the post displayed has been liked and added to favorite by the user the authenticated user
+    """
+    added_to_fav = False
+    liked = False
+
+    content_type_mapping = {
+        "anime": Anime,
+        "story": WrittenStory,
+        "designcontent": Design,
+        "textcontent": Text,
+        "videocontent": Video,
+        "photography": Photography,
+    }
+
+    user = request.user
+    selected_ct = content_type_mapping.get(content_type)
+
+    try:
+        creator_prof = CreatorProfile.objects.get(creator=user)
+    except (CustomUser.DoesNotExist, CreatorProfile.DoesNotExist, ValueError):
+        return Response({"error": "invalid user data"})
+    if selected_ct:
+        selected_ct.objects.get(id=object_id)
+
+        print(selected_ct)
+
+        # has user liked the post
+        liked = selected_ct.objects.get(id=object_id)
+        liked = liked.likes.filter(creator=user).exists()
+
+        # has user added the post to favorites
+        added_to_fav = selected_ct.objects.get(id=object_id)
+        added_to_fav = added_to_fav.favorited_by.filter(creator=user).exists()
+
+        return Response({"liked": liked, "favorited": added_to_fav})
+    return Response({"error": "invalid content type"})
 
 
 class CreatorViewSet(
@@ -269,9 +351,7 @@ class CreatorViewSet(
                 ),
                 recent_written_stories=Count(
                     "writtenstory_related",
-                    filter=Q(
-                        writtenstory_related__release_date__lte=one_month_ago
-                    ),
+                    filter=Q(writtenstory_related__release_date__lte=one_month_ago),
                 ),
             )
             .annotate(

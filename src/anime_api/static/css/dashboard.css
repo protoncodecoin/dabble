@@ -6,8 +6,30 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
+:root {
+  --bg: #fff;
+  --main-bg: #fff;
+  --card-bg: #eeeeee;
+  --card-hover-bg: #cecece;
+  --card-text: #000;
+  --content-right-bg: #eeeeee;
+  --sidebar-text: #242424;
+  --image-border-hover: #242424;
+}
+
+.dark-mode {
+  --bg: #000;
+  --main-bg: #0c0c0c;
+  --card-bg: #444444;
+  --card-hover-bg: #383838;
+  --card-text: #fff;
+  --content-right-bg: #707070;
+  --sidebar-text: #fafafa;
+  --image-border-hover: #fff;
+}
+
 body {
-  background-color: #dbdbdb;
+  background-color: var(--bg);
   position: relative;
 }
 
@@ -81,7 +103,7 @@ body {
 }
 
 .side-bar .s-text {
-  color: #242424;
+  color: var(--sidebar-text);
   font-size: 13px;
   height: 20px;
   transition: 0.1s;
@@ -107,9 +129,9 @@ body {
   margin-left: 65px;
   min-height: 100vh;
   border-radius: 20px;
-  background-color: #eeeeeec0;
-  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
+  background-color: var(--main-bg);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+  transition: 0.1s;
 }
 
 .top-nav {
@@ -130,6 +152,21 @@ body {
 
 .top-nav .dabble-ico {
   cursor: pointer;
+  height: 30px;
+  display: flex;
+}
+
+.dabble-ico img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dabble-ico p {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--card-text);
 }
 
 .top-nav input:hover {
@@ -140,7 +177,48 @@ body {
   width: 100%;
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
 .mode,
+.sign {
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.mode {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+}
+
+.mode img {
+  height: 20px;
+  /* padding: 3px 7px; */
+}
+
+.sign {
+  margin-left: 15px;
+  border-radius: 12px;
+  padding: 7px 17px;
+}
+
+.mode:hover,
+.sign:hover {
+  transform: scale(1.1);
+  background-color: #fd5050;
+}
+
+/*  */
+
+/* .mode,
 .sign {
   color: white;
   background-color: black;
@@ -160,7 +238,7 @@ body {
 
 .sign:hover {
   background-color: #fd5050;
-}
+} */
 
 /* dubious lines of code */
 .sign a {
@@ -179,7 +257,7 @@ body {
   background-color: transparent;
   border: none;
   outline: none;
-  color: black;
+  color: var(--card-text);
   padding: 0 5px;
   margin: 20px 10px 0;
   cursor: pointer;
@@ -226,17 +304,18 @@ body {
   align-items: center;
   justify-content: start;
   gap: 14px;
-  width: 100%;  
+  width: 100%;
   flex-wrap: wrap;
 }
 
-.page-content-card{
+.page-content-card {
   height: 240px;
-  background-color: #fff;
+  background-color: var(--card-bg);
   border-radius: 10px;
   overflow: hidden;
   flex-basis: 24%;
   min-width: 19%;
+  transition: 0.3s;
 }
 
 .book-card a,
@@ -256,24 +335,32 @@ body {
 
 .page-content-card p {
   font-size: 12px;
-  color: #727272;
+  color: var(--card-text);
   margin: 0 10px;
 }
- 
+
+.book-card:hover,
+.page-content-card:hover {
+  background-color: var(--card-hover-bg);
+  transform: scale(1.05);
+}
+
 /* BOOKS */
 
 .book-card {
   margin-top: 120px;
+  background-color: var(--card-bg);
   height: 110px;
-  background-color: #cecece;
   overflow: visible;
   position: relative;
   box-shadow: none;
-  padding:10px;
+  padding: 10px;
   flex-basis: 22%;
+  border-radius: 10px;
+  transition: 0.3s;
 }
 
-.book-card img{
+.book-card img {
   object-fit: cover;
   position: absolute;
   width: 45%;
@@ -285,6 +372,7 @@ body {
 
 .book-card p,
 .book-card button {
+  color: var(--card-text);
   margin-left: 60%;
   text-align: justify;
   font-size: 0.8rem;
@@ -302,7 +390,6 @@ body {
 .book-card button:hover {
   background-color: #242424;
 }
-
 
 /* modal */
 .overlay {
@@ -322,13 +409,14 @@ body {
   justify-content: start;
   align-items: start;
   gap: 10px;
-  position: absolute;
+  position: fixed;
   top: 50vh;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px 30px;
-  background-color: #fff;
+  background-color: var(--bg);
   min-width: 800px;
+  min-height: 390px;
   text-align: center;
   border-radius: 30px;
   z-index: 3;
@@ -363,11 +451,10 @@ body {
   height: 100%;
 }
 
-
 .left-btn {
   margin: 7px 0;
   padding: 3px 5px;
-  color: black;
+  color: var(--card-text);
   font-size: 0.85rem;
   display: block;
   background-color: transparent;
@@ -387,10 +474,9 @@ body {
   color: white;
 }
 
-
-
 /* right */
-.right-side {
+.right-side-1,
+.right-side-2 {
   width: 100%;
 }
 
@@ -403,7 +489,7 @@ body {
   background-color: transparent;
   border: none;
   outline: none;
-  color: black;
+  color: var(--card-text);
   padding: 0 5px;
   margin: 0 5px;
   cursor: pointer;
@@ -424,7 +510,8 @@ body {
   width: 50%;
 }
 
-.right-side hr {
+.right-side-1 hr,
+.right-side-2 hr {
   margin: 0 auto;
   width: 100%;
   margin-bottom: 18px;
@@ -447,7 +534,7 @@ form {
 }
 
 form input,
-textarea{ 
+textarea {
   display: block;
   outline: none;
   border-radius: 5px;
@@ -458,7 +545,8 @@ textarea{
 }
 
 form input::placeholder {
-  color: rgb(175, 175, 175); 
+  color: rgb(175, 175, 175);
+  /* color: var(--bg); */
 }
 
 .small {
@@ -486,24 +574,12 @@ form button,
   transition: 0.3s;
 }
 
-/* input[type="file"] {
-  display: none;
-  appearance: none;
-  background-color: initial;
-  cursor: default;
-  align-items: baseline;
-  color: inherit;
-  text-overflow: ellipsis;
-  border: initial;
-  margin: 0;
-} */
-
 .upload-button {
   width: 200px;
   /* margin: 0 auto; */
 }
- 
-.upload-button input{
+
+.upload-button input {
   width: 100%;
   height: 40px;
   color: rgb(255, 255, 255);
@@ -515,7 +591,7 @@ form button,
   outline: none;
 }
 
-input[type="file"]{
+input[type="file"] {
   /* width: 100%; */
   /* height: 45px; */
   color: gray;
@@ -525,7 +601,6 @@ input[type="file"]{
   /* border: 1px solid rgb(0, 0, 0); */
 }
 /*  */
-
 
 input[type="file"]:focus-within::file-selector-button,
 input[type="file"]:focus::file-selector-button {
@@ -559,10 +634,10 @@ input[type="file"]::before {
   cursor: pointer;
   top: 10px;
   left: 10px;
-  color: white;
   font-size: 13px;
   font-weight: 500;
   content: "Add Videos";
+  color: var(--bg);
 }
 
 .thumbnail[type="file"]::file-selector-button {
@@ -570,11 +645,13 @@ input[type="file"]::before {
 }
 
 .thumbnail[type="file"]::before {
-  content: "Add Thumbnail"
+  content: "Add Thumbnail";
+  color: var(--bg);
 }
 
 .image[type="file"]::before {
-  content: "Add Image"
+  content: "Add Image";
+  color: var(--bg);
 }
 
 input[type="file"]::after {
@@ -594,7 +671,7 @@ input[type="file"]::file-selector-button {
   /* padding: 5px; */
   height: 45px;
   cursor: pointer;
-  background-color: rgb(0, 0, 0);
+  background-color: var(--card-text);
   border: none;
   /* margin-right: 16px; */
   /* width: fit-content; */
@@ -605,7 +682,7 @@ form button:hover {
   background-color: #ff6969;
 }
 
-.post-btn, 
+.post-btn,
 .cancel-btn {
   display: inline;
   width: 100px;
@@ -627,8 +704,6 @@ form button:hover {
   color: #fd5050;
 }
 
-
-
 .tags {
   margin-top: 10px;
   color: rgb(175, 175, 175);
@@ -640,7 +715,7 @@ form button:hover {
   gap: 3px;
 }
 
-.publish-box input{
+.publish-box input {
   width: 5%;
   height: 20px;
   margin-bottom: 0;

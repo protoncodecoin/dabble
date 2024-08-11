@@ -27,10 +27,12 @@ from .utils import media_renamer, video_file_checker
 
 class CreatorInlineSerializer(serializers.Serializer):
     "Serialize data related to creator profile"
+    id = serializers.IntegerField(read_only=True)
     company_name = serializers.CharField(read_only=True)
     company_description = serializers.CharField(read_only=True)
     company_website = serializers.URLField(read_only=True)
     creator_logo = serializers.ImageField(read_only=True)
+    slug = serializers.SlugField(read_only=True)
 
 
 class ContactInlineSerializer(serializers.Serializer):
@@ -63,6 +65,7 @@ class SeriesSerializer(TaggitSerializer, serializers.ModelSerializer):
 
         model = Series
         fields = [
+            "id",
             "url",
             "pk",
             "slug",
@@ -113,6 +116,7 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source="creator.username")
     comments = serializers.SerializerMethodField()
     user_has_liked = serializers.SerializerMethodField()
+    user_has_favorited = serializers.SerializerMethodField()
     tags = TagListSerializerField()
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
@@ -135,6 +139,7 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "start_date",
             "end_date",
             "user_has_liked",
+            "user_has_favorited",
             "likes",
             "owner",
             "comments",
@@ -175,6 +180,10 @@ class SeriesDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
     def get_comments(self, obj):
         target_content_type = ContentType.objects.get_for_model(Series)
@@ -341,7 +350,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     user_has_liked = serializers.SerializerMethodField()
     season_number = serializers.ReadOnlyField(source="season.season_number")
-
+    user_has_favorited = serializers.SerializerMethodField()
     tags = TagListSerializerField()
 
     class Meta:
@@ -357,6 +366,7 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "episode_title",
             "release_date",
             "user_has_liked",
+            "user_has_favorited",
             "likes",
             "description",
             "content",
@@ -411,6 +421,10 @@ class StoryDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     def get_user_has_liked(self, obj):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
     def get_liked_user_names(self, obj):
         liked_users = obj.likes.all()
@@ -674,13 +688,16 @@ class AnimeFavoriteSerializer(serializers.ModelSerializer):
 
 class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     owner = CreatorInlineSerializer(source="series.creator", read_only=True)
-    comments = serializers.SerializerMethodField()
+    # comments = serializers.SerializerMethodField()
     series_name = serializers.ReadOnlyField(source="series.series_name")
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
     )
     user_has_liked = serializers.SerializerMethodField()
     tags = TagListSerializerField()
+    creator_name = serializers.ReadOnlyField(source="creator.creator.username")
+    user_has_favorited = serializers.SerializerMethodField()
+
     # favorited_urls = serializers.HyperlinkedRelatedField(
     #     view_name="animes:favorite-detail", read_only=True
     # )
@@ -697,14 +714,16 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "season",
             "release_date",
             "user_has_liked",
+            "user_has_favorited",
             "publish",
             "tags",
             "likes",
             "description",
             "thumbnail",
             "video_file",
-            "comments",
+            # "comments",
             "owner",
+            "creator_name",
             "favorited_by",
             "typeof",
             # "favorited_urls",
@@ -780,22 +799,26 @@ class AnimeDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         user = self.context["request"].user
         return obj.likes.filter(pk=user.pk).exists()
 
-    def get_comments(self, obj):
-        target_content_type = ContentType.objects.get_for_model(Anime)
-        comments = Comment.objects.filter(
-            content_type=target_content_type, object_id=obj.id
-        )
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
-        all_comments = {
-            comment.created.strftime("%m/%d/%Y, %H:%M:%S"): [
-                comment.user.user.email,
-                comment.text,
-            ]
-            for comment in comments
-            if comment.is_approved
-        }
+    # def get_comments(self, obj):
+    #     target_content_type = ContentType.objects.get_for_model(Anime)
+    #     comments = Comment.objects.filter(
+    #         content_type=target_content_type, object_id=obj.id
+    #     )
 
-        return {"message": all_comments}
+    #     all_comments = {
+    #         comment.created.strftime("%m/%d/%Y, %H:%M:%S"): [
+    #             comment.user.user.email,
+    #             comment.text,
+    #         ]
+    #         for comment in comments
+    #         if comment.is_approved
+    #     }
+
+    #     return {"message": all_comments}
 
 
 class SeasonSerializer(serializers.ModelSerializer):
@@ -951,12 +974,18 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
     )
+    owner = CreatorInlineSerializer(source="creator")
+    creator_name = serializers.ReadOnlyField(source="creator.creator.username")
+    user_has_favorited = serializers.SerializerMethodField()
+    user_has_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Text
         fields = [
             "id",
             "slug",
+            "owner",
+            "creator_name",
             "title",
             "content",
             "synopsis",
@@ -964,6 +993,8 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "release_date",
             "tags",
             "likes",
+            "user_has_liked",
+            "user_has_favorited",
             "typeof",
         ]
 
@@ -988,6 +1019,14 @@ class TextDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
                 "You do not have the required permission."
             )
         raise serializers.ValidationError("You do not have the required permission.")
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
 
 class DesignSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -1036,6 +1075,10 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
     )
+    creator_name = serializers.ReadOnlyField(source="creator.creator.username")
+    owner = CreatorInlineSerializer(source="creator")
+    user_has_liked = serializers.SerializerMethodField()
+    user_has_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Design
@@ -1043,7 +1086,10 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         fields = [
             "id",
             "slug",
-            "creator",
+            "creator_name",
+            "user_has_liked",
+            "user_has_favorited",
+            "owner",
             "title",
             "synopsis",
             "illustration",
@@ -1076,6 +1122,14 @@ class DesignDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             )
         raise serializers.ValidationError("You do not have the required permission.")
 
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
+
 
 class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
@@ -1103,7 +1157,6 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get("request")
         req_user = request.user
-        print(request, "------")
 
         if req_user.is_creator:
             try:
@@ -1133,10 +1186,14 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
 
 
 class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
+    owner = CreatorInlineSerializer(source="creator")
     tags = TagListSerializerField()
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
     )
+    creator_name = serializers.ReadOnlyField(source="creator.creator.username")
+    user_has_liked = serializers.SerializerMethodField()
+    user_has_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Video
@@ -1149,7 +1206,10 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
             "video_file",
             "tags",
             "release_date",
-            "creator",
+            "user_has_liked",
+            "user_has_favorited",
+            "creator_name",
+            "owner",
             "likes",
             "typeof",
         ]
@@ -1178,6 +1238,14 @@ class VideoDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
         raise serializers.ValidationError(
             "You do not have the permission to perform this action."
         )
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
 
 class PhotographyCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -1229,15 +1297,22 @@ class PhotographyDetailSerializer(TaggitSerializer, serializers.ModelSerializer)
     likes = serializers.HyperlinkedRelatedField(
         many=True, read_only=True, view_name="creatorprofile-detail"
     )
+    creator_name = serializers.ReadOnlyField(source="creator.creator.username")
+    owner = CreatorInlineSerializer(source="creator")
+    user_has_liked = serializers.SerializerMethodField()
+    user_has_favorited = serializers.SerializerMethodField()
 
     class Meta:
         model = Photography
         fields = [
             "id",
             "slug",
-            "creator",
+            "creator_name",
+            "owner",
             "title",
             "date_posted",
+            "user_has_liked",
+            "user_has_favorited",
             "likes",
             "image",
             "tags",
@@ -1266,6 +1341,14 @@ class PhotographyDetailSerializer(TaggitSerializer, serializers.ModelSerializer)
                 "You do not have the required permission."
             )
         raise serializers.ValidationError("You do not have the required permission.")
+
+    def get_user_has_liked(self, obj):
+        user = self.context["request"].user
+        return obj.likes.filter(pk=user.pk).exists()
+
+    def get_user_has_favorited(self, obj):
+        user = self.context["request"].user
+        return obj.favorited_by.filter(pk=user.pk).exists()
 
 
 class TextFavoriteSerializer(serializers.ModelSerializer):

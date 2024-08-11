@@ -1,0 +1,386 @@
+{% extends 'base.html' %}
+{% block title %}| Search {% endblock %}
+{% load static %}
+
+{% block content %}
+    <div class="main" id="main-view">
+          {% comment %} Top navigation bar {% endcomment %}
+{% include 'partials/_topnavigationbar.htm' %}
+
+      <div class="sort-bar">
+        <div>
+          <input type="checkbox" name="all" checked>
+        <label for="all">All</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="animation">Animation</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="film">Film</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="series">Series</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="design">Design & Illustration</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="shorts">Shorts</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="photography">Photography</label>
+        </div>
+        
+        <div>
+          <input type="checkbox" name="all">
+        <label for="story">Story</label>
+        </div>
+      </div>
+
+      <!-- search cards -->
+      <section class="search-box">
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+        
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+
+        <div class="search-card">
+          <div class="post-view">
+            <img class="modal-image hiddn" src="/Images/ (13).jpg" alt="Modal Image">
+            <!-- <video class="modal-video hidden" controls autoplay
+            muted
+            loop
+            controls
+            poster=""> -->
+          </div>
+    
+          <div class="right-side">
+            <!-- creator info -->
+            <div class="top-section">
+              <div class="image-text">
+                <a href="profilepage.html">
+                  <img src="/Images/ (1).jpg" alt="" />
+                </a>
+    
+                <div class="name-time">
+                  <a href="profilepage.html">
+                    <h3>Alan Dalani</h3>
+                  </a>
+                  <p>12 days ago</p>
+                </div>
+              </div>
+              <button class="follow">Follow</button>
+            </div>
+    
+            <p class="caption">
+              Art is where it all starts. The goal is simple, be the best to do it.
+            </p>
+    
+            <hr />
+    
+            <div class="actions">
+              <div class="interactions">
+                <img src="/Icons/likeicon1.svg" class="like" alt="" />
+                <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+                <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+              </div>
+    
+              <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+            </div>
+    
+            <hr />
+    
+            <div class="add-comment">
+              <input type="text" placeholder="Add comment.." />
+              <button type="submit">Post</button>
+            </div>
+          </div>
+    
+          <hr />
+        </div>
+      </section>
+
+    </div>
+{% endblock %}

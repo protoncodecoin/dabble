@@ -127,6 +127,10 @@ def activate(request, uidb64, token):
         return render(request, "users_api/activation_failed.html")
 
 
+def settings(request):
+    return render(request, "users_api/settings.html", {"selection": "settings"})
+
+
 def user_logout(request):
     logout(request)
     return redirect("users_html:login")

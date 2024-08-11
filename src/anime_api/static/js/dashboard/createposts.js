@@ -15,7 +15,7 @@ singleVideoEl.addEventListener("submit", async function (e) {
   // delete initial tags from the form data
   formdata.delete("tags");
 
-  // append new tags to the formdata
+  // append new tags to the formdata 
   tags.map((el) => {
     formdata.append("tags", el);
   });
@@ -45,3 +45,8 @@ singleVideoEl.addEventListener("submit", async function (e) {
 });
 
 const submitPost = async () => {};
+
+
+fetch("", {
+  
+})

@@ -5,42 +5,49 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
+from anime_api.models import Anime, Design, Series, Text, Video, WrittenStory
 from users_api.models import CreatorProfile
 
 from .models import Comment
-from .serializers import CommentSerializer, CommentDetailSerializer
+from .serializers import CommentListSerializer, CommentSerializer
 
 
 # Create your views here.
-class CommentAPIView(generics.ListCreateAPIView):
+class CommentAPIView(generics.CreateAPIView):
     # queryset = Comment.objects.filter(is_approved=True)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-    def perform_create(self, serializer):
-        req_user = self.request.user
-        target_obj = self.request.data.get("target_id")
-        content_type_str = self.request.data.get("target_ct")
-        parent = self.request.data.get("parent", None)
-        try:
-            content_type = ContentType.objects.get(id=content_type_str)
-            request_user = CreatorProfile.objects.get(creator=req_user)
-        except ContentType.DoesNotExist:
-            return Response(
-                {"error": "Invalid content type"}, status=status.HTTP_400_BAD_REQUEST
-            )
-        serializer.save(
-            target_ct=content_type,
-            target_id=target_obj,
-            user=request_user,
-            parent=parent,
-        )
 
-        return Response({"data": serializer.data}, status=status.HTTP_201_CREATED)
-
-        # serializer.save()
-
-
-class CommentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+class CommentListAPIView(generics.ListAPIView):
+    serializer_class = CommentListSerializer
     queryset = Comment.objects.all()
-    serializer_class = CommentDetailSerializer
+
+    def list(self, request):
+
+        content_type_mapping = {
+            "series": Series,
+            "anime": Anime,
+            "textcontent": Text,
+            "designcontent": Design,
+            "videocontent": Video,
+            "writtenstories": WrittenStory,
+        }
+
+        queryset = self.get_queryset()
+        object_id = self.request.query_params.get("object_id")
+        content_type = self.request.query_params.get("content_type")
+
+        # check the content type and retrieve comment with the associated object id
+        if object_id and content_type:
+            target_model = content_type_mapping.get(content_type)
+
+            # targe_model is a model from the content_type_mapping
+            if target_model:
+                post_data = target_model.objects.get(id=object_id)
+                queryset = post_data.comments.all()
+
+        serializer = CommentSerializer(
+            queryset, many=True, context={"request": request}
+        )
+        return Response(serializer.data)

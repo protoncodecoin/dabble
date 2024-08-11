@@ -10,8 +10,10 @@
   <link rel="stylesheet" href="{% static 'css/index.css' %}" />
   {% if selection == "signup" %}
   <link rel="stylesheet" href="{% static 'css/signup.css' %}">
-  {% else %}
+  {% elif selection == "login"%}
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  {% elif selection == "settings"%}
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
   {% endif %}
 
 </head>

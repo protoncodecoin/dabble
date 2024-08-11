@@ -5,9 +5,11 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
+from django.contrib.contenttypes.fields import GenericRelation
 
 from taggit.managers import TaggableManager
 
+from comment_system.models import Comment
 from users_api.models import CreatorProfile
 
 
@@ -96,7 +98,7 @@ class Base(models.Model):
     )
     episode_title = models.CharField(max_length=500)
     description = models.TextField(max_length=700, blank=True, null=True)
-    release_date = models.DateField(auto_now_add=True)
+    release_date = models.DateTimeField(auto_now_add=True)
     publish = models.BooleanField(default=True)
     likes = models.ManyToManyField(
         CreatorProfile,
@@ -132,6 +134,7 @@ class WrittenStory(Base):
     favorited_by = models.ManyToManyField(
         CreatorProfile, blank=True, related_name="favorite_stories"
     )
+    comments = GenericRelation(Comment, related_query_name="writtenstories_comments")
     typeof = models.CharField(max_length=12, default="writtenstory")
 
     class Meta:
@@ -155,6 +158,8 @@ class Anime(Base):
         blank=True,
         related_name="favorite_animes",
     )
+    comments = GenericRelation(Comment, related_query_name="anime_comments")
+
     typeof = models.CharField(max_length=5, default="anime")
 
     class Meta:
@@ -193,6 +198,8 @@ class Text(models.Model):
         related_name="favorite_text",
     )
     tags = TaggableManager(blank=True)
+    comments = GenericRelation(Comment, related_query_name="text_comments")
+
     typeof = models.CharField(max_length=4, default="text")
 
     class Meta:
@@ -241,6 +248,8 @@ class Video(models.Model):
         related_name="favorite_video",
     )
     tags = TaggableManager(blank=True)
+    comments = GenericRelation(Comment, related_query_name="video_comments")
+
     typeof = models.CharField(max_length=5, default="video")
 
     class Meta:
@@ -284,6 +293,8 @@ class Design(models.Model):
         related_name="favorite_design",
     )
     tags = TaggableManager(blank=True)
+    comments = GenericRelation(Comment, related_query_name="design_comments")
+
     typeof = models.CharField(max_length=6, default="design")
 
     class Meta:
@@ -324,6 +335,7 @@ class Photography(models.Model):
         related_name="photography",
     )
     tags = TaggableManager(blank=True)
+    comments = GenericRelation(Comment, related_query_name="photography_comments")
     typeof = models.CharField(max_length=15, default="photography")
 
     class Meta:

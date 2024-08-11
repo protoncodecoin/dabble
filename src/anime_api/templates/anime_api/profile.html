@@ -4,263 +4,240 @@
 
 {% block content %}
 
+  <div class="main" id="main-view">
  <!-- Top navigational bar -->
       {% include 'partials/_topnavigationbar.htm' %}
 
       <div class="content">
-
         <div class="content-main">
-            <div class="banner" >
-              <img src="/Images/cloudy.jpg" alt="" id="banner"/>
-            </div>
+          <div class="banner">
+            <img src="" alt="" id="banner"/>
+          </div>
 
-            <div class="profile-content">
-            <div class="profile-image" >
-              <img src="/dabble assets/broooo.jpg" alt="" id="profile-pic">
+          <div class="profile-content">
+            <div class="profile-image">
+              <img src="" alt="" id="profile-pic"/>
             </div>
 
             <h3 id="creator-name">
-              {% comment %} Jeffrey Dahmer {% endcomment %}
+              {% comment %} Jennifer Dahmer {% endcomment %}
+
             </h3>
             <h5 id="creator-programme">
               {% comment %} Creative Multimedia {% endcomment %}
             </h5>
 
-            
-
             <p id="biography">
-              {% comment %} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam animi accusamus ipsam cum labore. {% endcomment %}
+              {% comment %} Yep, Jeffrey Dahmer's little sis, dont worry, the only flavor of people I like is Dark Chocolate 😉🍧🍫 {% endcomment %}
             </p>
 
+            <h4>Interests</h4>
             <div class="tags">
-              <h4>Interests</h4>
-              <div class="tag">Music</div>
-              <div class="tag">Anime</div>
-              <div class="tag">Cars</div>
-              <div class="tag">Food</div>
-              <div class="tag">Travel</div>
+              <div class="tag">Art</div>
+              <div class="tag">Photography</div>
+              <div class="tag">Design</div>
             </div>
 
             <div class="profile-buttons">
               <button class="btn-2 msg">
-
                 <a href="{% url 'chat:chatty' %}">Message</a>
               </button>
-            
-            <button class="btn-2 edit">Edit Profile</button>
-            </div>
 
+              <button class="btn-2 edit">
+                <a href="{% url 'users_html:settings' %}">Edit Profile</a>
+              </button>
             </div>
+          </div>
 
-            <div class="portfolio-link">
-              Portfolio <a href="#" id="numOfWorks"></a>
-            </div>
+          <div class="portfolio-link">
+            Portfolio <a href="#" id="numOfWorks">15 artworks</a>
+          </div>
         </div>
 
         <!-- BOTTOM SECTION -->
         <div class="bottom-section">
-
           <section class="page-content">
-            
-              <div class="button-container">
-                <button id="post-tab" class="btn-2 active tab">Posts</button>
+            <div class="button-container">
+              <button id="post-tab" class="btn-2 active tab">Posts</button>
               <button id="watchlist-tab" class="btn-2 tab">Watchlist</button>
+            </div>
+            <div class="posts allCreatorPosts cx-post-container" id="post-container">
+               {% comment %} <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/hungry.jpg" alt="" />
+                <p>Hungry</p>
+              </div> {% endcomment %}
+              {% comment %}
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/Brown Tan White Cacao Chocolate Product Typography Logo.png" alt="" />
+                <p>Brown Tan White Cacao Chocolate Product Typography Logo</p>
               </div>
 
-            <div class="posts allCreatorPosts" id="post-container">
-              {% comment %} <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/IH.jpg" alt="" />
+                <p>Wow</p>
               </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button class=""><a href="postpage.html">Read</a></button>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/DIELLEEE.jpg" alt="" />
+                <p>DIELLEEE</p>
               </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/2024  esquan.jpg" alt="" />
+                <p>2024 Poster</p>
               </div>
               
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/3 cones.jpg" alt="" />
+                <p>3 cones Illustration</p>
               </div> {% endcomment %}
               
             </div>
 
-            <div class="posts tab-content-hide watchlist-container" id="watchlist-container">
-              {% comment %} <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Second section</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button ><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
+            <div class="posts tab-content-hide watchlist-container cx-post-container" id="watchlist-container">
               
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
+              {% comment %} <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/do yourself a flavor.jpg" alt="" />
+                <p>Do yourself a flavor</p>
               </div>
-              
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/aresst.jpg" alt="" />
+                <p>Arrest your cravings</p>
               </div>
-              
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
-              </div>
-              <div class="page-content-card">
-                <a href="postpage.html"><img src="/Images/ (3).jpg" alt="" />
-                <p>Character Modeling In 3D</p></a>
-              </div>
-              <div class="book-card">
-                <img src="/Images/ (16).jpg" alt="" />
-                <p>Machine's Way</p>
-                <p>Ronald Awudi</p>
-                <button><a href="postpage.html">Read</a></button>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/jennifer_s works/turn it up.jpg" alt="" />
+                <p>Turn it up</p>
               </div> {% endcomment %}
-              
             </div>
           </section>
         </div>
         <!--  -->
         <!--  -->
       </div>
+
+    <div class="overlay hidden"></div>
+    <!-- MODAL -->
+    <!-- MODAL -->
+    <!-- MODAL -->
+    <div class="pop-modal modal hidden">
+      <div class="post-view">
+        <img class="modal-image hidden" src="" alt="Modal Image">
+        <video class="modal-video hidden" controls autoplay
+        loop
+        controls
+        poster="">
+      </div>
+
+      <div class="right-side">
+        <!-- creator info -->
+        <div class="top-section">
+          <div class="image-text">
+            <a href="profilepage.html" id="prof-lnk">
+              <img src="/Images/ (1).jpg" alt="" />
+            </a>
+
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Alan Dalani</h3>
+              </a>
+              <p>12 days ago</p>
+            </div>
+          </div>
+          <button class="follow">Follow</button>
+        </div>
+
+        <p class="caption">
+          Art is where it all starts. The goal is simple, be the best to do it.
+        </p>
+
+        <hr />
+        <!-- comments -->
+        <div class="comments" id="comment-container">
+          
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (5).jpg" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Ronald the Conqueror</h3>
+              </a>
+              <p>Interesting, how much to conquer?</p>
+            </div>
+          </div>
+
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Portfolio/jennifer_s works/" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Brago</h3>
+              </a>
+
+              <p>An amazing piece</p>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="actions">
+          <div class="interactions">
+            <img src="{% static 'icons/likeicon1.svg' %}" class="like" alt="" />
+            <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+            <img src="{% static 'icons/saveicon1.svg' %}" class="fave" alt="" />
+          </div>
+
+          <p id='like-container'>Liked by <span id="liked-user">Jess Asante</span> and <span id="no-of-likes">23</span> others</p>
+        </div>
+
+        <hr />
+
+        <div class="add-comment" id="submit-btn">
+          <input type="text" placeholder="Add comment.." id="user-comment" required />
+          <button type="submit" >Post</button>
+        </div>
+      </div>
+
+      <hr />
+    </div>
+
 {% endblock %}
 
-{% block include_js %}
-  <script src="{% static 'js/profileController.js' %}"></script>
-  <script src="{% static 'js/userFavorites.js' %}"></script>
 
-    <script>
+{% block include_js %}
+<script src="{% static 'js/profileController.js' %}"></script>
+<script src="{% static 'js/userFavorites.js' %}"></script>
+
+{{ request.user.username|json_script:"request-user"}}
+
+  
+  <!-- Tab component Show/HIde -->
+  <script>
+    
+    const requestUser = JSON.parse(document.getElementById('request-user').textContent);
     // Tab component Show/HIde
-      const postTab = document.getElementById("post-tab");
-      const watchlistTab = document.getElementById("watchlist-tab");
-      const postContainer = document.getElementById("post-container");
-      const watchlistContainer = document.getElementById("watchlist-container");
+    const postTab = document.getElementById("post-tab");
+    const watchlistTab = document.getElementById("watchlist-tab");
+    const postContainer = document.getElementById("post-container");
+    const watchlistContainer = document.getElementById("watchlist-container");
+    
+    const commentContainerEl = document.querySelector("#comment-container")
+    const userComment = document.querySelector("#user-comment");
+    const submitCommentBtn = document.querySelector("#submit-btn");
+
+    const filter_content =  {
+        textcontent: "text",
+        designcontent: "design",
+        videocontent: "video",
+        anime: "anime",
+        writtenstory: "writtenstory"
+  }
+
+
 
 
       function swapTabs(tab, tabContent) {
@@ -270,10 +247,13 @@
           //   tabContent.classList.contains("tab-content-hide")
           // ) {
 
-            pushNPop(document.querySelectorAll(".tab"), document.querySelectorAll(".posts"));
+          pushNPop(
+            document.querySelectorAll(".tab"),
+            document.querySelectorAll(".posts")
+          );
 
-            tab.classList.add("active");
-            tabContent.classList.remove("tab-content-hide");
+          tab.classList.add("active");
+          tabContent.classList.remove("tab-content-hide");
           // } else {
           //   return;
           // }
@@ -281,17 +261,819 @@
       }
 
       //add and remove classes
-      function pushNPop (arr ,arr2) {
+      function pushNPop(arr, arr2) {
         for (let i = 0; i < arr.length; i++) {
-        arr[i].classList.remove('active');
-      }
+          arr[i].classList.remove("active");
+        }
         for (let i = 0; i < arr2.length; i++) {
-        arr2[i].classList.add('tab-content-hide');
-      }
+          arr2[i].classList.add("tab-content-hide");
+        }
       }
 
       // function calls
-      swapTabs(postTab, postContainer)
-      swapTabs(watchlistTab, watchlistContainer)
+      swapTabs(postTab, postContainer);
+      swapTabs(watchlistTab, watchlistContainer);
     </script>
+
+{% endblock %}
+
+{% block domready %}
+
+function timeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const secondsAgo = Math.floor((now - date) / 1000);
+
+    const minutesAgo = Math.floor(secondsAgo / 60);
+    const hoursAgo = Math.floor(minutesAgo / 60);
+    const daysAgo = Math.floor(hoursAgo / 24);
+
+    if (daysAgo > 0) {
+        return daysAgo === 1 ? "1 day ago" : `${daysAgo} days ago`;
+    } else if (hoursAgo > 0) {
+        return hoursAgo === 1 ? "1 hour ago" : `${hoursAgo} hours ago`;
+    } else if (minutesAgo > 0) {
+        return minutesAgo === 1 ? "1 minute ago" : `${minutesAgo} minutes ago`;
+    } else {
+        return secondsAgo === 1 ? "1 second ago" : `${secondsAgo} seconds ago`;
+    }
+}
+
+
+const baseDetailURL = "http://localhost:8000/content";
+    /**
+     * 
+     * @param {String} baseURL base url to be used
+     * @param {Number} id id of the selected post element 
+     * @param {String} typoOfPost typeof of selected post
+     *  
+     */
+    const getDetailedPost = async (baseUrl, id, typoOfPost) => {
+        const url = `${baseUrl}/${typoOfPost}/${id}`;
+        console.log(url)
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok){
+                console.log(response.status, response.statusText);
+                throw Error("Something happened")
+            }
+
+            const resJon = await response.json();
+            {% comment %} console.log(resJon) {% endcomment %}
+            return resJon;
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+
+      /**
+   * 
+   * @param {Number} creator_id id of the creator to be followed
+   * @pararm {String} action to be performed [POST, PUT]
+   */
+const followAndUnfollow = async function(creator_id, action="POST"){
+  const url = `http://localhost:8000/actions/follow/${creator_id}/`;
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      "Content-Type": "application/json"
+    },
+    credentails: "same-origin",
+    method: action
+  })
+
+  if (!response.ok) {
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+  
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+  /**
+   * 
+   * @param {Number} creator_id id of the creator to check status 
+   */
+const checkFollowStatus = async function(creator_id){
+  const url = `http://localhost:8000/actions/check_follow_status/${creator_id}/`;
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      ContentType: "application/json",
+      
+    },
+    credentials: "same-origin",
+    method: "POST"
+  })
+
+  if (!response.ok) {
+    console.log(response)
+    console.log(response.status, response.statusText)
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+
+  } catch (error) {
+    console.log(error);
+  }
+
+
+}
+
+
+/**
+ * 
+ * @param {String} content_type type of post object 
+ * @param {Number} object_id id of post object
+ */
+const getComments = async (content_type, object_id) => {
+  const url = `http://localhost:8000/comment/all/?content_type=${content_type}&object_id=${object_id}`;
+
+  try {
+    
+    const response = await fetch(url, {
+      header:{
+        "X-CSRFToken": csrf_token,
+      }
+    },)
+
+    if (!response.ok) {
+      console.log(response.status, response.statusText, response)
+      throw Error("An error occurred in comment async await")
+    }
+
+    const resJson = await response.json();
+    
+    // render comments
+    renderComments(resJson);
+    
+    return resJson;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+/**
+ * 
+ * @param {Array} data data to be rendered on the dom
+ */
+function renderComments(data){
+  const renderedCommentsHTML = data.length === 0 ? "<h2>Be the first to comment</h2>" : data.map((el) => {
+   
+    return    `<div class="image-text">
+            <a href="/${el.owner.id}/${requestUser}/">
+              <img src="${el.owner.creator_logo}" alt="${el.owner.company_name || el.user}" />
+            </a>
+            <div class="name-time">
+              <a href="/${el.owner.id}/${requestUser}/">
+                <h3>${el.owner.company_name || el.user}</h3>
+              </a>
+              <p>${el.text}</p>
+            </div>
+          </div>
+    `
+  }).join("");
+
+  commentContainerEl.innerHTML = "";
+  commentContainerEl.insertAdjacentHTML("beforeend", renderedCommentsHTML);
+}
+
+
+
+/**
+ * 
+ * @param {Object} data data to be rendered on the dom
+ */
+function renderSingleComment(data){
+
+const renderedCommentHtml =
+    `    <div class="image-text">
+            <a href="/${data.owner.id}/${data.user}/">
+              <img src="${data.owner.creator_logo}" alt="${data.owner.company_name || data.user}" />
+            </a>
+
+            <div class="name-time">
+              <a href="/${data.owner.id}/${data.user}/">
+                <h3>${data.owner.company_name || data.user}</h3>
+              </a>
+              <p>${data.text}</p>
+            </div>
+          </div>
+    `
+
+  commentContainerEl.insertAdjacentHTML("beforeend",renderedCommentHtml);
+  commentContainerEl.scrollHeight;
+
+}
+
+
+
+/**
+ * 
+ * @param {String} content_type type of post object 
+ * @param {Number} object_id id of post object
+ * @param {String} msg comment of user
+*/
+const postUserComment = async (content_type, object_id, msg) => {
+
+  const url = `http://localhost:8000/comment/create/`;
+
+
+  const userProf = "{{request.user.creator_profile.id}}"
+
+  console.log(filter_content[content_type],  "this is the filtered content")
+  console.log(content_type, object_id)
+
+ {% comment %} const userComment =  {
+  "user": userProf,
+    "text": msg,
+    "parent": null,
+    "object_id": +object_id,
+    "content_type_str": filter_content[content_type]
+} {% endcomment %}
+
+  let newCommentForm = new FormData();
+  newCommentForm.append("text", msg);
+  newCommentForm.append("object_id", object_id)
+  newCommentForm.append("content_type_str", filter_content[content_type])
+  newCommentForm.append("user", userProf)
+  
+
+  try {
+    
+    const response = await fetch(url,
+    
+      {
+        headers: {
+          "X-CSRFToken": csrf_token
+        },
+        method: "POST",
+      body: newCommentForm
+    },
+  )
+
+    if (!response.ok) {
+      console.log(response.status, response.statusText, response)
+      throw Error("An error occurred in comment async await")
+    }
+
+    const resJson = await response.json();
+    console.log(resJson)
+
+    // re-render comments
+    renderSingleComment(resJson);
+    
+    {% comment %} return resJson; {% endcomment %}
+    
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+  /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const likeAndUnlike = async (content_type, content_id, content="like") => {
+    const url = content === "like" ? `http://localhost:8000/content/action/like/${content_type}/${content_id}/` : `http://localhost:8000/content/action/favorite/${content_type}/${content_id}/`;
+
+    try {
+      
+      const response = await fetch(url , {
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+        method: "POST"
+      })
+
+      if (!response.ok) {
+        console.log(response, response.status, response.statusText);
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+    /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const getLikeFavStatus = async (content_type, content_id) => {
+
+    const url = `http://localhost:8000/actions/check_fav_like_status/${content_type}/${content_id}/`
+
+    console.log(content_type)
+
+    console.log(url);
+    try {
+      
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+      })
+
+      if (!response.ok) {
+        console.log(response, response.status, response.statusText, "thuis us tge sdf");
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+
+  /**
+ * 
+ * @param {String} url url of the resource
+ * @returns 
+ */
+  const getRecentlyLikedUser = async (url) => {
+    
+    try {
+      const response = await fetch(url,  {
+        headers: {
+          "X-CSRFToken": csrf_token
+        },
+        credentials: "same-origin"
+      })
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error("Couldn't get the name of the latest liked user")
+      }
+
+      const resJon = await response.json();
+      const {owner} = resJon;
+
+      return owner;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+   
+   //<!-- Modal -->
+      // MODAL VARIABLES
+          const modal = document.querySelector(".modal");
+          const overlay = document.querySelector(".overlay");
+          const btnOpenModal = document.querySelectorAll(".show-modal");
+          const modalImage = document.querySelector('.modal-image');
+          const modalVideo = document.querySelector('.modal-video');
+
+          // user's post details
+          const profileLink = document.querySelector("#prof-lnk");  // update link to person profile and img
+          const detailPostInfo = document.querySelector(".name-time");  // to update link to profile and name of post owner and date posted
+          const followBtn = document.querySelector(".follow");
+          const captionEl = document.querySelector(".caption")
+          const likeBtn = document.querySelector(".like")
+          const favoriteBtn = document.querySelector(".fave");
+
+
+          // <!-- NEW MODAL -->
+      {% comment %} const profilePostContainerEl = document.querySelector("#post-container"); {% endcomment %}
+      const profilePostContainerEl = document.querySelectorAll(".cx-post-container");
+
+      // making postid and post type global
+      let selectedPostId = null;
+      let selectedPostType = null;
+      let SET_CREATOR = null;
+
+      profilePostContainerEl.forEach((el) => {
+        
+      el.addEventListener("click", async function (e){
+      const selectedComponentEl = e.target.parentElement;
+
+      selectedPostId = e.target.parentElement.dataset.id;
+      selectedPostType = e.target.parentElement.dataset.posttype;
+
+      if (selectedComponentEl.classList.contains("show-modal")){
+        modal.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+
+        const contentType = e.target.parentElement.dataset.posttype == "anime" || e.target.parentElement.dataset.posttype == "videocontent" ? "video" : "img";
+
+        // <!-- get comments related to the post -->
+        await getComments(selectedPostType, selectedPostId);
+
+        // <!-- get like and favorite buttons status -->
+        {% comment %} console.log(selectedPostType, selectedPostId) {% endcomment %}
+        const likeFavResponse = await getLikeFavStatus(selectedPostType, selectedPostId);
+
+        const {liked, favorited} = likeFavResponse;
+
+        console.log(liked, favorited, "this is the result of liked and favorited")
+
+        if (liked){
+          document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+        }
+
+        if (favorited) {
+          document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+        }
+
+        
+        <!-- Fill Modal with necessary data from the selected component -->
+        if (contentType == "img"){
+           const selectedSrc = selectedComponentEl.querySelector("img").getAttribute("src");
+
+        // <!-- Call API to get detail information about selected element-->
+         // <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         // <!-- make request to the url to get the data -->
+
+         // get cursor on input field to active
+          userComment.focus()
+
+
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData) {
+
+            const data = detailData;
+
+            // making data a global variable
+            SET_CREATOR = data
+
+            modal.querySelector(".post-view").querySelector("img").classList.remove("hidden")
+            modal.querySelector(".post-view").querySelector("img").setAttribute("src", selectedSrc);
+
+             profileLink.setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent = data.username || data.owner.company_name;
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set link to profile
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              console.log(no_of_likes, "THe no of likes");
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+
+            // add eventlistener to the follow btn
+            followBtn.addEventListener("click", async function(){
+
+              const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+              
+              const result = await followAndUnfollow(data.creator || data.owner.id);
+
+              if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              }
+            })
+
+          }
+
+
+         } else if (contentType == "video" || contentType == "anime"){
+
+          <!-- Call API to get detail information about selected element-->
+         <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         <!-- make request to the url to get the data -->
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData){
+
+            const data = detailData;
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('video').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('video').setAttribute("poster", data.thumbnail)
+            modal.querySelector('.post-view').querySelector('video').setAttribute("src", data.video_file)
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              console.log(no_of_likes, "THe no of likes");
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+
+            
+          }
+
+         } else {
+          // content type is not known
+          console.log("none was selected")
+          console.log(contentType,  "this is the content type");
+         }
+
+
+      } else {
+        console.log("No")
+        console.log(selectedComponentEl)
+      }
+
+      userComment.focus();
+
+  })
+})
+
+
+    // LIKE BUTTON
+    // <!-- add eventlistener to like button -->
+    likeBtn.addEventListener("click", async function(e){
+      
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+      const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+      {% comment %} console.log(selectedPostId, filteredType) {% endcomment %}
+      const result = await likeAndUnlike(filteredType, selectedPostId)
+      
+
+      // set the state of the like button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+      else  document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+    })
+
+    // FAV BUTTON
+    // <!-- add eventlistener to the favorite button -->
+    favoriteBtn.addEventListener("click", async function(e){
+
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+
+       const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+      {% comment %} console.log(selectedPostId, filteredType, "check content type here") {% endcomment %}
+
+      const result = await likeAndUnlike(filteredType, selectedPostId, content="favorite");
+
+      {% comment %} console.log(result, "this is the result") {% endcomment %}
+
+       // set the state of the favorite button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+      else  document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}");
+    })
+
+
+
+  // <!-- user add comment -->
+        submitCommentBtn.addEventListener("click", async function(e){
+
+          e.preventDefault();
+
+          if (!selectedPostId || !selectedPostType) return;
+
+            // get user input
+            const comment = userComment.value;
+            
+
+            // validate data and send it to the backend
+            if (comment) {
+              {% comment %} console.log("values before post is send", selectedPostType, selectedPostId) {% endcomment %}
+               const result = await postUserComment(selectedPostType, selectedPostId, comment);
+               userComment.value = ""
+            }
+        })
+
+     // <!-- keyboard binding-->
+       submitCommentBtn.addEventListener("keypress", function(e){
+        if (e.key == "Enter"){
+          // cancel the default action if needed
+          e.preventDefault();
+          // trigger click event on button
+          submitCommentBtn.click();
+        }
+       })
+
+       {% comment %} userComment.focus(); {% endcomment %}
+
+
+       // FOLLOW BUTTON
+       // <!-- add eventlistener to follow button -->
+            followBtn.addEventListener("click", async function(){
+
+              if (!SET_CREATOR.creator || !SET_CREATOR.owner.id) return;
+
+              const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+              
+              const result = await followAndUnfollow(SET_CREATOR.creator || SET_CREATOR.owner.id);
+
+              if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              } else {
+                console.log(result)
+                return ;
+              }
+            })
+
+
+    /**
+     * Set the like and fav buttons to their default values
+    */ 
+    const setDefaultValues = () => {
+      //  const likeButton = document.querySelector(".like");
+      //   const faveButton = document.querySelector(".fave");
+
+        document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+        document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}");
+
+        // 
+
+        document.querySelector("#like-container").innerHTML = "<p>No likes yet </p>";
+
+    }
+
+      // MODAL FUNCTIONS
+      // ///////////////
+
+      const closeModal = function () {
+        modal.classList.add("hidden");
+        overlay.classList.add("hidden");
+
+        // Reset the modal content
+        modalImage.classList.add("hidden");
+        modalVideo.classList.add("hidden");
+        
+        setDefaultValues();
+      };
+
+      overlay.addEventListener("click", closeModal);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+          closeModal();
+        }
+      });
+
+
+    <!-- Modal buttons(like, save icons) -->
+      // interaction buttons
+      const likeButton = document.querySelector(".like");
+      const saveButton = document.querySelector(".save");
+      const faveButton = document.querySelector(".fave");
+
+      likeButton.addEventListener("click", () => {
+        let src =
+          likeButton.getAttribute("src") === "{% static 'icons/likeicon1.svg' %}"
+            ? "{% static 'icons/likeicon2.svg' %}"
+            : "{% static 'icons/likeicon1.svg' %}";
+        likeButton.setAttribute("src", src);
+      });
+
+      // DO NOT DELETE!!!!!!!
+      // saveButton.addEventListener("click", () => {
+      //   let src =
+      //     saveButton.getAttribute("src") === "{% static 'icons/saveicon1.svg' %}"
+      //       ? "{% static 'icons/saveicon2.svg' %}"
+      //       : "{% static 'icons/saveicon1.svg' %}";
+      //   saveButton.setAttribute("src", src);
+      // });
+
+      faveButton.addEventListener("click", () => {
+        let src =
+          faveButton.getAttribute("src") === "{% static 'icons/saveicon1.svg' %}"
+            ? "{% static 'icons/saveicon2.svg' %}"
+            : "{% static 'icons/saveicon1.svg' %}";
+        faveButton.setAttribute("src", src);
+      });
+
 {% endblock %}

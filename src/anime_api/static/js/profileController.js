@@ -88,48 +88,47 @@ const renderUserFavorites = (favorites) => {
 
   const renderFavData = favorites
     .map((el) => {
-      console.log(el, " from the favorites render function***/**/*");
+      // console.log(el, " from the favorites render function***/**/*");
       switch (el.typeof) {
         case "anime":
-          return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/"><img src="${el.thumbnail}" alt="${el.series_name}-${
-            el.episode_title
-          }" />
-                <p>${el.series_name} | ${el.episode_title}</p></a>
-              </div>`;
-        case "writtenstory":
-          return `<div class="book-card">
-                <img src="${el.thumbnail}" alt="${el.series_name} - ${
-            el.episode_title
-          }" />
-                <p>${el.episode_title}</p>
-                <p>${username}</p>
-              <button><a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/">Read</a></button>
-            </div>
-            `;
+          return `               
+               <div class="page-content-card show-modal" data-id="${el.id || el.pk}" data-posttype="${el.typeof}">
+                <img src="${el.thumbnail}" alt="${el.series_name}" />
+                <p>${el.series_name} | ${el.episode_title}</p>
+              </div>
+              
+              
+              `;
+
+        // case "writtenstory":
+        //   return `<div class="book-card">
+        //         <img src="${el.thumbnail}" alt="${el.series_name} - ${
+        //     el.episode_title
+        //   }" />
+        //         <p>${el.episode_title}</p>
+        //         <p>${username}</p>
+        //       <button><a href="/${el.typeof}/${el.id || el.pk}/${
+        //     el.slug
+        //   }/">Read</a></button>
+        //     </div>
+        //     `;
+            
         case "text":
         case "video":
         case "design":
-          return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
-                <p>${el.title}</p></a>
-              </div>`;
+          return `               
+              <div class="page-content-card show-modal" data-id="${el.id}" data-posttype="${el.typeof}content">
+                <img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+                <p>${el.title}</p>
+              </div>
+              `;
 
         case "book":
           return `
-        
-          <div class="book-card">
-          <img src="${el.cover}" alt=${el.title}"" />
-          <p>${el.title}</p>
-          <p>${el.author}</p>
-          <button><a href="books/${el.id}/${el.slug}/${el.category}">Read</a></button>
-        </div>
+               <div class="page-content-card show-modal" data-id="${el.id}" data-posttype="${el.typeof}">
+                <img src="${el.cover}" alt="${el.title}" />
+                <p>${el.title}</p>
+              </div>
         `;
 
         default:
@@ -180,10 +179,10 @@ const allPostsOfCreator = async () => {
     await getPostData(`/content/videocontent/${query_param}`),
   ]);
 
-  console.log("all posts of creator", resData);
+  // console.log("all posts of creator", resData);
 
   const results = resData.map((el) => el.results).flat();
-  console.log(results, "this is the result");
+  // console.log(results, "this is the result");
 
   renderAllUserPosts(results);
 };
@@ -202,35 +201,35 @@ const renderAllUserPosts = (postData) => {
     .map((el) => {
       switch (el.typeof) {
         case "anime":
-          return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/"><img src="${el.thumbnail}" alt="${el.series_name}-${
-            el.episode_title
-          }" />
-                <p>${el.series_name} | ${el.episode_title}</p></a>
-              </div>`;
-        case "writtenstory":
-          return `<div class="book-card">
-                <img src="${el.thumbnail}" alt="${el.series_name} - ${
-            el.episode_title
-          }" />
-                <p>${el.episode_title}</p>
-                <p>${username}</p>
-              <button><a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/">Read</a></button>
-            </div>
-            `;
+          return ` 
+          
+          <div class="page-content-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}">
+                <img src="${el.thumbnail}" alt="${el.series_name}-${el.episode_title}" />
+                <p>${el.series_name} | ${el.episode_title}</p>
+              </div>
+        `;
+        // case "writtenstory":
+        //   return `<div class="book-card">
+        //         <img src="${el.thumbnail}" alt="${el.series_name} - ${
+        //     el.episode_title
+        //   }" />
+        //         <p>${el.episode_title}</p>
+        //         <p>${username}</p>
+        //       <button><a href="/${el.typeof}/${el.id || el.pk}/${
+        //     el.slug
+        //   }/">Read</a></button>
+        //     </div>
+        //     `;
         case "text":
         case "video":
         case "design":
-          return ` <div class="page-content-card">
-                <a href="/${el.typeof}/${el.id || el.pk}/${
-            el.slug
-          }/"><img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
-                <p>${el.title}</p></a>
-              </div>`;
+          return `
+
+              <div class="page-content-card show-modal" data-id="${el.id || el.pk}" data-posttype="${el.typeof}content">
+                <img src="${el.thumbnail || el.illustration}" alt="${el.title}" />
+                <p>${el.title}</p>
+              </div>
+              `;
 
         default:
           console.log(
@@ -246,3 +245,4 @@ const renderAllUserPosts = (postData) => {
 creatorProfileController();
 allPostsOfCreator();
 creatorAllFavorites();
+

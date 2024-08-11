@@ -7,6 +7,7 @@ app_name = "users_html"
 urlpatterns = [
     path("login/", views_html.user_login, name="login"),
     path("signup/", views_html.signup, name="signup"),
+    path("settings/", views_html.settings, name="settings"),
     path("logout/", views_html.user_logout, name="logout"),
     path("activation/<uidb64>/<token>/", views_html.activate, name="activate"),
 ]

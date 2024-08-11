@@ -13,6 +13,7 @@ class CommentAdmin(admin.ModelAdmin):
         "id",
         "is_approved",
         "parent",
+        "text",
     ]
 
     list_filter = [

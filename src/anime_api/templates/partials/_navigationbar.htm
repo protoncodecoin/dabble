@@ -45,11 +45,11 @@
     <img src="{% static 'icons/profile darkicons.svg' %}" alt="" />
     <span class="s-text hide">Exhibition</span>
   </a>
-  <a class="s-ico {% if selection == 'tour'%} active {% endif %}">
+  <a class="s-ico {% if selection == 'tour'%} active {% endif %}" href="{% url 'anime_html:virtualtour' %}">
     <img src="{% static 'icons/virtual tour darkicons.svg' %}" alt="" />
     <span class="s-text hide">Virtual Tour</span>
   </a>
-  <a class="s-ico {% if selection == 'settings'%} active {% endif %}">
+  <a class="s-ico {% if selection == 'settings'%} active {% endif %}" href="{% url 'users_html:settings' %}">
     <img src="{% static 'icons/settings darkicons.svg' %}" alt="" />
     <span class="s-text hide">Settings</span>
   </a>

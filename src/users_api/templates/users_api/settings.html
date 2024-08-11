@@ -1,0 +1,241 @@
+{% extends 'main.html' %}
+{% block title %} Settings {% endblock %}
+{% load static %}
+
+{% block content %}
+ <div class="main" id="main-view">
+      <div class="top-nav">
+        <div class="dabble-ico">
+          <img src="{% static 'icons/dabblelogo.svg' %}" alt="" />
+          <p>| Settings</p>
+        </div>
+        <div class="search-bar">
+          <input type="search" placeholder="Search" />
+          <button class="search-btn">
+            <a href="searchpage.html"
+              ><img href src="{% static 'icons/searchiconnew.svg' %}" alt=""
+            /></a>
+          </button>
+        </div>
+        <div class="buttons">
+          <button class="mode theme-toggle">
+            <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
+          </button>
+          <button class="sign"><a href="signin.html">Log Out</a></button>
+        </div>
+      </div>
+
+      <div class="left-right">
+        <div class="left">
+          <div class="l-section-1">
+            <img src="/Portfolio/jennifer_s works/jenn2.jpg" alt="" class="profile-img" />
+            <div class="profile-info">
+              <div class="text">
+                <h4>Jennifer Dahmer</h4>
+                <p>Creative Multimedia</p>
+              </div>
+              <button class="change-button">Change Photo</button>
+
+              <div class="image-container hidden">
+                <input
+                  type="file"
+                  id="imageInput"
+                  class="input-1"
+                  accept="image/*"
+                />
+                <label for="imageInput" class="upload-button">+</label>
+                <div class="image-preview" id="imagePreview"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="l-section-2">
+            <label for="bio">Bio:</label>
+            <textarea
+              name="bio"
+              id=""
+              cols="30"
+              rows="3"
+              placeholder="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit quod blanditiis, modi illo esse quis, deleniti id ex el ucimus doloribus recusandae fuga eos harum."
+            ></textarea>
+
+            <label for="gender">Gender:</label>
+            <input name="gender" placeholder="Male" type="text" />
+
+            <label for="email">Email:</label>
+            <input
+              name="email"
+              placeholder="hozier@st.kust.edu.gh"
+              type="email"
+            />
+
+            <label for="contact">Contact:</label>
+            <input name="contact" placeholder="555-555-5555" type="tel" />
+            
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="r-section-1">
+            <img src="/Images/ (14).jpg" alt="" class="r-img" />
+
+            <button class="change-button2">Change Photo</button>
+            <div class="image-container2 hidden">
+              <input
+                type="file"
+                id="imageInput2"
+                accept="image/*"
+              />
+              <label for="imageInput2" class="upload-button">+</label>
+              <div class="image-preview2" id="imagePreview2"></div>
+            </div>
+
+          </div>
+
+
+          <div class="r-section-2 interests">
+            <h3>Interests</h3>
+            <div class="interests">
+              <div class="interests-left">
+
+                <div>
+                  <input name="Videography" type="checkbox" />
+                  <label for="videography">Videography</label>
+                </div>
+  
+                <div>
+                  <input name="animation" type="checkbox" />
+                  <label for="animation">animation</label>
+                </div>
+  
+                <div>
+                  <input name="illustration" type="checkbox" />
+                  <label for="illustration">illustration</label>
+                </div>
+  
+                <div>
+                  <input name="design" type="checkbox" />
+                  <label for="design">design</label>
+                </div>
+  
+                <div>
+                  <input name="art" type="checkbox" />
+                  <label for="art">art</label>
+                </div>
+  
+                <div>
+                  <input name="photography" type="checkbox" />
+                  <label for="photography">photography</label>
+                </div>
+  
+                <div>
+                  <input name="books" type="checkbox" />
+                  <label for="books">books</label>
+                </div>
+  
+              </div>
+  
+              <div class="interests-right">
+  
+                <div>
+                  <input name="Videography" type="checkbox" />
+                  <label for="videography">Videography</label>
+                </div>
+  
+                <div>
+                  <input name="animation" type="checkbox" />
+                  <label for="animation">animation</label>
+                </div>
+  
+                <div>
+                  <input name="illustration" type="checkbox" />
+                  <label for="illustration">illustration</label>
+                </div>
+  
+                <div>
+                  <input name="design" type="checkbox" />
+                  <label for="design">design</label>
+                </div>
+  
+                <div>
+                  <input name="art" type="checkbox" />
+                  <label for="art">art</label>
+                </div>
+  
+                <div>
+                  <input name="photography" type="checkbox" />
+                  <label for="photography">photography</label>
+                </div>
+  
+                <div>
+                  <input name="books" type="checkbox" />
+                  <label for="books">books</label>
+                </div>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="update">Update</button>
+    </div>
+{% endblock %}
+
+{% block include_js %}
+  <script src="{% static 'js/sibebar.js' %}"></script>
+    <script>
+      const changeButton = document.querySelector('.change-button');
+      const imageContainer = document.querySelector('.image-container');
+      const changeButton2 = document.querySelector('.change-button2');
+      const imageContainer2 = document.querySelector('.image-container2');
+
+      changeButton.addEventListener('click', () => {
+        changeButton.classList.toggle('hidden')
+        imageContainer.classList.toggle('hidden')
+      })
+
+      changeButton2.addEventListener('click', () => {
+        changeButton2.classList.toggle('hidden')
+        imageContainer2.classList.toggle('hidden')
+      })
+
+      
+      // IMAGE CHANGE JS
+      
+      document.getElementById('imageInput').addEventListener('change', function (event) {
+        previewImage(event, 'imagePreview')
+      })
+
+      document.getElementById('imageInput2').addEventListener('change', function (event) {
+        previewImage(event, 'imagePreview2')
+      })
+
+       function previewImage(event, prevID) {
+          var input = event.target;
+          console.log(input)
+          var preview = document.getElementById(prevID)
+          console.log(prevID)
+          // input.classList.contains('input-1')
+          //   ? document.getElementById("imagePreview")
+          //   : document.getElementById("imagePreview2");
+
+          var file = input.files[0];
+
+          if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              var img = document.createElement("img");
+              img.src = e.target.result;
+              preview.innerHTML = "";
+              preview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+          } else {
+            preview.innerHTML = "No image selected";
+          }
+        }
+    </script>
+{% endblock %}

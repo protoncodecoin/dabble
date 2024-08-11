@@ -353,3 +353,11 @@ def photography(request):
         "anime_api/gallery/photography.html",
         {"selection": "gallery_animation", "sub_selection": "photography"},
     )
+
+
+def search(request):
+    return render(request, "anime_api/search.html", {"selection": "search"})
+
+
+def virtualtour(request):
+    return render(request, "anime_api/virtualtour.html", {"selection": "virtualtour"})

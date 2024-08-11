@@ -8,19 +8,23 @@
     <title>Dabble {% block title %}{% endblock %}</title>
 
     {% if selection == "home" %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/index.css' %}" />
     {% elif selection == "profile" %}
-    <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/profilepage.css' %}" />
     {% elif selection == "exhibition" %}
-    <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
     {% elif selection == "dashboard"%}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
     {% elif selection == "gallery_animation"%}
-    <link rel="stylesheet" href="{% static 'css/gallery_tabs.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/gallery_tabs.css' %}" />
     {% elif selection == "library"%}
-    <link rel="stylesheet" href="{% static 'css/library.css' %}" />
+      <link rel="stylesheet" href="{% static 'css/library.css' %}" />
     {% elif selection == "chat" %}
         <link rel="stylesheet" href="{% static 'css/chatpage.css' %}" />
+    {% elif selection == "search" %}
+        <link rel="stylesheet" href="{% static 'css/searchpage.css' %}" />
+     {% elif selection == "virtualtour" %}
+        <link rel="stylesheet" href="{% static 'css/virtualtour.css' %}" />
     {% endif %}
   </head>
   <body>
@@ -63,15 +67,10 @@
     <!-- Navigation bar -->
      {% include 'partials/_navigationbar.htm' %}
 
-    <div class="main" id="main-view">
-      <!-- Top navigational bar -->
-      {% comment %} {% include 'partials/_topnavigationbar.htm' %} {% endcomment %}
-
       {% block content %}
 
-      {% endblock %}
 
-    </div>
+      {% endblock %}
     {% block include_js %}
     {% endblock %}
     
