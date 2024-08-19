@@ -5,7 +5,15 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
-from anime_api.models import Anime, Design, Series, Text, Video, WrittenStory
+from anime_api.models import (
+    Anime,
+    Design,
+    Photography,
+    Series,
+    Text,
+    Video,
+    WrittenStory,
+)
 from users_api.models import CreatorProfile
 
 from .models import Comment
@@ -26,12 +34,13 @@ class CommentListAPIView(generics.ListAPIView):
     def list(self, request):
 
         content_type_mapping = {
-            "series": Series,
+            # "series": Series,
             "anime": Anime,
             "textcontent": Text,
             "designcontent": Design,
             "videocontent": Video,
-            "writtenstories": WrittenStory,
+            "writtenstory": WrittenStory,
+            "photography": Photography,
         }
 
         queryset = self.get_queryset()

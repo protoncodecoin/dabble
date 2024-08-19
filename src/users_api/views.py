@@ -265,7 +265,7 @@ def check_like_fav_status(request, content_type, object_id):
 
     content_type_mapping = {
         "anime": Anime,
-        "story": WrittenStory,
+        "writtenstory": WrittenStory,
         "designcontent": Design,
         "textcontent": Text,
         "videocontent": Video,
@@ -281,8 +281,6 @@ def check_like_fav_status(request, content_type, object_id):
         return Response({"error": "invalid user data"})
     if selected_ct:
         selected_ct.objects.get(id=object_id)
-
-        print(selected_ct)
 
         # has user liked the post
         liked = selected_ct.objects.get(id=object_id)
@@ -338,7 +336,7 @@ class CreatorViewSet(
         """
         A list of top creators
         """
-        one_month_ago = timezone.now() - timedelta(days=30)
+        one_month_ago = timezone.now() - timedelta(days=3)
 
         top_series = (
             Series.objects.annotate(
@@ -367,7 +365,7 @@ class CreatorViewSet(
         top_series_creators = [obj.creator for obj in top_series]
         top_creators_id = [obj.creator.id for obj in top_series]
         filtered_list = []
-        for i in range(len(top_creators_id)):
+        for i in range(len(top_creators_id) - 1):
             if top_creators_id[i] not in filtered_list:
                 filtered_list.append(top_creators_id[i])
             else:
@@ -403,7 +401,7 @@ class CreatorViewSet(
         )
         return Response(data=serializer.data)
 
-    def update(self, request):
+    def update(self, request, pk):
         instance = self.get_object()
 
         if instance.creator.email != self.request.user.email:

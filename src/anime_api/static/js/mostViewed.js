@@ -31,17 +31,15 @@ const mostViewedPost = async () => {
       anime_most_viewed,
       writtenstory_most_viewed,
       video_most_viewed,
-      text_most_viewed,
+      // text_most_viewed,
       design_most_viewed,
     } = jsonData;
-
-    console.log(design_most_viewed)
 
     const mergedData = [
       ...anime_most_viewed.slice(0, 1),
       ...writtenstory_most_viewed.slice(0, 1),
       ...video_most_viewed.slice(0, 1),
-      ...text_most_viewed.slice(0, 1),
+      // ...text_most_viewed.slice(0, 1),
       ...design_most_viewed.slice(0, 1),
     ];
 
@@ -62,13 +60,13 @@ function renderMostViewedHTML(data) {
     .filter((el) => el !== "None")
     .map((el) => {
       return `
-          <a class="post" href="/${el.typeof}/${el.id}/${el.slug}/">
-                <img src="${el.thumbnail || el.illustration}" alt="${
+            <a class="post show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}${el.typeof == "anime" || el.typeof == "writtenstory"  ? "" : "content" }">
+              <img src="${el.thumbnail || el.illustration}" alt="${
         el.episode_title
-      }" />
+      }" alt="${el.episode_title || el.title}" />
               <span>
                 <p>${el.title || el.episode_title}</p>
-                <h5>${el.creator_username}</h5>
+               <h5>${el.creator_username}</h5>
               </span>
             </a>
         `;

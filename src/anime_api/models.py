@@ -320,6 +320,7 @@ class Photography(models.Model):
     title = models.CharField(
         max_length=150,
     )
+    caption = models.TextField(max_length=300, blank=True)
     date_posted = models.DateTimeField(
         auto_now_add=True,
     )

@@ -3,17 +3,18 @@ const rootTrends = document.getElementById("rootTrends");
 
 const trendingPosts = async () => {
   try {
-    let res = await fetch(mostViewedURL);
+    let res = await fetch(trendsURL);
 
     if (!res.ok) throw new Error(res.statusText);
 
     const jsonData = await res.json();
+
     const {
       anime_trends,
       story_trends,
       design_trends,
       video_trends,
-      text_trends,
+      // text_trends,
     } = jsonData;
 
     const mergedTrendsData = [
@@ -21,8 +22,9 @@ const trendingPosts = async () => {
       ...story_trends,
       ...design_trends,
       ...video_trends,
-      ...text_trends,
+      // ...text_trends,
     ];
+
 
     // Render data in browser
     renderTrendsHTML(mergedTrendsData.slice(0, 6));
@@ -36,19 +38,18 @@ const trendingPosts = async () => {
  */
 function renderTrendsHTML(data) {
   let trendshtmlDATA = data
-    .filter((el) => el !== "None")
     .map((el) => {
       return `
-
-                <div class="trend-card">
-                  <a href="${el.id || el.pk}/${el.typeof}">
-                    <img src="${el.thumbnail || el.illustration}" alt="${el.episode_title}" />
-                  <p>${el.title || el.episode_title}</p>
-                  </a>
-                </div>`
+                 <div class="trend-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}${el.typeof == "anime" || el.typeof == "writtenstory" ? "" : "content" }">
+                  <img src="${el.thumbnail || el.illustration}" alt="${el.series_name || el.title || el.episode_title}" />
+                  <p>${el.episode_title || el.title }</p>
+                </div>
+                      `
     })
     .join("");
-  rootTrends.insertAdjacentHTML("beforeend", trendshtmlDATA);
+
+    // data.length === 0 ? rootTrends.innerHTML = "<h2> NO Trending Posts </h2>" : rootTrends.insertAdjacentHTML("beforeend", trendshtmlDATA);
+    rootTrends.insertAdjacentHTML("beforeend", trendshtmlDATA);
 }
 
 trendingPosts();

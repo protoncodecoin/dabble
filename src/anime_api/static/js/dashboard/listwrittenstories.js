@@ -17,13 +17,15 @@
   };
 
   const getWrittenStories = async (page, limit) => {
-    const API_URL = `http://127.0.0.1:8000/content/stories/?page=${page}&limit=${limit}`;
+    // const API_URL = `http://127.0.0.1:8000/content/stories/?page=${page}&limit=${limit}`;
+    const API_URL = `http://localhost:8000/content/episodes/all/`
+
     const response = await fetch(API_URL);
 
     if (!response.ok)
       throw new Error(`An error occurred from books: ${response.statusText}`);
 
-    const data = await response.json();
+    const {data} = await response.json();
     console.log(data, "writtenstories data");
     return data;
   };
@@ -42,12 +44,13 @@
         : series
             .map((el) => {
               return `
-           <div class="page-content-card">
-            <a href="#">
-              <img src="${el.thumbnail}" alt="${el.series_name}" />
+        <div class="book-card show-card" data-id="${el.id || el.pk}" data-posttype="${el.typeof}">
+            <p class="hidden">${el.content}</p>
+             <img src="${el.thumbnail}" alt="${el.series_name}" />
+            <p>${el.episode_title}</p>
             <p>${el.series_name}</p>
-            </a>
-          </div>
+            <button class="show-card">Read</button>
+        </div> 
     `;
             })
             .join("");
@@ -69,18 +72,21 @@
     showLoader();
 
     try {
-      // if having more books to fetch
-      if (hasMoreWrittenStories(page, limit, total)) {
-        console.log("has more posts");
-        // call the API to get books
-        const response = await getWrittenStories(page, limit);
-        // show books
-        callback(response.results);
+      // // if having more books to fetch
+      // if (hasMoreWrittenStories(page, limit, total)) {
+      //   console.log("has more posts");
+      //   // call the API to get books
+      //   const response = await getWrittenStories(page, limit);
+      //   // show books
+      //   callback(response.results);
 
-        // update the total
-        total = response.count;
-        console.log("total: ", total);
-      }
+      //   // update the total
+      //   total = response.count;
+      //   console.log("total: ", total);
+      // }
+      const response = await getWrittenStories(page, limit);
+        // show books
+        callback(response[0]);
     } catch (error) {
       console.log(error);
     } finally {
@@ -89,24 +95,24 @@
     }
   };
 
-  window.addEventListener(
-    "scroll",
-    () => {
-      const { scrollTop, scrollHeight, clientHeight } =
-        document.documentElement;
+  // window.addEventListener(
+  //   "scroll",
+  //   () => {
+  //     const { scrollTop, scrollHeight, clientHeight } =
+  //       document.documentElement;
 
-      if (
-        scrollTop + clientHeight >= scrollHeight - 10 &&
-        hasMoreWrittenStories(currentPage, limit, total)
-      ) {
-        currentPage++;
-        loadWrittenStories(currentPage, limit);
-      }
-    },
-    {
-      passive: true,
-    }
-  );
+  //     if (
+  //       scrollTop + clientHeight >= scrollHeight - 10 &&
+  //       hasMoreWrittenStories(currentPage, limit, total)
+  //     ) {
+  //       currentPage++;
+  //       loadWrittenStories(currentPage, limit);
+  //     }
+  //   },
+  //   {
+  //     passive: true,
+  //   }
+  // );
 
   loadWrittenStories(currentPage, limit);
 })();

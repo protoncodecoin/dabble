@@ -3,6 +3,9 @@ const postBaseURL = "127.0.0.7:8000/";
 let blockRequest = false;
 let emptyPage = false;
 
+
+//NB: requestUserId is defined in the html template
+
 const stateURLS = {
   textContent: {
     pageNum: 1,
@@ -37,13 +40,6 @@ const stateURLS = {
 const getData = async function (postBaseURL) {
   try {
     const url = postBaseURL;
-    // let access_token = window.localStorage.getItem("dabble_access");
-    // const data = await fetch(url, {
-    //   headers: {
-    //     "Content-type": "application/json",
-    //     AUthorization: `Bearer ${access_token}`,
-    //   },
-    // });
     const data = await fetch(url);
 
     if (!data.ok)
@@ -65,17 +61,16 @@ const getData = async function (postBaseURL) {
  */
 const getPostController = async function () {
   const resData = await Promise.all([
-    await getData(`/content/textcontent/?limit=${stateURLS.textContent.limit}`),
+    await getData(`/content/textcontent/?limit=${stateURLS.textContent.limit}&id=${requestUserId}`),
     await getData(
-      `/content/designcontent/?limit=${stateURLS.designContent.limit}`
+      `/content/designcontent/?limit=${stateURLS.designContent.limit}&id=${requestUserId}`
     ),
     await getData(
-      `/content/videocontent/?limit=${stateURLS.videoContent.limit}`
+      `/content/videocontent/?limit=${stateURLS.videoContent.limit}&id=${requestUserId}`
     ),
   ]);
 
   const result = resData.map((el) => el);
-  console.log(result, "This is the results from the api");
 
   const flattenResult = result.map((el) => el.results).flat();
   // let shuffledData = shuffle(flattenResult);
@@ -91,13 +86,13 @@ const getPostController = async function () {
 const fetchMorePosts = async () => {
   const resData = await Promise.all([
     await getData(
-      `/content/textcontent/?limit=${stateURLS.textContent.limit}&offset=${stateURLS.textContent.offset}`
+      `/content/textcontent/?limit=${stateURLS.textContent.limit}&offset=${stateURLS.textContent.offset}&id=${requestUserId}`
     ),
     await getData(
-      `/content/designcontent/?limit=${stateURLS.designContent.limit}&offset=${stateURLS.designContent.offset}`
+      `/content/designcontent/?limit=${stateURLS.designContent.limit}&offset=${stateURLS.designContent.offset}&id=${requestUserId}`
     ),
     await getData(
-      `/content/videocontent/?limit=${stateURLS.videoContent.limit}&offset=${stateURLS.videoContent.offset}`
+      `/content/videocontent/?limit=${stateURLS.videoContent.limit}&offset=${stateURLS.videoContent.offset}&id=${requestUserId}`
     ),
     // await getData(`library/books`),
   ]);
@@ -106,12 +101,11 @@ const fetchMorePosts = async () => {
 
   const result = resData.map((el) => el);
   const flattenResult = result.map((el) => el.results).flat();
-  console.log("length of the data gotten is: 😍", result, flattenResult);
   if (flattenResult.length === 0) {
     emptyPage = true;
-    console.log(
-      "Got an empty page '''''''''''''''''''--------------''''''''''"
-    );
+    // console.log(
+    //   "Got an empty page '''''''''''''''''''--------------''''''''''"
+    // );
     return;
   } else {
     // increase offset by the number of limit
@@ -126,17 +120,17 @@ const fetchMorePosts = async () => {
  * @param {Array} data accept response data from the server and renders it in the browser
  */
 const renderPostHTML = function (data) {
-  let renderedHTML = data
+  let renderedHTML = data.filter((el) => el.typeof !== "text")
     .map((el) => {
+      
       return `
-        <div class="page-content-card">
-          <a href="${el.typeof}/${el.pk ? el.pk : el.id}/${el.slug}">
-            <img src="${el.thumbnail || el.illustration}" alt="${
+         <div class="page-content-card show-card" data-id="${el.id || el.pk}" data-posttype="${el.typeof}content">
+                <img src="${el.thumbnail || el.illustration}" alt="${
         el.title || el.series_name
       }" />
-          <p>${el.title || el.series_name}</p>
-          </a>
-        </div>
+                
+                <p>${el.title || el.series_name}</p>
+              </div>
       `;
     })
     .join("");
@@ -153,14 +147,12 @@ const renderRequestedPosts = function (data) {
   const processData = data
     .map((el) => {
       return `
-     <div class="page-content-card">
-          <a href="${el.typeof}/${el.pk ? el.pk : el.id}/${el.slug}">
-            <img src="${el.thumbnail || el.illustration}" alt="${
+     <div class="page-content-card show-card" data-id="${el.id || el.pk}" data-posttype="${el.typeof}content">
+                <img src="${el.thumbnail || el.illustration}" alt="${
         el.title || el.series_name
       }" />
-          <p>${el.title || el.series_name}</p>
-          </a>
-        </div>
+      <p>${el.title || el.series_name}</p>
+      </div>
     `;
     })
     .join("");
@@ -176,7 +168,7 @@ window.addEventListener(
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
     // const validRequestURLs = [];
-    console.log("The value of empty page from the top is: ", emptyPage);
+    // console.log("The value of empty page from the top is: ", emptyPage);
 
     if (scrollTop + clientHeight >= scrollHeight - 5 && !blockRequest) {
       blockRequest = true;
@@ -185,7 +177,7 @@ window.addEventListener(
       fetchMorePosts();
     }
     {
-      console.log("The value of empty page is now: ", emptyPage);
+      // console.log("The value of empty page is now: ", emptyPage);
     }
   },
   { passive: true }

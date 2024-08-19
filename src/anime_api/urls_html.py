@@ -10,7 +10,7 @@ urlpatterns = [
     path("search/", views_html.search, name="search"),
     path("virtualtour/", views_html.virtualtour, name="virtualtour"),
     path(
-        "<content_type>/<int:id>/<slug:slug>/",
+        "count/<content_type>/<int:id>/",
         views_html.detail_post_count,
         name="post_detail",
     ),

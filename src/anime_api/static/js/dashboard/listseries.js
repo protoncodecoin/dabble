@@ -2,6 +2,8 @@ const seriesRoot = document.querySelector("#series_container");
 let seriesLoaderEl = document.querySelector(".loaderx");
 let seriesInnerCircleEl = document.querySelector(".inner-circle");
 
+"http://localhost:8000/content/episodes/all/"
+
 let currentPage = 1;
 let total = 0;
 let limit = 7;
@@ -17,13 +19,14 @@ const showLoader = () => {
 };
 
 const getSeries = async (page, limit) => {
-  const API_URL = `http://127.0.0.1:8000/content/series/?page=${page}&limit=${limit}`;
+  // const API_URL = `http://127.0.0.1:8000/content/series/?page=${page}&limit=${limit}`;
+  const API_URL = `http://localhost:8000/content/episodes/all/`
   const response = await fetch(API_URL);
 
   if (!response.ok)
     throw new Error(`An error occurred from books: ${response.statusText}`);
 
-  const data = await response.json();
+  const {data} = await response.json();
   console.log(data, "series data");
   return data;
 };
@@ -42,12 +45,17 @@ const showSeries = (series) => {
       : series
           .map((el) => {
             return `
-           <div class="page-content-card">
-            <a href="#">
-              <img src="${el.series_poster}" alt="${el.series_name}" />
-            <p>${el.series_name}</p>
-            </a>
-          </div>
+            <div class="page-content-card show-card" data-id="${el.id | el.pk}" data-posttype="${el.typeof}">
+                          <!-- <a href="#"> -->
+                            <video
+                            src="${el.video_file }"
+                            muted
+                            loop
+                            poster="${el.thumbnail}"
+                          ></video>
+                          <p>${el.series_name}</p>
+                          <!-- </a> -->
+                        </div>
     `;
           })
           .join("");
@@ -70,17 +78,20 @@ const loadSeries = async (page, limit, callback = showSeries) => {
 
   try {
     // if having more books to fetch
-    if (hasMoreSeries(page, limit, total)) {
-      console.log("has more posts");
-      // call the API to get books
-      const response = await getSeries(page, limit);
-      // show books
-      callback(response.results);
+    // if (hasMoreSeries(page, limit, total)) {
+    //   console.log("has more posts");
+    //   // call the API to get books
+    //   const response = await getSeries(page, limit);
+    //   // show books
+    //   callback(response.results);
 
-      // update the total
-      total = response.count;
-      console.log("total: ", total);
-    }
+    //   // update the total
+    //   total = response.count;
+    //   console.log("total: ", total);
+    // }
+
+    const response = await getSeries();
+    callback(response[1])
   } catch (error) {
     console.log(error);
   } finally {
@@ -89,22 +100,22 @@ const loadSeries = async (page, limit, callback = showSeries) => {
   }
 };
 
-window.addEventListener(
-  "scroll",
-  () => {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+// window.addEventListener(
+//   "scroll",
+//   () => {
+//     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 10 &&
-      hasMoreSeries(currentPage, limit, total)
-    ) {
-      currentPage++;
-      loadSeries(currentPage, limit);
-    }
-  },
-  {
-    passive: true,
-  }
-);
+//     if (
+//       scrollTop + clientHeight >= scrollHeight - 10 &&
+//       hasMoreSeries(currentPage, limit, total)
+//     ) {
+//       currentPage++;
+//       loadSeries(currentPage, limit);
+//     }
+//   },
+//   {
+//     passive: true,
+//   }
+// );
 
 loadSeries(currentPage, limit);

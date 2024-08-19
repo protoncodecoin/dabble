@@ -1,26 +1,26 @@
 {% load static %}
-        <div class="top-nav">
-        <div class="dabble-ico">
-          <img src=" {% static 'icons/dabblelogo.svg' %}" alt="" />
-          <p>| {{ selection|title }} </p>
-        </div>
-        <div class="search-bar">
-          <input type="search" placeholder="Search" />
-          <button class="search-btn">
-            <a href="{% url 'anime_html:search' %}"
-              ><img href src="{% static 'icons/searchiconnew.svg' %}" alt=""
-            /></a>
-          </button>
-        </div>
-        <div class="buttons">
-          <button class="mode theme-toggle">
-            <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
-          </button>
-            {% if request.user.is_authenticated %}
-            {% comment %} <p>{{ user.username }}</p> {% endcomment %}
-              <button class="sign"><a href="{% url 'users_html:logout' %}">Log Out</a></button>
-              {% else %}
-              <button class="sign"><a href="{% url 'users_html:login' %}">Log in</a></button>
-            {% endif%}
-        </div>
-      </div>
+<div class="top-nav">
+<div class="dabble-ico">
+  <img src=" {% static 'icons/dabblelogo.svg' %}" alt="" />
+  <p>| {{ selection|title }} </p>
+</div>
+<div class="search-bar">
+  <input type="search" placeholder="Search" id="query"/>
+  <button class="search-btn" id="search-btn">
+    <a href="{% url 'anime_html:search' %}"
+      ><img href src="{% static 'icons/searchiconnew.svg' %}" alt=""
+    /></a>
+  </button>
+</div>
+<div class="buttons">
+  <button class="mode theme-toggle">
+    <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
+  </button>
+    {% if request.user.is_authenticated %}
+    {% comment %} <p>{{ user.username }}</p> {% endcomment %}
+      <button class="sign"><a href="{% url 'users_html:logout' %}">Log Out</a></button>
+      {% else %}
+      <button class="sign"><a href="{% url 'users_html:login' %}">Log in</a></button>
+    {% endif%}
+</div>
+</div>

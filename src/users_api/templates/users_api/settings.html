@@ -4,30 +4,11 @@
 
 {% block content %}
  <div class="main" id="main-view">
-      <div class="top-nav">
-        <div class="dabble-ico">
-          <img src="{% static 'icons/dabblelogo.svg' %}" alt="" />
-          <p>| Settings</p>
-        </div>
-        <div class="search-bar">
-          <input type="search" placeholder="Search" />
-          <button class="search-btn">
-            <a href="searchpage.html"
-              ><img href src="{% static 'icons/searchiconnew.svg' %}" alt=""
-            /></a>
-          </button>
-        </div>
-        <div class="buttons">
-          <button class="mode theme-toggle">
-            <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
-          </button>
-          <button class="sign"><a href="signin.html">Log Out</a></button>
-        </div>
-      </div>
+       {% include 'partials/_dashboardtopnav.html' %}
 
       <div class="left-right">
         <div class="left">
-          <div class="l-section-1">
+          <div class="l-section-1" id="top-profile">
             <img src="/Portfolio/jennifer_s works/jenn2.jpg" alt="" class="profile-img" />
             <div class="profile-info">
               <div class="text">
@@ -53,30 +34,40 @@
             <label for="bio">Bio:</label>
             <textarea
               name="bio"
-              id=""
+              id="bio-info"
               cols="30"
               rows="3"
               placeholder="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit quod blanditiis, modi illo esse quis, deleniti id ex el ucimus doloribus recusandae fuga eos harum."
             ></textarea>
 
-            <label for="gender">Gender:</label>
-            <input name="gender" placeholder="Male" type="text" />
+            <label for="programme">Programme:</label>
+            <input name="programme" placeholder="Your Programme of study" type="text" id="programme" />
+
+            {% comment %} <label for="gender">Gender:</label>
+            <input name="gender" placeholder="Male" type="text" /> {% endcomment %}
 
             <label for="email">Email:</label>
             <input
               name="email"
               placeholder="hozier@st.kust.edu.gh"
               type="email"
+              id="email"
             />
 
-            <label for="contact">Contact:</label>
-            <input name="contact" placeholder="555-555-5555" type="tel" />
+            <label for="contact">Favorite Quote:</label>
+            <input name="contact" placeholder="Your favorite quote" type="text" id="quote" />
+
+            <label for="website">Website:</label>
+            <input name="website" placeholder="Your website url" type="text" id="website" />
+
+            <label for="studio-name">Studio Name:</label>
+            <input name="studio-name" placeholder="Your studio name" type="text" id="studio-name" />
             
           </div>
         </div>
 
         <div class="right">
-          <div class="r-section-1">
+          <div class="r-section-1" id="bg-img">
             <img src="/Images/ (14).jpg" alt="" class="r-img" />
 
             <button class="change-button2">Change Photo</button>
@@ -96,8 +87,52 @@
           <div class="r-section-2 interests">
             <h3>Interests</h3>
             <div class="interests">
-              <div class="interests-left">
+              <div class="interests-left" id="interests">
 
+                <div class="interest-item" data-interest="videography">
+                  <input name="Videography" type="checkbox" />
+                  <label for="videography">Videography</label>
+                </div>
+  
+                <div class="interest-item" data-interest="animation">
+                  <input name="animation" type="checkbox" />
+                  <label for="animation">animation</label>
+                </div>
+  
+                <div class="interest-item" data-interest="illustration">
+                  <input name="illustration" type="checkbox" />
+                  <label for="illustration">illustration</label>
+                </div>
+  
+                <div class="interest-item" data-interest="design">
+                  <input name="design" type="checkbox" />
+                  <label for="design">design</label>
+                </div>
+  
+                <div class="interest-item" data-interest="photography">
+                  <input name="photography" type="checkbox" />
+                  <label for="photography">photography</label>
+                </div>
+  
+                <div class="interest-item" data-interest="photography">
+                  <input name="books" type="checkbox" data-interest="books"/>
+                  <label for="books">books</label>
+                </div>
+
+                <div class="interest-item" data-interest="writtenstory">
+                  <input name="writtenstory" type="checkbox" data-interest="writtenstory"/>
+                  <label for="writtenstory">Written Stories</label>
+                </div>
+
+                <div class="interest-item" data-interest="skits">
+                  <input name="skits" type="checkbox" data-interest="books"/>
+                  <label for="skits">Skits</label>
+                </div>
+  
+              </div>
+  
+              {% comment %} <div class="interests-right" >
+  
                 <div>
                   <input name="Videography" type="checkbox" />
                   <label for="videography">Videography</label>
@@ -133,46 +168,7 @@
                   <label for="books">books</label>
                 </div>
   
-              </div>
-  
-              <div class="interests-right">
-  
-                <div>
-                  <input name="Videography" type="checkbox" />
-                  <label for="videography">Videography</label>
-                </div>
-  
-                <div>
-                  <input name="animation" type="checkbox" />
-                  <label for="animation">animation</label>
-                </div>
-  
-                <div>
-                  <input name="illustration" type="checkbox" />
-                  <label for="illustration">illustration</label>
-                </div>
-  
-                <div>
-                  <input name="design" type="checkbox" />
-                  <label for="design">design</label>
-                </div>
-  
-                <div>
-                  <input name="art" type="checkbox" />
-                  <label for="art">art</label>
-                </div>
-  
-                <div>
-                  <input name="photography" type="checkbox" />
-                  <label for="photography">photography</label>
-                </div>
-  
-                <div>
-                  <input name="books" type="checkbox" />
-                  <label for="books">books</label>
-                </div>
-  
-              </div>
+              </div> {% endcomment %}
             </div>
           </div>
         </div>
@@ -183,7 +179,17 @@
 {% endblock %}
 
 {% block include_js %}
+    <script>
+      
+      const authUser = "{{request.user.creator_profile.id}}";
+      const defaultUser = "{{request.user.id}}"
+      const csrf_token = "{{ csrf_token }}";
+
+    </script>
+
   <script src="{% static 'js/sibebar.js' %}"></script>
+  <script src="{% static 'js/settings.js' %}"></script>
+
     <script>
       const changeButton = document.querySelector('.change-button');
       const imageContainer = document.querySelector('.image-container');

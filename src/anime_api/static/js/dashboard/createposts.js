@@ -1,52 +1,75 @@
 const singleVideoEl = document.querySelector("#create-single-video");
 
-/**
- * Post individual videos to the API
- */
 singleVideoEl.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const form = e.currentTarget;
-  const formdata = new FormData(form);
+  const thumbnailInput = document.querySelector("#thumbnail").files[0]; // Correctly reference the file
+  const captionInput = document.querySelector("#caption").value;
+  const videoInput = document.querySelector("#video").files[0]; // Correctly reference the file
+  const tags = document.querySelector("#tags").value;
 
-  //   split tags string to get individual tags to post
-  let tags = formdata.get("tags").split(",");
+  const formdata = new FormData();
 
-  // delete initial tags from the form data
-  formdata.delete("tags");
+  if (captionInput !== "") {
+    formdata.append("title", captionInput);
+  }
+  if (thumbnailInput) { // Ensure the file exists before appending
+    formdata.append("thumbnail", thumbnailInput);
+  }
+  if (videoInput) { // Ensure the file exists before appending
+    formdata.append("video_file", videoInput);
+  }
 
-  // append new tags to the formdata 
-  tags.map((el) => {
+  const userTags = tags.split(",").map((el) => el.trim());
+
+  userTags.forEach((el) => {
     formdata.append("tags", el);
   });
 
-  //   add the creator to the form
+  // Add creator to the form
   formdata.append("creator", creatorName);
 
-  //   console.log(csrf_token, "this is the token");
-
   try {
-    let response = await fetch("http://127.0.0.1:8000/content/videocontent/", {
+    let response = await fetch("http://localhost:8000/content/videocontent/", {
       headers: {
         "X-CSRFToken": csrf_token,
-        // "Content-Type": "multipart/form-data",
       },
       credentials: "same-origin",
       method: "POST",
       body: formdata,
     });
-    if (!response.ok)
-      throw new Error("failed to post data", response.statusText);
+
+    if (!response.ok) {
+      console.log("Response status:", response.status);
+      console.log("Response text:", await response.text());
+      throw new Error("Failed to post data", response);
+    }
+
     const resData = await response.json();
     console.log(resData, "this is the response data from the form endpoint");
   } catch (error) {
-    console.error(error.message, "🤔 from the video form submission");
+    console.error(error, "🤔 from the video form submission");
   }
 });
 
-const submitPost = async () => {};
+
+// post story
+document.querySelector('#story-btn').addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const story_title = document.querySelector("#story_title").value;
+  const story_synopsis = document.querySelector("#story_synopsis").value;
+  const story_content = document.querySelector("#story_content").value;
+  const story_tags = document.querySelector("#story_tags");
+
+  const newStoryForm = new FormData();
+
+  if (story_title){
+    newStoryForm.append("title", story_title)
+  } if (story_content){
+    newStoryForm.append("synopsis", story_synopsis)
+  }
+    
 
 
-fetch("", {
-  
 })

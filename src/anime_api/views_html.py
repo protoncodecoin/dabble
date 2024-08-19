@@ -7,6 +7,9 @@ from django.utils import timezone
 from django.db.models import Count, Q
 import redis
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 
 from anime_api import models
 from users_api.models import CreatorProfile
@@ -17,6 +20,7 @@ from .views_serializer import (
     SimpleWrittenStory,
     SimpleVideoSerializer,
     SimpleTextSerializer,
+    SimplePhotographySerializer,
 )
 
 # connect to redis
@@ -49,7 +53,9 @@ def dashboard(request):
     return render(request, "anime_api/dashboard.html", {"selection": "dashboard"})
 
 
-def detail_post_count(request, content_type, id, slug):
+@api_view(["POST"])
+def detail_post_count(request, content_type, id):
+    """Keep track of the number of views of a post"""
     post = None
     content_type_mapping = {
         # "series": models.Series,
@@ -72,15 +78,8 @@ def detail_post_count(request, content_type, id, slug):
 
         # increment general post by one
         # r.zincrby("post_ranking", 1, post.id)
-        return render(
-            request,
-            "anime_api/post_detail.html",
-            {
-                "total_views": total_views,
-                "post": post,
-                "selction": "detail",
-            },
-        )
+
+        return Response({"total_views": total_views, "post": post})
 
     elif target_content == models.WrittenStory:
         post = get_object_or_404(models.WrittenStory, id=id)
@@ -92,15 +91,7 @@ def detail_post_count(request, content_type, id, slug):
         # increment general post by one
         # r.zincrby("post_ranking", 1, post.id)
 
-        return render(
-            request,
-            "anime_api/post_detail.html",
-            {
-                "total_views": total_views,
-                "post": post,
-                "selction": "detail",
-            },
-        )
+        return Response({"total_views": total_views, "post": post})
 
     # elif target_content == models.CreatorProfile:
     #     post = get_object_or_404(models.CreatorProfile, id=id)
@@ -130,15 +121,16 @@ def detail_post_count(request, content_type, id, slug):
 
         # increment general post by one
         # r.zincrby("post_ranking", 1, post.id)
-        return render(
-            request,
-            "anime_api/post_detail.html",
-            {
-                "total_views": total_views,
-                "post": post,
-                "selction": "detail",
-            },
-        )
+        # return render(
+        #     request,
+        #     "anime_api/post_detail.html",
+        #     {
+        #         "total_views": total_views,
+        #         "post": post,
+        #         "selction": "detail",
+        #     },
+        # )
+        return Response({"total_views": total_views, "post": post})
 
     elif target_content == models.Text:
         post = get_object_or_404(models.Text, id=id)
@@ -149,15 +141,16 @@ def detail_post_count(request, content_type, id, slug):
         # increment general post by one
         # r.zincrby("post_ranking", 1, post.id)
 
-        return render(
-            request,
-            "anime_api/post_detail.html",
-            {
-                "total_views": total_views,
-                "post": post,
-                "selction": "detail",
-            },
-        )
+        # return render(
+        #     request,
+        #     "anime_api/post_detail.html",
+        #     {
+        #         "total_views": total_views,
+        #         "post": post,
+        #         "selction": "detail",
+        #     },
+        # )
+        return Response({"total_views": total_views, "post": post})
 
     elif target_content == models.Design:
         post = get_object_or_404(models.Design, id=id)
@@ -169,15 +162,25 @@ def detail_post_count(request, content_type, id, slug):
         # increment general post by one
         # r.zincrby("post_ranking", 1, post.id)
 
-        return render(
-            request,
-            "anime_api/post_detail.html",
-            {
-                "total_views": total_views,
-                "post": post,
-                "selction": "detail",
-            },
-        )
+        # return render(
+        #     request,
+        #     "anime_api/post_detail.html",
+        #     {
+        #         "total_views": total_views,
+        #         "post": post,
+        #         "selction": "detail",
+        #     },
+        # )
+        return Response({"total_views": total_views, "post": post})
+
+    elif target_content == models.Photography:
+        post = get_object_or_404(models.Photography, id=id)
+        total_views = r.incr(f"photograhpy:{post}:views")
+
+        # increment total design views by 1
+        r.zincrby("photography_ranking", 1, post.id)
+
+        return Response({"total_views": total_views, "post": post})
 
     return render(request, "anime_api/post_detail.html")
 
@@ -231,8 +234,21 @@ def post_ranking(request):
     design_most_viewed.sort(key=lambda x: design_ranking_ids.index(x.id))
     design_serializer = SimpleDesignSerializer(design_most_viewed, many=True)
 
+    # get most viewed photography
+    photography_rank = r.zrange("photography_ranking", 0, -1, desc=True)[:10]
+    photography_ranking_ids = [int(id) for id in photography_rank]
+    photography_trends = models.Photography.objects.filter(
+        id__in=photography_ranking_ids
+    )
+    photography_most_viewed = list(photography_trends)
+
+    photography_most_viewed.sort(key=lambda x: photography_ranking_ids.index(x.id))
+    photography_serializer = SimplePhotographySerializer(
+        photography_most_viewed, many=True
+    )
+
     # MOST TRENDING
-    week_ago = timezone.now() - timedelta(days=2)
+    week_ago = timezone.now() - timedelta(days=70)
 
     top_anime_trends = (
         anime_trends.annotate(
@@ -286,6 +302,18 @@ def post_ranking(request):
     )
     text_trends_serializer = SimpleTextSerializer(top_text_trends, many=True)
 
+    top_photography_trends = (
+        photography_trends.annotate(
+            count_likes=Count("likes", filter=Q(date_posted__gte=week_ago))
+            # count_likes=Count("likes", filter=Q(release_date__lte=week_ago))
+        )
+        .filter(count_likes__gt=0)
+        .order_by("-count_likes")
+    )
+    photography_trends_serializer = SimpleTextSerializer(
+        top_photography_trends, many=True
+    )
+
     return JsonResponse(
         {
             "anime_most_viewed": anime_serializer.data[:3],
@@ -293,11 +321,13 @@ def post_ranking(request):
             "video_most_viewed": video_serializer.data[:3],
             "text_most_viewed": text_serializer.data[:3],
             "design_most_viewed": design_serializer.data[:3],
+            "photography_most_viewed": photography_serializer.data[:3],
             "anime_trends": anime_trend_serializer.data,
             "story_trends": story_trend_serializer.data,
             "design_trends": design_trend_serializer.data,
             "video_trends": video_trends_serializer.data,
             "text_trends": text_trends_serializer.data,
+            "photography": photography_trends_serializer.data,
         },
         safe=False,
         status=200,

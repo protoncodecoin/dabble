@@ -38,11 +38,12 @@ const showBooks = (books) => {
       : books
         .map((el) => {
           return `
-        <div class="book-post">
-            <img src="${el.cover}" alt="${el.title}">
+           <div class="book-post">
+            <img src="${el.cover}" alt="${el.title}" />
             <p>${el.title}</p>
             <button>
-              <a href="#">Read</a></button>
+              <a href="${el.external_link}">Read</a>
+            </button>
           </div>
     `;
         })
@@ -113,8 +114,6 @@ document
         targetValue == "general"
           ? `/library/books`
           : `/library/books/?book_category=${targetValue}&`;
-
-      console.log("currentURL: ", buildURL);
       // Reset the URL and load the filtered books
       currentURL = buildURL;
       // booksContainer.innerHTML = ""; // Clear the previous books
@@ -130,25 +129,52 @@ document
  * @param {Array} books render list of filtered books in the browser
  */
 const showFilteredBooks = (books, rootContainerEl = booksContainer) => {
-  const htmlData =
-    books <= 0
+  const elClass = rootContainerEl.classList.contains("cat-x") ? "book-card" : "book-post";
+
+    let htmlData;
+
+  if (elClass === "book-post"){
+    
+    htmlData =
+          books <= 0
+            ? 0
+            : books
+              .map((el) => {
+                return `
+              <div class="book-post">
+                  <img src="${el.cover}" alt="${el.title}">
+                  <p>${el.title}</p>
+                  <button>
+                    <a href="${el.external_link}">Read</a></button>
+                </div>
+          `;
+              })
+              .join("");
+
+  } else if (elClass == "book-card"){
+
+    htmlData =
+      books <= 0
       ? 0
       : books
         .map((el) => {
           return `
-        <div class="book-post">
-            <img src="${el.cover}" alt="${el.title}">
-            <p>${el.title}</p>
-            <button>
-              <a href="#">Read</a></button>
-          </div>
+            <div class="book-card">
+              <img src="${el.cover}" alt="${el.title}" />
+              <p>${el.title}</p>
+              <p>${el.author}</p>
+              <button><a href="${el.external_link}">Read</a></button>
+            </div>
     `;
         })
         .join("");
 
+  }
+
   if (htmlData) {
     rootContainerEl.innerHTML = ""; // Clear previous books
     rootContainerEl.insertAdjacentHTML("beforeend", htmlData);
+
   } else {
     rootContainerEl.innerHTML = `
       <div style='padding:10px;margin:20px;text-align:center;'>

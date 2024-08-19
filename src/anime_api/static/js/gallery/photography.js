@@ -73,12 +73,11 @@ async function loadMorePosts() {
       // render data into the browser
       const htmlData = results
         .map((el) => {
+          console.log(el)
           return `
-              <div class="page-content-card">
-                <a href="postpage.html"
-                  ><img src="${el.image}" alt="${el.title}" />
-                  <p>${el.title}</p></a
-                >
+              <div class="page-content-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}">
+                <img src="${el.image}" alt="${el.title}" />
+                  <p>${el.title}</p>
               </div>
         `;
         })

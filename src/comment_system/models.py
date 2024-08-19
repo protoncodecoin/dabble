@@ -34,7 +34,7 @@ class Comment(models.Model):
             models.Index(fields=["-date_posted"]),
             models.Index(fields=["content_type", "object_id"]),
         ]
-        ordering = ["-date_posted"]
+        ordering = ["date_posted"]
 
     def __str__(self):
         return f"{self.user.creator.email} made a comment on {self.content_type}"

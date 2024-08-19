@@ -82,7 +82,11 @@ def search(request, contenttype):
         "series": models.Series,
         "anime": models.Anime,
         "story": models.WrittenStory,
+        "photography": models.Photography,
+        "design": models.Design,
+        "video": models.Video,
         "creator": CreatorProfile,
+        "book": Book,
     }
 
     target_content = content_type_mapping.get(contenttype)
@@ -158,6 +162,86 @@ def search(request, contenttype):
 
                 return Response(series_serializer.data)
 
+            if target_content == models.Photography:
+                search_vector = SearchVector(
+                    "title",
+                    "caption",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Photography.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
+                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                photography_serializer = PhotographyDetailSerializer(
+                    results, many=True, context={"request": request}
+                )
+
+                return Response(photography_serializer.data)
+
+            if target_content == models.Design:
+                search_vector = SearchVector(
+                    "title",
+                    "synopsis",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Design.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
+                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                design_serializer = DesignDetailSerializer(
+                    results, many=True, context={"request": request}
+                )
+
+                return Response(design_serializer.data)
+
+            if target_content == models.Video:
+                search_vector = SearchVector(
+                    "title",
+                    "synopsis",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Video.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
+                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                video_serializer = VideoDetailSerializer(
+                    results, many=True, context={"request": request}
+                )
+
+                return Response(video_serializer.data)
+
+            if target_content == Book:
+                search_vector = SearchVector(
+                    "title",
+                    "author",
+                )
+                search_query = SearchQuery(query)
+                results = (
+                    Book.objects.annotate(
+                        search=search_vector,
+                        rank=SearchRank(search_vector, search_query),
+                    )
+                    .filter(search=search_query)
+                    .order_by("-rank")
+                )
+                book_serializer = BookSerializer(
+                    results, many=True, context={"request": request}
+                )
+
+                return Response(book_serializer.data)
+
             if target_content == CreatorProfile:
                 search_vector = SearchVector(
                     "company_name",
@@ -222,7 +306,7 @@ def toggle_like(request, content_id, content_type):
                     {"message": False, "content": "series"},
                     status=status.HTTP_200_OK,
                 )
-        elif content_type == "stories":
+        elif content_type == "writtenstory":
             try:
                 stories_instance = WrittenStory.objects.get(id=content_id)
             except WrittenStory.DoesNotExist:
@@ -329,6 +413,32 @@ def toggle_like(request, content_id, content_type):
                     {
                         "message": False,
                         "content": "design",
+                        "status": status.HTTP_200_OK,
+                    }
+                )
+
+        elif content_type == "photography":
+            try:
+                photography_instance = Photography.objects.get(pk=content_id)
+            except Photography.DoesNotExist:
+                return Response(
+                    {"message": "Detail not found", "status": status.HTTP_404_NOT_FOUND}
+                )
+            if not photography_instance.likes.filter(pk=user.id).exists():
+                photography_instance.likes.add(user)
+                return Response(
+                    {
+                        "message": True,
+                        "content": "photography",
+                        "status": status.HTTP_200_OK,
+                    }
+                )
+            else:
+                photography_instance.likes.remove(user)
+                return Response(
+                    {
+                        "message": False,
+                        "content": "photography",
                         "status": status.HTTP_200_OK,
                     }
                 )
@@ -486,7 +596,7 @@ def toggle_favorite(request, content_type, content_id):
         content_type_mapping = {
             "series": models.Series,
             "anime": models.Anime,
-            "story": models.WrittenStory,
+            "writtenstory": models.WrittenStory,
             "book": Book,
             "text": Text,
             "design": Design,
@@ -609,13 +719,11 @@ def toggle_favorite(request, content_type, content_id):
                     user_profile = CreatorProfile.objects.get(creator=user)
 
                 except (Design.DoesNotExist, CreatorProfile.DoesNotExist):
-                    print("I do not exist=======")
                     return Response(
                         {"message": "design not found"},
                         status=status.HTTP_404_NOT_FOUND,
                     )
                 if design_instance.favorited_by.filter(id=user.id).exists():
-                    print("I was removed========")
                     design_instance.favorited_by.remove(user_profile)
                     return Response(
                         {"message": False, "content": "design"},
@@ -1035,8 +1143,24 @@ class DesignCreateListAPIView(generics.ListCreateAPIView):
     list and create design/illustration object
     """
 
-    queryset = Design.objects.all()
+    # queryset = Design.objects.all()
     serializer_class = DesignSerializer
+
+    def get_queryset(self):
+        """
+        Can be used to return objects filtered by either the user or the object's slug itself. It returns all items by default if no query_params is provided in the url
+        """
+
+        queryset = Design.objects.all()
+
+        user_id = self.request.query_params.get("id")
+        design_slug = self.request.query_params.get("slug")
+
+        if user_id is not None:
+            queryset = queryset.filter(creator=user_id)
+        elif design_slug is not None:
+            queryset = queryset.filter(slug=design_slug)
+        return queryset
 
     # def list(self, request):
     #     queryset = self.get_queryset()
@@ -1280,7 +1404,10 @@ def subsequent_episodes(request, content_type, season_id):
         season_id (int): id of the episode selected to get related season
     """
 
-    content_type_mapping = {"anime": models.Anime, "story": models.WrittenStory}
+    content_type_mapping = {
+        "anime": models.Anime,
+        "story": models.WrittenStory,
+    }
 
     target_content = content_type_mapping.get(content_type)
     try:
@@ -1380,7 +1507,7 @@ class RecommdationSystem(APIView):
                 )
                 # count += animation_data.count()
 
-            if interest == "writtenstories":
+            if interest == "writtenstory":
                 # data data from writtenstories model
                 # filter the returned data by latest post (release_date)
                 written_stories = WrittenStory.objects.all().order_by("-release_date")
@@ -1390,6 +1517,26 @@ class RecommdationSystem(APIView):
                     written_stories
                     if not combined_data
                     else list(combined_data) + list(written_stories)
+                )
+            if interest == "photography":
+                # data from photography model
+                # filter the returned data by latest post (release_date)
+                photos = Photography.objects.all().order_by("-date_posted")
+
+                # combine queryset to paginate
+                combined_data = (
+                    photos if not combined_data else list(combined_data) + list(photos)
+                )
+            if interest == "design":
+                # data from photography model
+                # filter the returned data by latest post (release_date)
+                design_data = Design.objects.all().order_by("-release_date")
+
+                # combine quetset to paginate
+                combined_data = (
+                    design_data
+                    if not combined_data
+                    else list(combined_data) + list(design_data)
                 )
 
         # paginate the combined querset
@@ -1415,6 +1562,17 @@ class RecommdationSystem(APIView):
                 elif isinstance(obj, WrittenStory):
                     serialized_data.append(
                         StoryCreateSerializer(obj, context={"request": request}).data
+                    )
+                elif isinstance(obj, Photography):
+                    serialized_data.append(
+                        PhotographyDetailSerializer(
+                            obj, context={"request": request}
+                        ).data
+                    )
+
+                elif isinstance(obj, Design):
+                    serialized_data.append(
+                        DesignDetailSerializer(obj, context={"request": request}).data
                     )
 
             # Get the paginated response witth the total count
@@ -1481,6 +1639,39 @@ class PhotographyDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         return self.destroy(request, *args, **kwargs)
 
 
-@api_view
-def comment_on_post(request):
-    pass
+@api_view(["GET"])
+def get_user_series(request):
+
+    if request.user.is_authenticated:
+
+        user = request.user
+
+        print(user, " === this is the user ====")
+        # anime_serializer = None
+        # writtenstory_serializer = None
+
+        user_profile = CreatorProfile.objects.get(creator=user)
+        user_series = Series.objects.filter(creator=user_profile)
+
+        # get all user series id
+        user_series_list_ids = [series.id for series in user_series]
+
+        # get all animes for the series
+        user_animations = Anime.objects.filter(series__in=user_series)
+
+        # get all written stories for the series
+        user_writtenstories = WrittenStory.objects.filter(series__in=user_series)
+
+        # if user_animations:
+        anime_serializer = AnimeSerializer(
+            user_animations, many=True, context={"request": request}
+        )
+
+        # if user_writtenstories:
+        writtenstory_serializer = StorySerializer(
+            user_writtenstories, many=True, context={"request": request}
+        )
+
+        return Response({"data": [writtenstory_serializer.data, anime_serializer.data]})
+
+    return Response({"error": "permission denied"}, status=status.HTTP_401_UNAUTHORIZED)

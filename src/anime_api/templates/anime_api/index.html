@@ -6,197 +6,380 @@
   <!-- Top navigational bar -->
   {% include 'partials/_topnavigationbar.htm' %}
 
-<div class="content">
-    <div class="content-main">
-      <div class="banner">
-        <img src="{% static 'images/cloudy.jpg' %}" alt="" />
+      <div class="content">
+        <div class="content-main">
+          <div class="banner">
+            <!-- <img src="/Images/cloudy.jpg" alt="" /> -->
+            <video
+              src="/Portfolio/Dabble logo animation (2).mp4"
+              autoplay
+              muted
+              loop
+              poster="/Images/ (3).jpg"
+            ></video>
+          </div>
+
+          <section class="trends">
+            <h3>Trends</h3>
+            <div class="container">
+              <button class="slide-btn slide-btn-1" data-btn="slide-btn-1">
+                <img src="{% static 'icons/betterico.svg' %}" alt="" class="ico" data-btn="slide-btn-1"/>
+              </button> 
+              <div class="posts xx carousel trends-carousel popular" id="rootTrends">
+                {% comment %} <div class="trend-card show-modal">
+                  <!-- <a href=""> -->
+                    <img src="/Portfolio/apple cider ad.jpg" alt="" />
+                    <p>Apple cider Poster</p>
+                  <!-- </a> -->
+                </div>
+                <div class="trend-card show-modal">
+                  <img src="/Portfolio/spyter photography works 2/Naturalspace-1.jpg" alt="" />
+                  <p>Perfume Photography</p>
+                </div>
+                <div class="trend-card show-modal">
+                  <img src="/Portfolio/nike.jpg" alt="" />
+                  <p>Nike Poster</p>
+                </div>
+                <div class="trend-card show-modal">
+                  <img src="/Portfolio/drawing 2.jpg" alt="" />
+                  <p>Pencil Drawing</p>
+                </div>
+                <div class="trend-card show-modal ">
+                  <video
+                    src="/Portfolio/bs water splash.mp4"
+                  autoplay
+                    muted
+                    contriols
+                    poster=""
+                  ></video>
+                  <p>Bottle Product Animation</p>
+                </div>
+                <div class="trend-card show-modal">
+                  <img src="/Portfolio/cookies flyer.jpg" alt="">
+                  <p>Cookies Poster</p>
+                </div> {% endcomment %}
+              </div>
+              <button class="slide-btn slide-btn-2" data-btn="slide-btn-2">
+                <img src="{% static 'icons/betterico2.svg' %}" alt="" class="ico" data-btn="slide-btn-2" />
+              </button>
+            </div>
+          </section>
+
+          <section class="books">
+            <h3>Recommended Books</h3>
+            <div class="container">
+              <button class="slide-btn slide-btn-1" data-btn="slide-btn-3">
+                <img src="{% static 'icons/betterico.svg' %}" alt="" class="ico" data-btn="slide-btn-3"/>
+              </button>
+
+              <div class="posts carousel xx books-carousel" id="recommended__books">
+                {% comment %} <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 1.png" alt="" />
+                  <p>The Beginners Guide To Branding</p>
+                  <p>Creative media</p>
+                  <button><a target="_blank" href="https://dl.dropboxusercontent.com/sh/d6plg2q4oydvpcs/AACazcHZ9SJwz-8i8bDIocAca/Archivos%20Infobooks%20ING/Temas/265%20Graphic%20Design/17.%20The%20Beginner%27s%20Guide%20to%20Branding%20author%20Creative%20Market.pdf?dl=1">Read</a></button>
+                </div>
+
+                <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 10.png" alt="" />
+                  <p>Getting the hang of Web Typography</p>
+                  <p>Smashing Magazine</p>
+                  <button><a target="_blank" href="https://www.pdfdrive.com/download.pdf?id=19637783&h=fb641137cb46f08e1a921b9872c91f47&u=cache&ext=pdf" >Read</a></button>
+                </div>
+
+                <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 11.png" alt="" />
+                  <p>The Animators Survival Kit</p>
+                  <p>Richard Williams</p>
+                  <button><a target="_blank" href="https://www.pdfdrive.com/download.pdf?id=156654527&h=3628aae9d3caff9ca7416bd038700346&u=cache&ext=pdf">Read</a></button>
+                </div>
+
+                <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 18.png" alt="" />
+                  <p>Advanced Compositing</p>
+                  <p>Brett Malley</p>
+                  <button><a target="_blank" href="https://www.pdfdrive.com/download.pdf?id=184691669&h=9d80bf6d778a7bc26fe61c4bf7d25e67&u=cache&ext=pdf">Read</a></button>
+                </div>
+
+                <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 3.png" alt="" />
+                  <p>Color Theory</p>
+                  <p>Dave Morrow</p>
+                  <button><a target="_blank" href="https://drive.google.com/file/d/13FuLudMlsOl5B27c1vM2fAhQ6twvfMFx/view?usp=drivesdk">Read</a></button>
+                </div>
+
+                <div class="book-card">
+                  <img src="/Portfolio/BOOKS/BOOK 13.png" alt="" />
+                  <p>2D Character 2D Character Animation</p>
+                  <p>Mark Simon</p>
+                  <button><a target="_blank" href="https://www.pdfdrive.com/download.pdf?id=185566032&h=994eae0d748d69297137f537ee131d5f&u=cache&ext=pdf">Read</a></button>
+                </div> {% endcomment %}
+              </div>
+
+              <button class="slide-btn slide-btn-2" data-btn="slide-btn-4">
+                <img src="{% static 'icons/betterico2.svg' %}" alt="" class="ico" data-btn="slide-btn-4"/>
+              </button>
+            </div>
+          </section>
+
+          <section class="page-content">
+            <h3>Posts</h3>
+            <div class="posts post-gap" id="rootPost">
+              {% comment %} <div class="page-content-card show-modal">
+                <!-- <a href="#"> -->
+                  <video
+                  src="/dabble assets/vid(5).MP4"
+                  autoplay
+                  muted
+                  loop
+                  contriols
+                  poster="/Images/ (3).jpg"
+                ></video>
+                <p>3D Abstract Modelling</p>
+                <!-- </a> -->
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/BURGER.jpg" alt="" />
+                <p>Burger Flyer</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/CRAVE XPRESS 2-01-01-01.jpg" alt="" />
+                <p>Crave Express</p>
+              </div>
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/pepsi.jpg" alt="">
+                <p>Pepsi Poster</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/fggv.png" alt="" />
+                <p>Christmas Poste</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Images/ (7).jpg" alt="" />
+                <p>Orange Fruit Photography</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="Portfolio/photography88.JPG" alt="">
+                <p>Fan Ice Ad</p>
+              </div>
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/85810389-21b4-4792-a540-c9935bf45305.jpg" alt="" />
+                <p>Happiness Illustrations</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <video
+                src="/Portfolio/Treat Truck (3).mp4"
+                muted
+                autoplay 
+                contriols
+                poster=""
+              ></video>
+                <p>Christmas Icecream</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio//jennifer_s works/sub.jpg" alt="" />
+                <p>Photography</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Images/ (12).jpg" alt="" />
+                <p>Nature Photography</p>
+              </div>
+
+              <div class="page-content-card show-modal">
+                <img src="/Portfolio/watch 2.jpg" alt="">
+                <p>Watch Poster</p>
+              </div> {% endcomment %}
+            </div>
+          </section>
+        </div>
+
+        <!-- CONTENT RIGHT -->
+        <div class="content-right"> 
+          <section class="most-viewed cr-content popular" id="rootMostViewed">
+            <h3>Most Viewed</h3>
+            {% comment %} <a class="post show-modal">
+              <img src="/Images/(35).jpg" alt="" />
+              <span>
+                <p>Labrador Painting</p>
+                <h5>Matt Sam</h5>
+              </span>
+            </a> {% endcomment %}
+            <!-- <hr /> -->
+            {% comment %} <a class="post show-modal">
+              <img src="/Images/ (19).jpg" alt="" />
+              <span>
+                <p>Skull in Dark Background</p>
+                <h5>Ronald Awudi</h5>
+              </span>
+            </a> {% endcomment %}
+            <!-- <hr /> -->
+            {% comment %} <a class="post show-modal">
+              <img src="/Images/ (7).jpg" alt="" />
+              <span>
+                <p>Juice World</p>
+                <h5>Lucy Ann</h5>
+              </span>
+            </a> {% endcomment %}
+          </section>
+
+          <section class="top-creator cr-content" id="topCreator">
+            <h3>Top Creator</h3>
+            {% comment %} <a class="post" href="profilepage.html">
+              <img src="/Images/ (18).jpg" alt="" />
+              <span>
+                <h5>Matt Sam</h5>
+                <p>Multimedia</p>
+              </span>
+              <div class="active">Active</div>
+            </a>
+            <a class="post" href="profilepage.html">
+              <img src="/Images/(20).jpg" alt="" />
+              <span>
+                <h5>Prince Asante</h5>
+                <p>Advertising</p>
+              </span>
+              <div class="active">Offline</div>
+            </a>
+            <a class="post" href="profilepage.html">
+              <img src="/Images/(23).jpg" alt="" />
+              <span>
+                <h5>Shawn Mensah</h5>
+                <p>Visual Communication</p>
+              </span>
+              <div class="active">Active</div>
+            </a>
+            <a class="post" href="profilepage.html">
+              <img src="/Images/(21).jpg" alt="" />
+              <span>
+                <h5>Jeff Bediako</h5>
+                <p>Advertising</p>
+              </span>
+              <div class="active">Active</div>
+            </a> {% endcomment %}
+          </section>
+        </div>
       </div>
 
-      <section class="trends">
-        <h3>[] Trends</h3>
-        <div class="container">
-          <button class="slide-btn slide-btn-1">
-            <img src="{% static 'icons/backarrow 2icons.svg' %}" alt="" class="ico" />
-          </button>
-          <div class="posts xx" id="rootTrends">
-            
-          </div>
-          <button class="slide-btn slide-btn-1">
-            <img src="/Icons/arrow 2icons.svg" alt="" class="ico" />
-          </button>
-        </div>
-      </section>
 
-      {% comment %} <section class="recents">
-        <h3>Recently Viewed</h3>
-        <div class="container">
-          <button>
-            <img src="{% static 'icons/backarrow 2icons.svg' %}" alt="" class="ico" />
-          </button>
-          <div class="recent-posts posts xx">
-            <div class="recent-card">
-              <a href="postpage.html">
-                <img src="/Images/ (6).jpg" alt="" />
-              <p>Modern Abstract Composition in 3D</p>
+    <div class="overlay hidden"></div>
+    <!-- MODAL -->
+    <!-- MODAL -->
+    <!-- MODAL -->
+    <div class="pop-modal modal hidden">
+      <div class="post-view">
+        <p class="modal-text hidden"></p>
+        <img class="modal-image hidden" src="" alt="Modal Image">
+        <video class="modal-video hidden" controls autoplay
+        muted
+        loop
+        controls
+        poster="">
+
+       </div>
+
+
+      <div class="right-side">
+        <!-- creator info -->
+        <div class="top-section">
+          <div class="image-text">
+            <a href="profilepage.html" id="prof-lnk">
+              <img src="/Images/ (1).jpg" alt="" />
+            </a>
+
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Alan Dalani</h3>
               </a>
-            </div>
-            <div class="recent-card">
-              <img src="/Images/ (2).jpg" alt="" />
-              <p>Modern Abstract Composition in 3D</p>
-            </div>
-
-            <div class="recent-card">
-              <img src="/Images/ (6).jpg" alt="" />
-              <p>Modern Abstract Composition in 3D</p>
-            </div>
-            <div class="recent-card">
-              <img src="/Images/ (2).jpg" alt="" />
-              <p>Modern Abstract Composition in 3D</p>
+              <p>12 days ago</p>
             </div>
           </div>
-          <button>
-            <img src="/Icons/arrow 2icons.svg" alt="" class="ico" />
-          </button>
+          <button class="follow">Follow</button>
         </div>
-      </section> {% endcomment %}
 
-      <section class="books">
-        <h3>[] Recommended Books</h3>
-        <div class="container">
-          <button class="slide-btn slide-btn-1">
-            <img src="/Icons/backarrow 2icons.svg" alt="" class="ico" />
-          </button>
-          <div class="posts xx" id="recommended__books">
-            {% comment %} <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Machine's Way</p>
-              <p>Ronald Awudi</p>
-              <button><a href="postpage.html">Read</a></button>
+        <p class="caption">
+          Art is where it all starts. The goal is simple, be the best to do it.
+        </p>
+
+        <hr />
+        <!-- comments -->
+        <div class="comments" id="comment-container">
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (2).jpg" alt="" />
+            </a>
+
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Jenni Addo</h3>
+              </a>
+              <p>Im enthralled😍</p>
             </div>
-
-            <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Lady Liberty</p>
-              <p>Brie Tankson</p>
-              <button><a href="postpage.html">Read</a></button>
-            </div>
-
-            <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Ancient Poems</p>
-              <p>Serwah Cole</p>
-              <button><a href="postpage.html">Read</a></button>
-            </div>
-
-            <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Machine's Way</p>
-              <p>Ronald Awudi</p>
-              <button><a href="postpage.html">Read</a></button>
-            </div>
-
-            <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Lady Liberty</p>
-              <p>Brie Tankson</p>
-              <button><a href="postpage.html">Read</a></button>
-            </div>
-
-            <div class="book-card">
-              <img src="/Images/ (16).jpg" alt="" />
-              <p>Ancient Poems</p>
-              <p>Serwah Cole</p>
-              <button><a href="postpage.html">Read</a></button>
-            </div> {% endcomment %}
           </div>
-          <button class="slide-btn slide-btn-1">
-            <img src="/Icons/arrow 2icons.svg" alt="" class="ico" />
-          </button>
-        </div>
-      </section>
 
-      <section class="page-content">
-        <h3>[] Posts</h3>
-        <div class="posts"  id="rootPost">
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (5).jpg" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Ronald the Conqueror</h3>
+              </a>
+              <p>Interesting, how much to conquer?</p>
+            </div>
+          </div>
 
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Brago</h3>
+              </a>
+
+              <p>An amazing piece</p>
+            </div>
+          </div>
         </div>
-      </section>
+
+        <hr />
+
+        <div class="actions">
+          <div class="interactions">
+            <img src="{% static 'icons/likeicon1.svg' %}" class="like" alt="" />
+            <!-- <img src="/Icons/saveicon1.svg" class="save" alt="" /> -->
+            <img src="{% static 'icons/saveicon1.svg' %}" class="fave" alt="" />
+          </div>
+
+          <p id='like-container'>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+        </div>
+
+        <hr />
+
+        <div class="add-comment" id="submit-btn">
+          <input type="text" placeholder="Add comment.." id="user-comment" required />
+          <button type="submit">Post</button>
+        </div>
+      </div>
+
+      <hr />
     </div>
 
-    <!-- CONTENT RIGHT -->
-     {% include 'partials/_sidebarcomponent.htm' %}
-    <!-- <div class="content-right">
-      <section class="most-viewed cr-content">
-        <h3>Most Viewed</h3>
-        <a class="post" href="postpage.html">
-            <img src="/Images/(35).jpg" alt="" />
-          <span>
-            <p>Labrador Painting</p>
-            <h5>Matt Sam</h5>
-          </span>
-        </a> -->
-        <!-- <hr /> -->
-        <!-- <a class="post" href="postpage.html">
-          <img src="/Images/ (19).jpg" alt="" />
-          <span>
-            <p>Chuuchuu Simulation</p>
-            <h5>Ronald Awudi</h5>
-          </span>
-        </a> -->
-        <!-- <hr /> -->
-        <!-- <a class="post" href="postpage.html">
-          <img src="/Images/ (7).jpg" alt="" />
-          <span>
-            <p>Bamboo Agency Group Logo</p>
-            <h5>Lucy Ann</h5>
-          </span>
-        </a>
-      </section> -->
-
-      <!-- <section class="top-creator cr-content">
-        <h3>Top Creator</h3>
-        <a class="post" href="postpage.html">
-          <img src="/Images/ (18).jpg" alt="" />
-          <span>
-            <h5>Matt Sam</h5>
-            <p>Multimedia</p>
-          </span>
-          <div class="active">Active</div>
-        </a>
-        <a class="post" href="postpage.html">
-          <img src="/Images/(20).jpg" alt="" />
-          <span>
-            <h5>Prince Asante</h5>
-            <p>Advertising</p>
-          </span>
-          <div class="active">Offline</div>
-        </a>
-        <a class="post" href="postpage.html">
-          <img src="/Images/(23).jpg" alt="" />
-          <span>
-            <h5>Shawn Mensah</h5>
-            <p>Visual Communication</p>
-          </span>
-          <div class="active">Active</div>
-        </a>
-        <a class="post" href="postpage.html">
-          <img src="/Images/(21).jpg" alt="" />
-          <span>
-            <h5>Jeff Bediako</h5>
-            <p>Advertising</p>
-          </span>
-          <div class="active">Active</div>
-        </a>
-      </section> -->
-    </div>
-  </div>
-
-  
-{% endblock %}
+    {% endblock %}
 
 {% block include_js %}
+{{ request.user.username|json_script:"request-user"}}
     <script>
         csrf_token = "{{ csrf_token }}";
+        const requestUser = JSON.parse(document.getElementById('request-user').textContent);
         {% comment %} const creatorName = "{{ request.user.creator_profile.id }}"; {% endcomment %}
     </script>
     <script  src="{% static 'js/topCreators.js' %}"></script>
@@ -204,5 +387,1319 @@
     <script src="{% static 'js/recommendedBooks.js' %}"></script>
     <script src="{% static 'js/postController1.js' %}"></script>
     <script src="{% static 'js/trendsController.js' %}"></script>
+    <script src="{% static 'js/search.js' %}"></script>
+
+
+
+{% endblock %}
+
+
+{% block domready %}
+
+    const filter_content =  {
+        textcontent: "text",
+        designcontent: "design",
+        videocontent: "video",
+        anime: "anime",
+        writtenstory: "writtenstory",
+        photography: "photography"
+  }
+
+
+// MODAL VARIABLES
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const btnOpenModal = document.querySelectorAll(".show-modal");
+const modalImage = document.querySelector('.modal-image');
+const modalVideo = document.querySelector('.modal-video');
+const modalText = document.querySelector('.modal-text');
+
+
+// user's post details
+const profileLink = document.querySelector("#prof-lnk");  // update link to person profile and img
+const detailPostInfo = document.querySelector(".name-time");  // to update link to profile and name of post owner and date posted
+const followBtn = document.querySelector(".follow");
+const captionEl = document.querySelector(".caption")
+const likeBtn = document.querySelector(".like")
+const favoriteBtn = document.querySelector(".fave");
+
+
+const commentContainerEl = document.querySelector("#comment-container")
+const userComment = document.querySelector("#user-comment");
+const submitCommentBtn = document.querySelector("#submit-btn");
+
+
+// MODAL FUNCTIONS
+// ///////////////
+const openModal = function (i) {
+  return function() {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    
+    console.log(objectPath, "this is the object path")
+    console.log("i ws here some")
+    const objectPath = btnOpenModal[i].children[0];
+    const src = objectPath.getAttribute("src");
+
+
+    if (objectPath.tagName === "IMG") {
+      // Handle image
+      modalImage.classList.remove("hidden");
+      modalVideo.classList.add("hidden");
+      modalText.classList.add("hidden");
+      modalImage.setAttribute("src", src);
+    } else if (objectPath.tagName === "VIDEO") {
+      // Handle video
+      modalImage.classList.add("hidden");
+      modalVideo.classList.remove("hidden");
+      modalText.classList.add("hidden");      
+      modalVideo.setAttribute("src", src);
+      modalVideo.load(); // Ensure the video loads with the new source
+    }else if (objectPath.tagName === "P") {
+      // Handle stories
+      modalImage.classList.add("hidden");
+      modalVideo.classList.add("hidden");
+      modalText.classList.remove("hidden");
+      modalText.textContent = objectPath.textContent
+    }
+  }
+};
+
+    /**
+     * Set the like and fav buttons to their default values
+    */ 
+    const setDefaultValues = () => {
+      //  const likeButton = document.querySelector(".like");
+      //   const faveButton = document.querySelector(".fave");
+
+        document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+        document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}");
+
+        // 
+        document.querySelector("#like-container").innerHTML = "<p>No likes yet </p>";
+
+        commentContainerEl.innerHTML = "";
+
+        // set global variables to null
+        {% comment %} SET_CREATOR = null;
+        selectedPostId = null;
+        selectedPostType = null; {% endcomment %}
+        modal.querySelector(".modal-text").textContent = ""
+
+    }
+
+
+const closeModal = function () {
+  modal.classList.add("hidden");
+  overlay.classList.add("hidden");
+
+  // Reset the modal content
+  modalImage.classList.add("hidden");
+  modalVideo.classList.add("hidden");
+  {% comment %} modalVideo.setAttribute("src", ""); // Clear the video src {% endcomment %}
+
+  setDefaultValues();
+};
+
+// Adding event listeners to each button
+{% comment %} btnOpenModal.forEach((button, i) => button.addEventListener("click", openModal(i))); {% endcomment %}
+
+overlay.addEventListener("click", closeModal);
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+    closeModal();
+  }
+});
+
+
+// carousel
+
+  let currentIndex = 0;
+  let currentIndex2 = 0;
+
+
+  document.querySelectorAll(".slide-btn").forEach((e) => {
+    e.addEventListener("click", function(e){
+
+
+      // check if the btn selected 
+      let dataValue = e.target.dataset.btn;
+
+      if (!dataValue) return;
+      
+      // select the carousel element
+      const carouselEl = document.querySelector(".trends-carousel");
+      let carouselItems = document.querySelectorAll(".trend-card");
+      const width = carouselEl.clientWidth;
+
+
+      let carouselItems2 = document.querySelectorAll(".book-card");
+      const carouselEl2 = document.querySelector(".books-carousel");
+      const width2 = carouselEl2.clientWidth;
+
+
+      // update carousel function
+          function updateCarousel() {
+
+            const width = carouselItems[0].clientWidth + 20;
+            const offset = -currentIndex * width;
+
+
+            for (let i = 0; i < carouselItems.length; i++) {
+              carouselItems[i].style.transform = "translateX(" + offset + "px)";
+            }
+          }
+
+       // update carousel function2
+          function updateCarousel2() {
+
+            const width2 = carouselItems2[0].clientWidth + 20;
+            const offset = -currentIndex2 * width2;
+
+            for (let i = 0; i < carouselItems2.length; i++) {
+              carouselItems2[i].style.transform = "translateX(" + offset + "px)";
+            }
+          }
+      
+      if (dataValue == "slide-btn-1"){
+            // prevButton
+            if (currentIndex < carouselItems.length - 3) {
+              currentIndex++;
+            } else {
+              currentIndex = 0; // Go back to the first item
+            }
+            updateCarousel();
+        
+      } else if (dataValue == "slide-btn-2"){
+          // nextButton
+          if (currentIndex > 0) {
+              currentIndex--;
+            } else {
+              currentIndex = carouselItems.length - 1; // Go to the last item
+            }
+            updateCarousel();
+
+      } else if(dataValue == "slide-btn-3"){
+          // prevButton
+            if (currentIndex2 < carouselItems2.length - 3) {
+              currentIndex2++;
+            } else {
+              currentIndex2 = 0; // Go back to the first item
+            }
+            updateCarousel2();
+        
+      } else if (dataValue == 'slide-btn-4'){
+
+          // nextButton
+          if (currentIndex2 > 0) {
+              currentIndex2--;
+            } else {
+              currentIndex2 = carouselItems2.length - 1; // Go to the last item
+            }
+            updateCarousel2();
+      }
+    })
+  })
+
+  // MODAL 
+
+const baseDetailURL = "http://localhost:8000/content";
+    /**
+     * 
+     * @param {String} baseURL base url to be used
+     * @param {Number} id id of the selected post element 
+     * @param {String} typoOfPost typeof of selected post
+     *  
+     */
+    const getDetailedPost = async (baseUrl, id, typoOfPost) => {
+        const url = `${baseUrl}/${typoOfPost}/${id}`;
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok){
+                throw Error("Something happened")
+            }
+
+            const resJon = await response.json();
+            return resJon;
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+
+  /**
+ * 
+ * @param {String} content_type type of post object 
+ * @param {Number} object_id id of post object
+ */
+const getComments = async (content_type, object_id) => {
+  const url = `http://localhost:8000/comment/all/?content_type=${content_type}&object_id=${object_id}`;
+
+  try {
+    
+    const response = await fetch(url, {
+      header:{
+        "X-CSRFToken": csrf_token,
+      }
+    },)
+
+    if (!response.ok) {
+      throw Error("An error occurred in comment async await")
+    }
+
+    const resJson = await response.json();
+    
+    // render comments
+    renderComments(resJson);
+    
+    return resJson;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+/**
+ * 
+ * @param {Array} data data to be rendered on the dom
+ */
+function renderComments(data){
+  const renderedCommentsHTML = data.length === "" ? "<h2>Be the first to comment</h2>" : data.map((el) => {
+   
+    return    `<div class="image-text">
+            <a href="/${el.owner.id}/${requestUser}/">
+              <img src="${el.owner.creator_logo}" alt="${el.owner.company_name || el.user}" />
+            </a>
+            <div class="name-time">
+              <a href="/${el.owner.id}/${requestUser}/">
+                <h3>${el.owner.company_name || el.user}</h3>
+              </a>
+              <p>${el.text}</p>
+            </div>
+          </div>
+    `
+  }).join("");
+
+  commentContainerEl.innerHTML = "";
+  commentContainerEl.insertAdjacentHTML("beforeend", renderedCommentsHTML);
+}
+
+
+    /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const getLikeFavStatus = async (content_type, content_id) => {
+
+    const url = `http://localhost:8000/actions/check_fav_like_status/${content_type}/${content_id}/`
+
+
+    try {
+      
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  function timeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const secondsAgo = Math.floor((now - date) / 1000);
+
+    const minutesAgo = Math.floor(secondsAgo / 60);
+    const hoursAgo = Math.floor(minutesAgo / 60);
+    const daysAgo = Math.floor(hoursAgo / 24);
+
+    if (daysAgo > 0) {
+        return daysAgo === 1 ? "1 day ago" : `${daysAgo} days ago`;
+    } else if (hoursAgo > 0) {
+        return hoursAgo === 1 ? "1 hour ago" : `${hoursAgo} hours ago`;
+    } else if (minutesAgo > 0) {
+        return minutesAgo === 1 ? "1 minute ago" : `${minutesAgo} minutes ago`;
+    } else {
+        return secondsAgo === 1 ? "1 second ago" : `${secondsAgo} seconds ago`;
+    }
+}
+
+
+
+  /**
+   * 
+   * @param {Number} creator_id id of the creator to check status 
+   */
+const checkFollowStatus = async function(creator_id){
+  const url = `http://localhost:8000/actions/check_follow_status/${creator_id}/`;
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      ContentType: "application/json",
+      
+    },
+    credentials: "same-origin",
+    method: "POST"
+  })
+
+  if (!response.ok) {
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+
+  } catch (error) {
+    console.log(error);
+  }
+
+
+}
+
+
+  /**
+ * 
+ * @param {String} url url of the resource
+ * @returns 
+ */
+  const getRecentlyLikedUser = async (url) => {
+    
+    try {
+      const response = await fetch(url,  {
+        headers: {
+          "X-CSRFToken": csrf_token
+        },
+        credentials: "same-origin"
+      })
+
+      if (!response.ok) {
+        throw new Error("Couldn't get the name of the latest liked user")
+      }
+
+      const resJon = await response.json();
+      const {owner} = resJon;
+
+      return owner;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+    /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const likeAndUnlike = async (content_type, content_id, content="like") => {
+    const url = content === "like" ? `http://localhost:8000/content/action/like/${content_type}/${content_id}/` : `http://localhost:8000/content/action/favorite/${content_type}/${content_id}/`;
+
+    console.log(url, "this is like and fav")
+
+    try {
+      
+      const response = await fetch(url , {
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+        method: "POST"
+      })
+
+      if (!response.ok) {
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+        /**
+   * 
+   * @param {Number} creator_id id of the creator to be followed
+   * @pararm {String} action to be performed [POST, PUT]
+   */
+const followAndUnfollow = async function(creator_id, action="POST"){
+  const url = `http://localhost:8000/actions/follow/${creator_id}/`;
+
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      "Content-Type": "application/json"
+    },
+    credentails: "same-origin",
+    method: action
+  })
+
+  if (!response.ok) {
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+  
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+/**
+ * 
+ * @param {String} content_type type of post object 
+ * @param {Number} object_id id of post object
+ * @param {String} msg comment of user
+*/
+const postUserComment = async (content_type, object_id, msg) => {
+
+  const url = `http://localhost:8000/comment/create/`;
+
+
+  const userProf = "{{request.user.creator_profile.id}}"
+
+  let newCommentForm = new FormData();
+  newCommentForm.append("text", msg);
+  newCommentForm.append("object_id", object_id)
+  newCommentForm.append("content_type_str", filter_content[content_type])
+  newCommentForm.append("user", userProf)
+  
+
+  try {
+    
+    const response = await fetch(url,
+    
+      {
+        headers: {
+          "X-CSRFToken": csrf_token
+        },
+        method: "POST",
+      body: newCommentForm
+    },
+  )
+
+    if (!response.ok) {
+      throw Error("An error occurred in comment async await")
+    }
+
+    const resJson = await response.json();
+
+    // re-render comments
+    renderSingleComment(resJson);
+    
+    {% comment %} return resJson; {% endcomment %}
+    
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+/**
+ * 
+ * @param {Object} data data to be rendered on the dom
+ */
+function renderSingleComment(data){
+
+const renderedCommentHtml =
+    `    <div class="image-text">
+            <a href="/${data.owner.id}/${data.user}/">
+              <img src="${data.owner.creator_logo}" alt="${data.owner.company_name || data.user}" />
+            </a>
+
+            <div class="name-time">
+              <a href="/${data.owner.id}/${data.user}/">
+                <h3>${data.owner.company_name || data.user}</h3>
+              </a>
+              <p>${data.text}</p>
+            </div>
+          </div>
+    `
+
+  commentContainerEl.insertAdjacentHTML("beforeend",renderedCommentHtml);
+  commentContainerEl.scrollHeight;
+
+}
+
+
+
+  let selectedPostId = null;
+  let selectedPostType = null;
+  let SET_CREATOR = null;
+
+  const postContainer = document.querySelector("#rootPost").addEventListener("click", async function(e){
+
+    const selectedParentEL = e.target.parentElement;
+    // get the content type and selected post id
+    
+    selectedPostId = e.target.parentElement.dataset.id;
+    selectedPostType = e.target.parentElement.dataset.posttype;
+
+    if (selectedParentEL.classList.contains("show-modal")){
+      modal.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+
+
+      // check type of content to display model (video/img)
+      const contentData = e.target.parentElement.dataset.posttype ;
+    const contentType = contentData == "anime" || contentData == "videocontent" ? "video" : contentData ===  "writtenstory"  ? "writtenstory" : "img";
+
+    // <!-- get comments related to the post -->
+        await getComments(selectedPostType, selectedPostId);
+
+        // <!-- get like and favorite buttons status -->
+        console.log(selectedPostType, "this is the selected post type")
+        const likeFavResponse = await getLikeFavStatus(selectedPostType, selectedPostId);
+
+        console.log(likeFavResponse, "this is the status")
+
+        const {liked, favorited} = likeFavResponse;
+
+        if (liked){
+          document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+        }
+
+        if (favorited) {
+          document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+        }
+
+
+    if (contentType == "img") {
+      const selectedSrc = selectedParentEL.querySelector("img").getAttribute("src");
+
+        // get cursor on input field to active
+        userComment.focus();
+
+      // make request to the api endpoint to get detailed information about the post item
+      const detailedData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+      if (detailedData){
+
+        const data = detailedData;
+
+         // making data a global variable
+            SET_CREATOR = data
+
+            modal.querySelector(".post-view").querySelector("img").classList.remove("hidden")
+            modal.querySelector(".post-view").querySelector("img").setAttribute("src", selectedSrc);
+
+             profileLink.setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent = data.username || data.owner.company_name;
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set link to profile
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+
+            // add eventlistener to the follow btn
+            followBtn.addEventListener("click", async function(){
+
+              const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+              
+              console.log(data.creator, data.owner.id)
+              const result = await followAndUnfollow(data.creator || data.owner.id);
+
+
+              if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              }
+            })
+            
+      } 
+
+    } else if (contentType == "video" || contentType == "anime"){
+     
+      
+          <!-- Call API to get detail information about selected element-->
+         <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         <!-- make request to the url to get the data -->
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('video').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('video').setAttribute("poster", data.thumbnail)
+            modal.querySelector('.post-view').querySelector('video').setAttribute("src", data.video_file)
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+
+            
+          }
+
+    } else if (contentType === "writtenstory"){
+
+      const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+                if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+            console.log(selectedPostId, selectedPostType, "from the writtenstory")
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('p').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('p').textContent = data.content;
+             
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // set the content
+            modal.querySelector(".modal-text").textContent = data.content
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+            
+          }
+
+    }
+
+      // get cursor on input field to active
+      userComment.focus()
+
+    } 
+
+  })
+
+
+    // LIKE BUTTON
+    // <!-- add eventlistener to like button -->
+    likeBtn.addEventListener("click", async function(e){
+      
+
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+      const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+      const result = await likeAndUnlike(filteredType, selectedPostId)
+
+      console.log(result, "this is the result")
+      
+
+      // set the state of the like button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+      else  document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+    })
+
+    // FAV BUTTON
+    // <!-- add eventlistener to the favorite button -->
+    favoriteBtn.addEventListener("click", async function(e){
+
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+
+       const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+
+      const result = await likeAndUnlike(filteredType, selectedPostId, content="favorite");
+
+       // set the state of the favorite button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+      else  document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}");
+    })
+
+
+
+  // <!-- user add comment -->
+        submitCommentBtn.addEventListener("click", async function(e){
+
+          e.preventDefault();
+
+          if (!selectedPostId || !selectedPostType) return;
+
+            // get user input
+            const comment = userComment.value;
+            
+
+            // validate data and send it to the backend
+            if (comment) {
+               const result = await postUserComment(selectedPostType, selectedPostId, comment);
+               userComment.value = ""
+            }
+        })
+
+     // <!-- keyboard binding-->
+       submitCommentBtn.addEventListener("keypress", function(e){
+        if (e.key == "Enter"){
+          // cancel the default action if needed
+          e.preventDefault();
+          // trigger click event on button
+          submitCommentBtn.click();
+        }
+       })
+
+       {% comment %} userComment.focus(); {% endcomment %}
+
+
+       // FOLLOW BUTTON
+       // <!-- add eventlistener to follow button -->
+            followBtn.addEventListener("click", async function(){
+
+              if (!SET_CREATOR.owner.id) return;
+
+              const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+              
+              const result = await followAndUnfollow(SET_CREATOR.owner.id);
+
+              if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              } else {
+                return ;
+              }
+            })
+
+  // Adding event listeners to trends and most viewed
+  document.querySelectorAll(".popular").forEach((el) => {
+    el.addEventListener("click", async function(e){
+      
+         const selectedParentEL = e.target.parentElement;
+    // get the content type and selected post id
+    
+    selectedPostId = e.target.parentElement.dataset.id;
+    selectedPostType = e.target.parentElement.dataset.posttype;
+
+        if (selectedParentEL.classList.contains("show-modal")){
+      modal.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+
+      // check type of content to display model (video/img)
+      const contentData = e.target.parentElement.dataset.posttype ;
+    const contentType = contentData == "anime" || contentData == "videocontent" ? "video" : contentData ===  "writtenstory"  ? "writtenstory" : "img";
+
+    // <!-- get comments related to the post -->
+        await getComments(selectedPostType, selectedPostId);
+
+        // <!-- get like and favorite buttons status -->
+        console.log(selectedPostId, selectedPostType)
+        const type = filter_content[selectedPostType]
+        const likeFavResponse = await getLikeFavStatus(selectedPostType, selectedPostId);
+
+        console.log(likeFavResponse, "this is the status")
+
+        const {liked, favorited} = likeFavResponse;
+
+        if (liked){
+          document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+        }
+
+        if (favorited) {
+          document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+        }
+
+        if (contentType == "img") {
+            const selectedSrc = selectedParentEL.querySelector("img").getAttribute("src");
+
+              // get cursor on input field to active
+              userComment.focus();
+
+            // make request to the api endpoint to get detailed information about the post item
+            const detailedData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+            if (detailedData){
+
+              const data = detailedData;
+
+              // making data a global variable
+                  SET_CREATOR = data
+
+                modal.querySelector(".post-view").querySelector("img").classList.remove("hidden")
+                modal.querySelector(".post-view").querySelector("img").setAttribute("src", selectedSrc);
+
+                profileLink.setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+                // set profile image
+                profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+                // post detail
+                // name of the post owner
+                detailPostInfo.querySelector("h3").textContent = data.username || data.owner.company_name;
+
+                // set the date
+                detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+                // set link to profile
+                detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+                // set the caption
+                captionEl.textContent = data.description;
+
+                // get the number of likes and recently liked people
+                if (data.likes.length > 0) {
+
+                  const no_of_likes = data.likes.length;
+
+                  const recentUserURL = data.likes[data.likes.length - 1]
+
+                  // get the latest like object and get the username of the person who liked it
+
+                  const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+                  // pluralize 
+                  let pluralize;
+
+                  if (no_of_likes === 0) {
+                    pluralize = ""
+                  }else if (no_of_likes > 1){
+                    pluralize = "other"
+                  } else {
+                    pluralize = "others"
+                  }
+
+                  // update dom
+                  no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+                }
+
+                // follow and unfollow
+                // check the if authenticated user is following the creator and change the button text to show the status
+
+                const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+                if (followStatus.message){
+                  followBtn.textContent = "Unfollow";
+                  followBtn.dataset.status = "unfollow";
+                }else {
+                  followBtn.textContent = "Follow";
+                  followBtn.dataset.status = "follow"
+                }
+
+                // add eventlistener to the follow btn
+                followBtn.addEventListener("click", async function(){
+
+                  const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+                  
+                  console.log(data.creator, data.owner.id)
+                  const result = await followAndUnfollow(data.creator || data.owner.id);
+
+
+                  if (result.message){
+                    followBtn.textContent = "Unfollow";
+                  }else if (!result.message){
+                    followBtn.textContent = "Follow";
+                  }
+                })
+                
+            } 
+
+      }else if (contentType == "video" || contentType == "anime"){
+     
+      
+          <!-- Call API to get detail information about selected element-->
+         <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         <!-- make request to the url to get the data -->
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('video').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('video').setAttribute("poster", data.thumbnail)
+            modal.querySelector('.post-view').querySelector('video').setAttribute("src", data.video_file)
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+
+            
+          }
+
+    } else if (contentType === "writtenstory"){
+
+      const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+                if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+            console.log(selectedPostId, selectedPostType, "from the writtenstory")
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('p').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('p').textContent = data.content;
+             
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // set the content
+            modal.querySelector(".modal-text").textContent = data.content
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+            
+          }
+
+    }
+
+
+      }
+
+    
+    })
+  })
+
+      <!-- Modal buttons(like, save icons) -->
+      // interaction buttons
+      const likeButton = document.querySelector(".like");
+      const saveButton = document.querySelector(".save");
+      const faveButton = document.querySelector(".fave");
+
+      likeButton.addEventListener("click", () => {
+        let src =
+          likeButton.getAttribute("src") === "{% static 'icons/likeicon1.svg' %}"
+            ? "{% static 'icons/likeicon2.svg' %}"
+            : "{% static 'icons/likeicon1.svg' %}";
+        likeButton.setAttribute("src", src);
+      });
+
+      // DO NOT DELETE!!!!!!!
+      // saveButton.addEventListener("click", () => {
+      //   let src =
+      //     saveButton.getAttribute("src") === "{% static 'icons/saveicon1.svg' %}"
+      //       ? "{% static 'icons/saveicon2.svg' %}"
+      //       : "{% static 'icons/saveicon1.svg' %}";
+      //   saveButton.setAttribute("src", src);
+      // });
+
+      faveButton.addEventListener("click", () => {
+        let src =
+          faveButton.getAttribute("src") === "{% static 'icons/saveicon1.svg' %}"
+            ? "{% static 'icons/saveicon2.svg' %}"
+            : "{% static 'icons/saveicon1.svg' %}";
+        faveButton.setAttribute("src", src);
+      });
+
 
 {% endblock %}

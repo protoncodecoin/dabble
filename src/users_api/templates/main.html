@@ -43,9 +43,16 @@
 
   {% endblock %}
 
+  {% block include_js %}
 
-<script src="{% static 'formvalidation.js' %}"></script>
-<script src="{% static 'js/sidebar.js' %}"></script>
+  {% endblock %}
+
+  {% block domready %}
+
+  {% endblock %}
+
+    <script src="{% static 'js/sidebar.js' %}"></script>
+      <script>
 </body>
 </html>
 

@@ -1,29 +1,114 @@
 {% extends 'base.html' %}
-{% block title %}| Search {% endblock %}
+{% block title %}| VirtualTour {% endblock %}
 {% load static %}
 
 {% block content %}
-    <div class="main" id="main-view">
-      <div class="top-nav">
-        <div class="dabble-ico">
-          <img src="{% static 'icons/dabblelogo.svg'%}" alt="" />
-          <p>| Virtual Tour</p>
-        </div>
-        <div class="search-bar">
-          <input type="search" placeholder="Search" />
-          <button class="search-btn">
-            <a href="{% url 'anime_html:search' %}"
-              ><img href src="{% static 'icons/searchiconnew.svg' %}" alt=""
-            /></a>
-          </button>
-        </div>
-        <div class="buttons">
-          <button class="mode theme-toggle">
-            <img src="{% static 'icons/modeicon22.svg' %}" alt="" />
-          </button>
-          <button class="sign"><a href="signin.html">Log Out</a></button>
-        </div>
+
+
+<div class="main" id="main-view">
+  
+  <!-- Dashboard Top navigational bar -->
+  {% include 'partials/_dashboardtopnav.html' %}
+
+      <div class="content-view">
+
+          <button class="carousel-button prev" >&#8656;</button>
+          
+          <div class="carousel-inner" >
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-1.mp4' %}" autoplay loop muted></video> 
+            </div>
+
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-2.mp4' %}" autoplay loop muted></video> 
+            </div>
+
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-3.mp4' %}" autoplay loop muted></video> 
+            </div>
+
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-4.mp4' %}" autoplay loop muted></video> 
+            </div>
+            
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-5.mp4' %}" autoplay loop muted></video> 
+            </div>
+            
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-6.mp4' %}" autoplay loop muted></video> 
+            </div>
+          
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-1.mp4' %}" autoplay loop muted></video> 
+            </div>
+        
+            <div class="carousel-item">
+              <video src="{% static 'video/bg-video-2.mp4' %}" autoplay loop muted></video> 
+            </div>
+          </div>
+
+          <button class="carousel-button next">&#8658;</button>
+
       </div>
+
+            
     </div>
+
+      </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block include_js %}
+    <script src="{% static 'js/sidebar.js' %}"></script>
+<script>
+    const slideCarousel = (
+        prevButton,
+        nextButton,
+        carouselContent,
+        carouselItems
+      ) => {
+        document.addEventListener("DOMContentLoaded", function () {
+          let currentIndex = 0;
+
+          function updateCarousel() {
+            const width = carouselItems[0].clientWidth + 20;
+            const offset = -currentIndex * width;
+
+            for (let i = 0; i < carouselItems.length; i++) {
+              carouselItems[i].style.transform = "translateX(" + offset + "px)";
+            }
+          }
+
+          prevButton.addEventListener("click", function () {
+            if (currentIndex > 0) {
+              currentIndex--;
+            } else {
+              currentIndex = carouselItems.length - 1; // Go to the last item
+            }
+            updateCarousel();
+          });
+
+          nextButton.addEventListener("click", function () {
+            if (currentIndex < carouselItems.length - 3) {
+              currentIndex++;
+            } else {
+              currentIndex = 0; // Go back to the first item
+            }
+            updateCarousel();
+          });
+        });
+      };
+
+      slideCarousel(
+        document.querySelector(".prev"),
+        document.querySelector(".next"),
+        document.querySelector(".carousel-inner"),
+        document.querySelectorAll(".carousel-item")
+      );
+    </script>
 
 {% endblock %}

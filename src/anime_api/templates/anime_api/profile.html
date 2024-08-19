@@ -123,6 +123,7 @@
     <!-- MODAL -->
     <div class="pop-modal modal hidden">
       <div class="post-view">
+        <p class="modal-text hidden"></p>
         <img class="modal-image hidden" src="" alt="Modal Image">
         <video class="modal-video hidden" controls autoplay
         loop
@@ -652,6 +653,7 @@ const postUserComment = async (content_type, object_id, msg) => {
           const btnOpenModal = document.querySelectorAll(".show-modal");
           const modalImage = document.querySelector('.modal-image');
           const modalVideo = document.querySelector('.modal-video');
+          const modalText = document.querySelector('.modal-text');
 
           // user's post details
           const profileLink = document.querySelector("#prof-lnk");  // update link to person profile and img
@@ -683,7 +685,9 @@ const postUserComment = async (content_type, object_id, msg) => {
         modal.classList.remove("hidden");
         overlay.classList.remove("hidden");
 
-        const contentType = e.target.parentElement.dataset.posttype == "anime" || e.target.parentElement.dataset.posttype == "videocontent" ? "video" : "img";
+         const contentData = e.target.parentElement.dataset.posttype ;
+        const contentType = contentData == "anime" || contentData == "videocontent" ? "video" : contentData ===  "writtenstory"  ? "writtenstory" : "img";
+
 
         // <!-- get comments related to the post -->
         await getComments(selectedPostType, selectedPostId);
@@ -693,8 +697,6 @@ const postUserComment = async (content_type, object_id, msg) => {
         const likeFavResponse = await getLikeFavStatus(selectedPostType, selectedPostId);
 
         const {liked, favorited} = likeFavResponse;
-
-        console.log(liked, favorited, "this is the result of liked and favorited")
 
         if (liked){
           document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
@@ -886,11 +888,91 @@ const postUserComment = async (content_type, object_id, msg) => {
             
           }
 
-         } else {
-          // content type is not known
-          console.log("none was selected")
-          console.log(contentType,  "this is the content type");
-         }
+         } else if (contentType === "writtenstory"){
+
+      const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+                if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+            console.log(selectedPostId, selectedPostType, "from the writtenstory")
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            modal.querySelector('.post-view').querySelector('p').classList.remove('hidden')
+            modal.querySelector('.post-view').querySelector('p').textContent = data.content;
+             
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // set the content
+            modal.querySelector(".modal-text").textContent = data.content
+
+
+            // get the number of likes and recently liked people
+            if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            }
+
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            }
+            
+          }
+
+    }
 
 
       } else {
@@ -1019,6 +1101,8 @@ const postUserComment = async (content_type, object_id, msg) => {
         // 
 
         document.querySelector("#like-container").innerHTML = "<p>No likes yet </p>";
+
+        const modalText = document.querySelector('.modal-text').textContent = "";
 
     }
 

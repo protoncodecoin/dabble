@@ -135,6 +135,7 @@ class PhotographyAdmin(admin.ModelAdmin):
         "id",
         "creator",
         "date_posted",
+        "caption",
     ]
 
     list_filter = [

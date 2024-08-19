@@ -111,3 +111,17 @@ anime
       document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
       document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
   }
+
+  document.querySelectorAll(".slide-btn").forEach((e) => {
+    e.addEventListener("click", function(e){
+
+      // check if the btn selected 
+      let btn = e.target;
+
+      let dataset = btn.dataset;
+
+      if (btn){
+        dataset
+      }
+    })
+  })

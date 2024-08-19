@@ -1,14 +1,13 @@
 from django.contrib.auth.models import Group
-
-from rest_framework import serializers
-
-from dj_rest_auth.registration.serializers import RegisterSerializer
-
 from django.db import transaction
 
-from .models import UserProfile, CreatorProfile, CustomUser, Follow
-
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from dj_rest_auth.registration.serializers import RegisterSerializer
+
+from taggit.serializers import TaggitSerializer, TagListSerializerField
+
+from .models import UserProfile, CreatorProfile, CustomUser, Follow
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -66,10 +65,12 @@ class RFollowSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
+class RCreatorSerializer(TaggitSerializer, serializers.HyperlinkedModelSerializer):
     """
     Serializer to serialize and deserialize data of the creatorProfile model
     """
+
+    interests = TagListSerializerField()
 
     class Meta:
         model = CreatorProfile
@@ -84,17 +85,23 @@ class RCreatorSerializer(serializers.HyperlinkedModelSerializer):
             "biography",
             "creator_logo",
             "background_image",
+            "interests",
+            "favorite_quote",
             # "following",
             # "followers",
         ]
 
 
-class RCreatorSerializerDetail(serializers.HyperlinkedModelSerializer):
+class RCreatorSerializerDetail(
+    TaggitSerializer, serializers.HyperlinkedModelSerializer
+):
     """
     Serializer to serialize and deserialize data of the creatorProfile model
     """
 
     owner = serializers.ReadOnlyField(source="creator.username")
+    email = serializers.ReadOnlyField(source="creator.email")
+    interests = TagListSerializerField()
 
     class Meta:
         model = CreatorProfile
@@ -112,6 +119,9 @@ class RCreatorSerializerDetail(serializers.HyperlinkedModelSerializer):
             "followers",
             "background_image",
             "owner",
+            "email",
+            "favorite_quote",
+            "interests",
         ]
 
 

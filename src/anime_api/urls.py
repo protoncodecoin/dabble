@@ -11,6 +11,7 @@ urlpatterns = [
         views.RecommdationSystem.as_view(),
         name="recommendation_system",
     ),
+    path("episodes/all/", views.get_user_series, name="user_series"),
     path(
         "episodes/<str:content_type>/<int:season_id>/",
         views.subsequent_episodes,
@@ -76,4 +77,7 @@ urlpatterns = [
     # Video
     path("videocontent/", views.VideoCreateListAPIView.as_view()),
     path("videocontent/<int:pk>/", views.VideoDetailAPIView.as_view()),
+    # WrittenStories
+    path("writtenstory/", views.StoryListAPI.as_view()),
+    path("writtenstory/<int:pk>/", views.StoryDetailAPI.as_view()),
 ]

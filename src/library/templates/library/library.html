@@ -12,60 +12,60 @@
      <!-- Section 1 -->
       <section class="section-1">
         <div class="container">
-          <button class="post-btn-1 post-btn">
-            <img src="/Icons/betterico.svg" alt="" class="ico" />
+          <button class="post-btn-1 post-btn slide-btn slide-btn-1" data-btn="slide-btn-1">
+            <img src="{% static 'icons/betterico.svg' %}" alt="" class="ico" data-btn="slide-btn-1" />
           </button>
-          <div class="posts categories_post" id="books__container">
-            <div class="post-card crd" data-category="general">
+          <div class="posts carousel categories_post books-cat-carousel" id="books__container">
+            <div class="post-card crd fav-card" data-category="general">
               <a href="#" class="crd" data-category="general">
                 <img src="{% static 'images/(15).jpg' %}" alt="general" data-category="general" class="crd"/>
               <p data-category="general" class="crd">General</p>
               </a>
             </div>
 
-            <div class="post-card crd" data-category="animation">
+            <div class="post-card crd fav-card" data-category="animation">
               <a href="#" class="crd" data-category="animation">
                 <img src="{% static 'images/(7).jpg' %}" alt="animation" data-category="animation" class="crd"/>
               <p data-category="animation" class="crd">Animation Books</p>
               </a>
             </div>
 
-            <div class="post-card crd" data-category="advertising">
+            <div class="post-card crd fav-card" data-category="advertising">
               <a href="#" class="crd" data-category="advertising">
                 <img src="{% static 'images/(13).jpg' %}" alt="advertising" data-category="advertising" class="crd"/>
               <p data-category="advertising" class="crd">Advertising Books</p>
               </a>
             </div>
 
-            <div class="post-card crd" data-category="photography">
+            <div class="post-card crd fav-card" data-category="photography">
               <a href="#" class="crd" data-category="photography">
                  <img src="{% static 'images/(9).jpg' %}" alt="photography" class="crd" data-category="photography"/>
               <p class="crd" data-category="photography">Photography Books</p>
               </a>
             </div>
 
-            <div class="post-card crd" data-category="typography">
+            <div class="post-card crd fav-card" data-category="typography">
               <a href="#" class="crd" data-category="typography">
                  <img src="{% static 'images/(8).jpg' %}" alt="Typography" data-category="typography" class="crd"/>
               <p class="crd" data-category="typography">Typography Books</p>
               </a>
             </div>
 
-            <div class="post-card crd"  data-category="design-illustration">
+            <div class="post-card crd fav-card"  data-category="design-illustration">
               <a href="#" class="crd" data-category="design-illustration">
                  <img src="{% static 'images/(10).jpg' %}" alt="design-illustration" data-category="design-illustration" class="crd" />
               <p class="crd" data-category="design-illustration">Design/Illustration Books</p>
               </a>
             </div>
 
-            <div class="post-card crd"  data-category="other">
+            <div class="post-card crd fav-card"  data-category="other">
               <a href="#" class="crd" data-category="other">
                  <img src="{% static 'images/(11).jpg' %}" alt="other" data-category="other" class="crd"/>
               <p class="crd" data-category="other">Other Books</p>
               </a>
             </div>
 
-            <div class="post-card crd"  data-category="research">
+            <div class="post-card crd fav-card"  data-category="research">
               <a href="#" class="crd" data-category="research">
                  <img src="{% static 'images/(12).jpg' %}" alt="research" data-category="research" class="crd"/>
               <p class="crd" data-category="research">Research Books</p>
@@ -73,8 +73,8 @@
             </div>
           </div>
           
-          <button class="post-btn-2 post-btn">
-            <img src="/Icons/betterico2.svg" alt="" class="ico" />
+          <button class="post-btn-2 post-btn slide-btn slide-btn-2" data-btn="slide-btn-2">
+            <img src="{% static 'icons/betterico2.svg' %}" alt="" class="ico" data-btn="slide-btn-2" />
           </button>
         </div>
       </section>
@@ -82,12 +82,12 @@
 
       <!-- Section 2 -->
       <section class="section-2">
-        <h3>[[]] Books</h3>
+        <h3>Books</h3>
         <div class="container">
-        <button class="post-btn-1 post-btn">
-          <img src="/Icons/betterico.svg" alt="" class="ico" />
+        <button class="post-btn-1 post-btn slide-btn slide-btn-1" data-btn="slide-btn-3">
+          <img src="{% static 'icons/betterico.svg' %}" alt="" class="ico" data-btn="slide-btn-3" />
         </button>
-        <div class="posts" id="fav_books">
+        <div class="posts carousel favbooks-carousel cat-x" id="fav_books">
           {% comment %} <div class="book-card">
              <img src="{% static 'images/(2).jpg' %}" alt="" />
             <p>Machine's Way</p>
@@ -132,8 +132,8 @@
           </div> {% endcomment %}
         </div>
         
-        <button class="post-btn-2 post-btn">
-          <img src="/Icons/betterico2.svg" alt="" class="ico" />
+        <button class="post-btn-2 post-btn slide-btn slide-btn-2" data-btn="slide-btn-4">
+          <img src="{% static 'icons/betterico2.svg' %}" alt="" class="ico" data-btn="slide-btn-4" />
         </button>
         </div> 
       </section>
@@ -277,4 +277,102 @@
 {% block include_js %}
       {{ request.user.creator_profile.id|json_script:"request-user"}};
       <script src="{% static 'js/library.js' %}"></script>
+{% endblock %}
+
+{% block domready %}
+      // carousel
+
+  let currentIndex = 0;
+  let currentIndex2 = 0; 
+
+
+  document.querySelectorAll(".slide-btn").forEach((e) => {
+    e.addEventListener("click", function(e){
+
+
+      // check if the btn selected 
+      let dataValue = e.target.dataset.btn;
+
+      console.log(dataValue)
+      
+      if (!dataValue) return;
+      
+      // select the carousel element
+      const carouselEl = document.querySelector(".books-cat-carousel");
+      let carouselItems = document.querySelectorAll(".fav-card");
+      const width = carouselEl.clientWidth;
+
+      const carouselEl2 = document.querySelector(".favbooks-carousel")
+      let carouselItems2 = document.querySelectorAll(".book-card");
+      const width2 = carouselEl2.clientWidth;
+      
+
+      // update carousel function
+          function updateCarousel() {
+
+            const width = carouselItems[0].clientWidth + 20;
+            const offset = -currentIndex * width;
+
+                    console.log("from fn 1", "w:", width, "off: ", offset, "cur: ", currentIndex)
+
+
+            for (let i = 0; i < carouselItems.length; i++) {
+              carouselItems[i].style.transform = "translateX(" + offset + "px)";
+            }
+          }
+
+        // update carousel function
+          function updateCarousel2() {
+
+            const width = carouselItems2[0].clientWidth + 20;
+            const offset = -currentIndex2 * width2;
+
+            console.log("carouselItem2 length ", carouselItems2.length)
+
+            console.log("from fn 2", "w:", width2, "off: ", offset, "cur: ", currentIndex2)
+
+
+            for (let i = 0; i < carouselItems2.length; i++) {
+              carouselItems2[i].style.transform = "translateX(" + offset + "px)";
+            }
+          }
+
+      if (dataValue == "slide-btn-1"){
+            // prevButton
+            if (currentIndex < carouselItems.length - 3) {
+              currentIndex++;
+            } else {
+              currentIndex = 0; // Go back to the first item
+            }
+            updateCarousel();
+        
+      } else if (dataValue == "slide-btn-2"){
+          // nextButton
+          if (currentIndex > 0) {
+              currentIndex--;
+            } else {
+              currentIndex = carouselItems.length - 1; // Go to the last item
+            }
+            updateCarousel();
+      } else if (dataValue == "slide-btn-3"){
+          // prevButton
+          if (currentIndex2 < carouselItems2.length - 3) {
+              currentIndex2++;
+            } else {
+              currentIndex2 = 0; // Go back to the first item
+            }
+            updateCarousel2();
+      }else if (dataValue == 'slide-btn-4'){
+
+          // nextButton
+          if (currentIndex2 > 0) {
+              currentIndex2--;
+            } else {
+              currentIndex2 = carouselItems2.length - 1; // Go to the last item
+            }
+            updateCarousel2();
+      }
+    })
+  })
+
 {% endblock %}

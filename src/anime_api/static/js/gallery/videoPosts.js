@@ -103,18 +103,16 @@ async function loadMorePosts() {
       const htmlData = results
         .map((el) => {
           return `
-              <div class="page-content-card">
-                <a href="postpage.html">
-                  <!-- <img src="/Images/ (3).jpg" alt="" /> -->
-                  <video src="${el.video_file}" autoplay muted controls poster="${el.thumbnail}"></video>
+             <div class="page-content-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}content" >
+                <video src="${el.video_file}"
+                  muted
+                  loop
+                  poster="${el.thumbnail}"></video>
                   <p>${el.title}</p>
-                </a>
               </div>
         `;
         })
         .join("");
-
-      console.log(htmlData);
       postVideoContainerEl.insertAdjacentHTML("beforeend", htmlData);
     }
 

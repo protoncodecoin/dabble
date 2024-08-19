@@ -230,7 +230,7 @@ button {
 .buttons {
   display: flex;
   align-items: center;
-}
+} 
 
 .mode,
 .sign {
@@ -319,18 +319,15 @@ button {
   background-color: var(--card-bg);
   width: 31%;
   border-radius: 10px;
+  transition: 0.3s ease;
   /* box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2); */
 }
 
-.post-view {
-  /* min-width: 67%; */
-  /* flex-basis: 70%; */
-  /* height: 100%; */
-  /* align-self: stretch; */
+.search-card:hover {
+  transform: scale(1.03);
 }
 
-.post-view img,
-.post-view video {
+.search-card .top img {
   border-radius: 10px;
   /* min-height: 535px;
   min-width: 720px; */
@@ -341,8 +338,423 @@ button {
 }
 
 /* right */
-.right-side {
+.search-card .right-side {
   padding: 10px;
+  min-width: 30%;
+  padding-top: 10px;
+}
+
+.search-card .top-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-card .image-text {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.search-card .image-text img {
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  border: 5px solid #fd5050;
+  transition: 0.3s;
+}
+
+.search-card .image-text img:hover {
+  border-color: var(--image-border-hover);
+  padding: 3px;
+}
+
+.search-card .name-time {
+  display: inline-block;
+}
+
+.search-card .name-time a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.search-card .name-time h3 {
+  color: var(--card-text);
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: start;
+}
+
+.search-card .name-time p {
+  color: rgb(136, 135, 135);
+  font-size: 0.8rem;
+}
+
+.search-card .follow {
+  background-color: transparent;
+  border: none;
+  color: #fd5050;
+  font-size: 1.3rem;
+  font-family: cursive;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.3s;
+}
+
+.search-card .follow:hover {
+  color: #f8a2a2;
+  transform: scale(1.1);
+}
+
+.search-card .caption {
+  margin: 10px 0;
+  padding: 0 5px;
+  text-align: start;
+  line-height: 17px;
+  font-size: 0.9rem;
+  color: var(--card-text);
+}
+
+.search-card .comments {
+  margin: 15px 0;
+  min-height: 220px;
+  max-height: 221px;
+  overflow-y: scroll;
+}
+
+.search-card .comments::-webkit-scrollbar {
+  display: none;
+}
+
+.search-card .comments .image-text {
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+.search-card .actions {
+  margin: 10px 0;
+}
+
+.search-card .interactions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.search-card .interactions img {
+  cursor: pointer;
+  height: 45px;
+  width: 45px;
+  transition: 0.3s;
+}
+
+.search-card .interactions img:hover {
+  transform: scale(1.2);
+}
+
+.search-card .actions p {
+  padding: 0 20px;
+  font-size: 0.8rem;
+  text-align: left;
+  color: var(--card-text);
+}
+
+.search-card .actions p span {
+  font-weight: 700;
+}
+
+.search-card .add-comment {
+  width: 100%;
+  margin: 10px 0 20px;
+}
+
+.search-card .add-comment input,
+.search-card .add-comment button {
+  border: none;
+  background-color: transparent;
+  width: 80%;
+  outline: none;
+}
+
+.search-card .add-comment input {
+  color: var(--card-text);
+}
+
+.search-card .add-comment button {
+  color: var(--bg);
+  background-color: var(--card-text);
+}
+
+.search-card .add-comment input {
+  padding-left: 15px;
+}
+
+.search-card .add-comment button {
+  width: 18%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.search-card .add-comment button:hover {
+  background-color: #242424;
+  color: white;
+}
+
+/* modal classes
+.show-modal {
+  transition: 0.3s;
+}
+
+.hidden {
+  display: none;
+} */
+
+/* BOOKS */
+/* BOOKS */
+/* BOOKS */
+
+.books{
+  margin: 10px 3%;
+}
+
+.posts {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 3%;
+  width: 100%;
+  flex-wrap: wrap;
+  /* padding-right: 10px;  */
+}
+
+.book-card {
+  height: 240px;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-basis: 31%;
+  min-width: 31%;
+  transition: 0.3s;
+  margin-bottom: 15px;
+}
+
+.book-card:hover {
+  background-color: var(--card-hover-bg);
+}
+
+.book-card img:hover{
+  transform: scale(1.05);
+}
+
+.book-card a{
+  text-decoration: none;
+  color: inherit;
+}
+
+.book-card {
+  margin-top: 120px;
+  height: 110px;
+  overflow: visible;
+  position: relative;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.book-card img {
+  object-fit: cover;
+  position: absolute;
+  width: 45%;
+  height: 200px;
+  top: -115px;
+  left: 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.book-card p,
+.book-card button {
+  margin-left: 60%;
+  text-align: justify;
+  font-size: 0.8rem;
+  color: var(--card-text);
+}
+
+.book-card p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+
+.book-card button {
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: #fff; 
+  background-color: #fd5050;
+  border: none;
+  transition: 0.3s;
+}
+
+.book-card button:hover {
+  background-color: #242424;
+}
+
+/* POSTS SECTION */
+
+.posts-section {
+  margin: 10px 3%;
+}
+
+/* .page-content-card a {
+  text-decoration: none;
+  color: inherit;
+} */
+
+.page-content-card,
+.book-card{
+  height: 240px;
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-basis: 23%;
+  min-width: 23%;
+  transition: 0.3s;
+}
+
+.book-card:hover,
+.page-content-card:hover {
+  background-color: #cecece;
+  background-color: var(--card-hover-bg);
+  transform: scale(1.05);
+}
+
+.page-content-card img,
+.page-content-card video {
+  object-fit: cover;
+  object-position: top;
+  width: 100%;
+  height: 210px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.page-content-card p {
+  font-size: 12px;
+  margin: 0 10px;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-card button {
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: white;
+  background-color: #fd5050;
+  border: none;
+  transition: 0.3s;
+}
+
+/* BOOKS */
+/* BOOKS */
+/* BOOKS */
+
+.book-card {
+  margin-top: 120px;
+  height: 110px;
+  overflow: visible;
+  position: relative;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.book-card img {
+  object-fit: cover;
+  position: absolute;
+  width: 45%;
+  height: 200px;
+  top: -115px;
+  left: 20px;
+  border-radius: 10px;
+}
+
+.book-card p,
+.book-card button {
+  margin-left: 60%;
+  text-align: justify;
+  font-size: 0.75rem;
+} 
+
+.book-card p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+
+
+/* MODAL */
+/* modal */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  backdrop-filter: blur(2px);
+}
+
+.pop-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 15px;
+  position: fixed;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  background-color: var(--main-bg);
+  min-width: 1100px;
+  border-radius: 30px;
+  z-index: 3;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
+}
+
+.post-view {
+  min-width: 67%;
+  /* flex-basis: 70%; */
+  /* height: 100%; */
+  align-self: stretch;
+  /* object-fit: fill; */
+}
+
+.post-view img,
+.post-view video {
+  border-radius: 30px;
+  /* min-height: 535px;
+  min-width: 720px; */
+  height: 540px;
+  width: 725px;
+  object-fit:cover;
+  object-position: center;
+}
+
+.modal-text{
+  color: var(--card-text);
+  flex-basis: 88%;
+  overflow-y: scroll;
+  padding: 10px 15px;
+}
+
+.modal-text::-webkit-scrollbar {
+  display: none;
+}
+
+/* right */
+.right-side {
   min-width: 30%;
   padding-top: 10px;
 }
@@ -513,4 +925,241 @@ button {
 
 .hidden {
   display: none;
+}
+
+
+.vid-container,
+.video-controls,
+.video-timer,
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vid-container {
+  /* width: 98%; */
+  user-select: none;
+  overflow: hidden;
+  max-width: 900px;
+  border-radius: 30px;
+  background: #000;
+  /* aspect-ratio: 16 / 9; */
+  position: relative;
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); */
+}
+
+.vid-container.fullscreen {
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  border-radius: 0px;
+}
+.wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  bottom: -15px;
+  transition: all 0.08s ease;
+}
+.vid-container.show-controls .wrapper {
+  opacity: 1;
+  bottom: 0;
+  transition: all 0.13s ease;
+}
+.wrapper::before {
+  content: "";
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: calc(100% + 35px);
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+.video-timeline {
+  height: 7px;
+  width: 100%;
+  cursor: pointer;
+}
+.video-timeline .progress-area {
+  height: 3px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+}
+.progress-area span {
+  position: absolute;
+  left: 50%;
+  top: -25px;
+  font-size: 13px;
+  color: #fff;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.progress-area .progress-bar {
+  width: 0%;
+  height: 100%;
+  position: relative;
+  background: #f33d3d;
+}
+.progress-bar::before {
+  content: "";
+  right: 0;
+  top: 50%;
+  height: 13px;
+  width: 13px;
+  position: absolute;
+  border-radius: 50%;
+  background: #f33d3d;
+  transform: translateY(-50%);
+}
+.progress-bar::before,
+.progress-area span {
+  display: none;
+}
+.video-timeline:hover .progress-bar::before,
+.video-timeline:hover .progress-area span {
+  display: block;
+}
+.wrapper .video-controls {
+  padding: 5px 20px 10px;
+}
+.video-controls .options {
+  width: 100%;
+}
+.video-controls .options:first-child {
+  justify-content: flex-start;
+}
+.video-controls .options:last-child {
+  justify-content: flex-end;
+}
+.options button {
+  height: 40px;
+  width: 40px;
+  font-size: 19px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: #efefef;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+.options button :where(i, span) {
+  height: 100%;
+  width: 100%;
+  line-height: 40px;
+}
+.options button:hover :where(i, span) {
+  color: #fff;
+}
+.options button:active :where(i, span) {
+  transform: scale(0.9);
+}
+.options button span {
+  font-size: 23px;
+}
+.options input {
+  height: 4px;
+  margin-left: 3px;
+  max-width: 75px;
+  accent-color: #0078ff;
+}
+.options .video-timer {
+  color: #efefef;
+  margin-left: 15px;
+  font-size: 14px;
+}
+.video-timer .separator {
+  margin: 0 5px;
+  font-size: 16px;
+  font-family: "Open sans";
+}
+.playback-content {
+  display: flex;
+  position: relative;
+}
+.playback-content .speed-options {
+  position: absolute;
+  list-style: none;
+  left: -40px;
+  bottom: 40px;
+  width: 95px;
+  overflow: hidden;
+  opacity: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}
+.playback-content .speed-options.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.speed-options li {
+  cursor: pointer;
+  color: #000;
+  font-size: 14px;
+  margin: 2px 0;
+  padding: 5px 0 5px 15px;
+  transition: all 0.2s ease;
+}
+.speed-options li:where(:first-child, :last-child) {
+  margin: 0px;
+}
+.speed-options li:hover {
+  background: #dfdfdf;
+}
+.speed-options li.active {
+  color: #fff;
+  background: #3e97fd;
+}
+.container video {
+  width: 100%;
+}
+
+@media screen and (max-width: 540px) {
+  .wrapper .video-controls {
+    padding: 3px 10px 7px;
+  }
+  .options input,
+  .progress-area span {
+    display: none !important;
+  }
+  .options button {
+    height: 30px;
+    width: 30px;
+    font-size: 17px;
+  }
+  .options .video-timer {
+    margin-left: 5px;
+  }
+  .video-timer .separator {
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .options button :where(i, span) {
+    line-height: 30px;
+  }
+  .options button span {
+    font-size: 21px;
+  }
+  .options .video-timer,
+  .progress-area span,
+  .speed-options li {
+    font-size: 12px;
+  }
+  .playback-content .speed-options {
+    width: 75px;
+    left: -30px;
+    bottom: 30px;
+  }
+  .speed-options li {
+    margin: 1px 0;
+    padding: 3px 0 3px 10px;
+  }
+  .right .pic-in-pic {
+    display: none;
+  }
 }

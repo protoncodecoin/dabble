@@ -54,6 +54,7 @@ class CreatorProfile(models.Model):
     )
     total_likes = models.IntegerField(default=0)
     interests = TaggableManager()
+    favorite_quote = models.TextField(max_length=200, blank=True)
 
     def __str__(self):
         """Readable representation of the User Profile model"""

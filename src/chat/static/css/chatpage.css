@@ -6,8 +6,30 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
+:root {
+  --bg: #fff;
+  --main-bg: #fff;
+  --card-bg: #eeeeee;
+  --card-hover-bg: #cecece;
+  --card-text: #000;
+  --content-right-bg: #eeeeee;
+  --sidebar-text: #242424;
+  --image-border-hover: #242424;
+}
+
+.dark-mode {
+  --bg: #000;
+  --main-bg: #0c0c0c;
+  --card-bg: #444444;
+  --card-hover-bg: #383838;
+  --card-text: #fff;
+  --content-right-bg: #707070;
+  --sidebar-text: #fafafa;
+  --image-border-hover: #fff;
+}
+
 body {
-  background-color: #fff;
+  background-color: var(--bg);
   position: relative;
 }
 
@@ -86,7 +108,7 @@ a {
 }
 
 .side-bar .s-text {
-  color: #242424;
+  color: var(--sidebar-text);
   font-size: 13px;
   height: 20px;
   transition: 0.1s;
@@ -112,7 +134,7 @@ a {
   margin-left: 65px;
   min-height: 100vh;
   border-radius: 20px;
-  background-color: #fff;
+  background-color: var(--main-bg);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
   transition: 0.1s;
 }
@@ -136,13 +158,20 @@ a {
 .top-nav .dabble-ico {
   cursor: pointer;
   height: 30px;
-  width: 5%;
+  display: flex;
 }
 
 .dabble-ico img {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.dabble-ico p {
+  margin-left: 10px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: var(--card-text);
 }
 
 .top-nav .search-bar {
@@ -157,6 +186,7 @@ a {
   border-radius: 30px;
   background-color: transparent;
   outline: none;
+  color: var(--card-text);
   border: 1px solid gray;
   height: 36px;
   padding: 5px 15px;
@@ -516,7 +546,6 @@ a {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
-
 
 .list-item {
   display: flex;

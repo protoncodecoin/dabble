@@ -22,6 +22,7 @@ class SimpleAnimeSerializer(serializers.ModelSerializer):
             "creator_username",
         ]
 
+
 class SimpleAnimeSerializerWithTrends(serializers.ModelSerializer):
     """
     Simple serializer to serialize data in django views
@@ -63,7 +64,6 @@ class SimpleWrittenStory(serializers.ModelSerializer):
             "thumbnail",
             "typeof",
             "creator_username",
-
         ]
 
 
@@ -120,6 +120,25 @@ class SimpleTextSerializer(serializers.ModelSerializer):
             "slug",
             "title",
             "thumbnail",
+            "typeof",
+            "creator_username",
+        ]
+
+
+class SimplePhotographySerializer(serializers.ModelSerializer):
+    """
+    Simple serializer to serialize data in django views
+    """
+
+    creator_username = serializers.ReadOnlyField(source="creator.creator.username")
+
+    class Meta:
+        model = models.Photography
+        fields = [
+            "id",
+            "slug",
+            "title",
+            "image",
             "typeof",
             "creator_username",
         ]

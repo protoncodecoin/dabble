@@ -232,6 +232,7 @@ class StorySerializer(TaggitSerializer, serializers.ModelSerializer):
             "tags",
             "thumbnail",
             "release_date",
+            "content",
             "typeof",
         ]
 
@@ -1158,6 +1159,8 @@ class VideoCreateSerializer(TaggitSerializer, serializers.ModelSerializer):
         request = self.context.get("request")
         req_user = request.user
 
+        print("==========", request.data)
+
         if req_user.is_creator:
             try:
                 creator_prof = CreatorProfile.objects.get(creator=req_user)
@@ -1264,10 +1267,11 @@ class PhotographyCreateSerializer(TaggitSerializer, serializers.ModelSerializer)
             "slug",
             "title",
             "image",
+            "caption",
             "tags",
             "date_posted",
             "likes",
-            # "typeof",
+            "typeof",
         ]
 
     def create(self, validated_data):
@@ -1315,6 +1319,7 @@ class PhotographyDetailSerializer(TaggitSerializer, serializers.ModelSerializer)
             "user_has_favorited",
             "likes",
             "image",
+            "caption",
             "tags",
             "typeof",
         ]

@@ -4,11 +4,11 @@
 {% load static %}
 
 {% block content %}
-  <div class="main" id="main-view">
+    <div class="main" id="main-view">
       <!-- Dashboard Top navigational bar -->
        {% include 'partials/_dashboardtopnav.html' %}
 
-       <!-- Main -->
+      <!-- Main -->
       <div class="overlay hidden"></div>
       <!-- Navigation -->
       <div class="post-nav">
@@ -17,385 +17,145 @@
         <button class="stories-tab">Stories</button>
         <button class="videos-tab">Videos</button>
       </div>
-      <hr>
+      <hr />
 
       <!-- page content -->
       <section class="post-section">
-        <div class="posts" id="list_post_root">
-          {% comment %} <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div> {% endcomment %}
+
+        <div class="posts postParentContainerEl" id="list_post_root">
+
+              {% comment %} <div class="page-content-card show-card">
+                <img src="/Portfolio/jennifer_s works/hungry.jpg" alt="" />
+                <button class="delete-btn">X</button>
+                <p>Hungry</p>
+              </div>
+              
+              <div class="page-content-card show-card">
+                <img src="/Portfolio/jennifer_s works/Brown Tan White Cacao Chocolate Product Typography Logo.png" alt="" />
+                <button class="delete-btn">X</button>
+                <p>Brown Tan White Cacao Chocolate Product Typography Logo</p>
+              </div>
+
+              <div class="page-content-card show-card">
+                <img src="/Portfolio/jennifer_s works/DIELLEEE.jpg" alt="" /><button class="delete-btn">X</button>
+                <p>DIELLEEE</p>
+              </div>
+    
+              <div class="page-content-card show-card">
+                <img src="/Portfolio/jennifer_s works/2024  esquan.jpg" alt="" /><button class="delete-btn">X</button>
+                <p>2024 Poster</p>
+              </div> {% endcomment %}
+
         </div>
       </section>
 
-        <!-- Series/Playlist -->
-      <section class="series-section hidden" >
-        <div class="posts" id="series_container">
-          {% comment %} <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div> {% endcomment %}
-        </div>
-      </section>
-
-      <!-- written stories -->
-      <section class="stories-section hidden">
-        <div class="posts" id="written_stories_root">
-          {% comment %} <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div>
-          <div class="book-card">
-            <img src="/Images/ (16).jpg" alt="" />
-            <p>Machine's Way</p>
-            <p>Ronald Awudi</p>
-            <button><a href="postpage.html">Read</a></button>
-          </div> {% endcomment %}
-        </div>
-      </section>
-
-      <section class="videos-section hidden" >
-        <div class="posts">
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
-          </div>
-          <div class="page-content-card">
-            <a href="postpage.html">
-              <img src="/Images/ (3).jpg" alt="" />
-            <p>Character Modeling In 3D</p>
-            </a>
+      <section class="series-section hidden">
+        <div class="posts postParentContainerEl" id="series_container">
+          
+          {% comment %} <div class="page-content-card show-card">
+            <img src="/Portfolio/jennifer_s works/IH.jpg" alt="" /><button class="delete-btn">X</button>
+            <p>Wow</p>
           </div>
           
+          <div class="page-content-card show-card">
+            <img src="/Portfolio/jennifer_s works/3 cones.jpg" alt="" /><button class="delete-btn">X</button>
+            <p>3 cones Illustration</p>
+          </div> {% endcomment %}
         </div>
       </section>
 
+      <section class="stories-section hidden">
+        <div class="posts postParentContainerEl" id="written_stories_root">
+          {% comment %} <div class="book-card show-card">
+            <p class="hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus vero dolor exercitationem iste dolorem pariatur explicabo commodi fugiat distinctio necessitatibus suscipit placeat minus, similique molestias aut quae, maiores voluptatem temporibus nesciunt autem consectetur! Id, optio incidunt facere delectus iure consectetur ipsum tempora at eligendi recusandae laboriosam! Molestiae dolor ipsam velit accusantium omnis earum maiores consectetur minus ex qui. Rerum non, inventore sit tenetur fugit possimus nostrum asperiores cupiditate consequatur officiis dolor laboriosam dolorum iusto omnis veniam amet distinctio ad cum similique quibusdam deserunt nulla eveniet? Labore, officiis delectus eveniet sed voluptatibus magnam, voluptate modi quam inventore ipsam hic corrupti saepe.</p>
+          
+            <img src="/UI's/dabble assets/ch p.png" alt="" /><button class="delete-btn">X</button>
+            <p>The Chess Prodigy</p>
+            <p>Jennifer Dahmer</p>
+            <button class="show-card">Read</button>
+        </div> {% endcomment %}
+      </section>
+
+      <section class="videos-section hidden">
+        <div class="posts postParentContainerEl">
+          <div class="page-content-card show-card">
+            <video
+            src="/Portfolio/Treat Truck (3).mp4"
+            muted
+            autoplay
+            poster=""
+          ></video>
+            <p>Christmas Icecream</p>
+          </div>
+        </div>
+      </section>
     </div>
+
 
     <!-- Loader animation -->
         <div class="loaderx">
                <div class="inner-circle"></div>
         </div>
   
-    <!-- MODAL -->
+
+    <!-- Create MODAL -->
     <div class="pop-modal modal hidden">
-        
-        <div class="left-side">
-          <div class="left-main">
-            <h3>Add New</h3>
+      <div class="left-side">
+        <div class="left-main">
+          <h3>Add New</h3>
 
           <button class="left-btn selected" id="create-tab">Create Post</button>
           <button class="left-btn" id="upload-tab">Upload Series</button>
-          </div>
-
-          <div class="vertical-hr"></div>
         </div>
 
-        <div class="right-side">
-          
-          <div class="right-post-nav">
-            <button class="current post-nav-video">Video</button>
-            <button class="post-nav-story">Stories</button>
-            <button class="post-nav-image">Image</button> 
+        <div class="vertical-hr"></div>
+      </div>
+
+      <div class="right-side-1">
+        <div class="right-post-nav">
+          <button class="current post-nav-video">Video</button>
+          <button class="post-nav-story">Stories</button>
+          <button class="post-nav-image">Image</button>
+          <button class="post-nav-playlist1">Playlist 1</button>
+          <button class="post-nav-playlist2">Playlist 2</button>
+        </div>
+        <hr />
+
+        <!-- create video -->
+        <form class="create create-video" id="create-single-video" enctype="multipart/form-data">
+          {% comment %} <input type="text" name="" id="" placeholder="Title" /> {% endcomment %}
+
+          <textarea
+            name="title"
+            id="caption"
+            cols="30"
+            rows="3"
+            placeholder="Caption"
+          ></textarea>
+
+          <div class="upload-button">
+            <input
+              class="thumbnail"
+              type="file"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              name="thumbnail"
+              placeholder=""
+              id="thumbnail"
+            />
           </div>
-          <hr>
 
-          <!-- create video -->
-          <form class="create create-video" id="create-single-video">
-             
-            {% comment %} <input type="text" name="title" id="" placeholder="Title"> {% endcomment %}
+          <div class="upload-button">
+            <input
+              class=""
+              type="file"
+              accept=""
+              name="video_file"
+              placeholder=""
+              id="video"
+            />
+          </div>
 
-
-            <textarea name="title" cols="30" rows="3" placeholder="Caption"></textarea>
-
-            <div class="upload-button">
-              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="thumbnail" placeholder="">
-            </div>
-
-            <div class="upload-button">
-              <input class="" type="file" accept="" name="video_file" placeholder="">
-            </div>
-   
-            <!-- <button>
+          <!-- <button>
               <input
               class="file-input"
               type="file"
@@ -405,47 +165,101 @@
               />
               <label for="fileInput">Add Video</label>
             </button> -->
-            
-            <div class="tags">
-              <label for="tags" >Tags</label>
-            <input type="text" name="tags" id="" placeholder="Separate with commas">
-            </div>
 
-            <button type="submit" class="post-btn">Post</button>
-            <button class="cancel-btn close-modal">Cancel</button>
-          </form>
+          <div class="tags">
+            <label for="tags">Tags</label>
+            <input
+              type="text"
+              name="tags"
+              id="tags"
+              placeholder="Separate with commas"
+            />
+          </div>
 
-          <!-- create story -->
-          <form class="hidden create create-story">
-             
-            <input type="text" name="" id="" placeholder="Title">
+          <button type="submit" class="post-btn">Post</button>
+          <button class="cancel-btn close-modal">Cancel</button>
+        </form>
 
+        <!-- create story -->
+        <form class="hidden create create-story" enctype="application/x-www-form-urlencoded">
+          <input type="text" name="" id="story_title" placeholder="Title" />
 
-            <textarea name="" id="" cols="30" rows="3" placeholder="Synopsis"></textarea>
+          <textarea
+            name=""
+            id="story_synopsis"
+            cols="30"
+            rows="3"
+            placeholder="Synopsis"
+          ></textarea>
 
-            <textarea name="" id="" cols="30" rows="3" placeholder="Story"></textarea>
+          <textarea
+            name=""
+            id="story_content"
+            cols="30"
+            rows="3"
+            placeholder="Story"
+          ></textarea>
 
-            <!-- <button>Add Thumbnail</button> -->
-            
-            
-            <div class="tags">
-              <label for="tags" >Tags</label>
-            <input type="text" name="tags" id="" placeholder="Separate with commas">
-            </div>
+          <!-- <button>Add Thumbnail</button> -->
 
-            <button type="submit" class="post-btn">Post</button>
-            <button class="cancel-btn close-modal">Cancel</button>
-          </form>
+          <div class="tags">
+            <label for="tags">Tags</label>
+            <input
+              type="text"
+              name="tags"
+              id="story_tags"
+              placeholder="Separate with commas"
+            />
+          </div>
 
-          <!-- create image -->
-          <form class="hidden create create-image">
-             
-            <input type="text" name="" id="" placeholder="Title">
+          <button type="submit" class="post-btn" id="story-btn">Post</button>
+          <button class="cancel-btn close-modal">Cancel</button>
+        </form>
+
+        <!-- create image -->
+        <form class="hidden create create-image">
+          <input type="text" name="" id="" placeholder="Title" />
+
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="3"
+            placeholder="Caption"
+          ></textarea>
+
+          <!-- <button>Add Image</button> -->
+          <div class="upload-button">
+            <input
+              class="image"
+              type="file"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              name="imageInput"
+              placeholder=""
+            />
+          </div>
+
+          <div class="tags">
+            <label for="tags">Tags</label>
+            <input
+              type="text"
+              name="tags"
+              id=""
+              placeholder="Separate with commas"
+            />
+          </div>
+
+          <button type="submit" class="post-btn">Post</button>
+          <button class="cancel-btn close-modal">Cancel</button>
+        </form>
+
+        <!-- create playlist1 -->
+        <form class="hidden create create-playlist1">
+          <!-- <input type="text" name="" id="" placeholder="Title">
 
 
             <textarea name="" id="" cols="30" rows="3" placeholder="Caption"></textarea>
-
-            <!-- <button>Add Image</button> -->
+          
             <div class="upload-button">
               <input class="image" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
             </div>
@@ -456,68 +270,18 @@
             </div>
 
             <button type="submit" class="post-btn">Post</button>
-            <button class="cancel-btn close-modal">Cancel</button>
-          </form>
+            <button class="cancel-btn close-modal">Cancel</button> -->
+        </form>
 
-          <!-- Upload video -->
-          <form class="hidden upload upload-video">
-            <div class="post-form">
-              <div class="form-left">
-               <input type="text" name="title" placeholder="Title">
+        <!-- create playlist2 -->
+        <form class="hidden create create-playlist2">
+          <!-- <input type="text" name="" id="" placeholder="Title">
 
-              <div class="small">
-                <label for="season#">Season Number:</label>
-                <input type="number" name="season#" id="">
-              </div>
 
-              <textarea name="description" placeholder="Description" id="" cols="20" rows="3"></textarea>
-              </div>
-
-              <div class="form-right">
-              <input type="text" name="title" placeholder="Episode Title">
-
-              <div class="small">
-                <label for="episode#">Episode Number:</label>
-                <input type="number" name="episode#" id="">
-              </div>
-              </div> 
-            </div>
-
-            <div class="upload-button">
-              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
-            </div>
-
-            <div class="upload-button">
-              <input class="" type="file" accept="" name="imageInput" placeholder="">
-            </div>
-             
-
-            <!-- <button>Add Thumbnail</button>
-            <button>Add Videos</button> -->
-
-            <div class="tags">
-              <label for="tags" >Tags</label>
-            <input type="text" name="tags" id="" placeholder="Separate with commas">
-            </div>
+            <textarea name="" id="" cols="30" rows="3" placeholder="Caption"></textarea>
           
-            <div class="publish-box"><input type="checkbox"> <label>Publish</label></div>
-
-            <button type="submit" class="post-btn">Post</button>
-            <button class="cancel-btn close-modal">Cancel</button>
-          </form>
-
-          <!-- Upload story -->
-          <form class="hidden upload upload-story">
-             
-            <input type="text" name="" id="" placeholder="Series Title">
-
-            <textarea name="" id="" cols="30" rows="3" placeholder="Synopsis"></textarea>
-
-            <textarea name="" id="" cols="30" rows="5" placeholder="Story"></textarea>
-
-            <!-- <button>Add Thumbnail</button> -->
             <div class="upload-button">
-              <input class="thumbnail" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
+              <input class="image" type="file" accept="image/png, image/jpg, image/gif, image/jpeg" name="imageInput" placeholder="">
             </div>
             
             <div class="tags">
@@ -526,22 +290,1266 @@
             </div>
 
             <button type="submit" class="post-btn">Post</button>
-            <button class="cancel-btn close-modal">Cancel</button>
-          </form>
+            <button class="cancel-btn close-modal">Cancel</button> -->
+        </form>
+      </div>
+
+      <div class="right-side-2 hidden">
+        <div class="right-post-nav">
+          <button class="current upload-nav-video">Video</button>
+          <button class="upload-nav-story">Stories</button>
+          <!-- <button class="post-nav-image">Image</button> -->
         </div>
+        <hr />
+
+        <!-- Upload video -->
+        <form class="upload upload-video">
+          <div class="post-form">
+            <div class="form-left">
+              <input type="text" name="title" placeholder="Title" />
+
+              <div class="small">
+                <label for="season#">Season Number:</label>
+                <input type="number" name="season#" id="" />
+              </div>
+
+              <textarea
+                name="description"
+                placeholder="Description"
+                id=""
+                cols="20"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-right">
+              <input type="text" name="title" placeholder="Episode Title" />
+
+              <div class="small">
+                <label for="episode#">Episode Number:</label>
+                <input type="number" name="episode#" id="" />
+              </div>
+            </div>
+          </div>
+
+          <div class="upload-button">
+            <input
+              class="thumbnail"
+              type="file"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              name="imageInput"
+              placeholder=""
+            />
+          </div>
+
+          <div class="upload-button">
+            <input
+              class=""
+              type="file"
+              accept=""
+              name="imageInput"
+              placeholder=""
+            />
+          </div>
+
+          <!-- <button>Add Thumbnail</button>
+            <button>Add Videos</button> -->
+
+          <div class="tags">
+            <label for="tags">Tags</label>
+            <input
+              type="text"
+              name="tags"
+              id=""
+              placeholder="Separate with commas"
+            />
+          </div>
+
+          <div class="publish-box">
+            <input type="checkbox" /> <label>Publish</label>
+          </div>
+
+          <button type="submit" class="post-btn">Post</button>
+          <button class="cancel-btn close-modal">Cancel</button>
+        </form>
+
+        <!-- Upload story -->
+        <form class="hidden upload upload-story">
+          <input type="text" name="" id="" placeholder="Series Title" />
+
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="3"
+            placeholder="Synopsis"
+          ></textarea>
+
+          <textarea
+            name=""
+            id=""
+            cols="30"
+            rows="5"
+            placeholder="Story"
+          ></textarea>
+
+          <!-- <button>Add Thumbnail</button> -->
+          <div class="upload-button">
+            <input
+              class="thumbnail"
+              type="file"
+              accept="image/png, image/jpg, image/gif, image/jpeg"
+              name="imageInput"
+              placeholder=""
+            />
+          </div>
+
+          <div class="tags">
+            <label for="tags">Tags</label>
+            <input
+              type="text"
+              name="tags"
+              id=""
+              placeholder="Separate with commas"
+            />
+          </div>
+
+          <button type="submit" class="post-btn">Post</button>
+          <button class="cancel-btn close-modal">Cancel</button>
+        </form>
+      </div>
     </div>
+
+    <!-- PAGE CONTENT modal -->
+    <div class="card-modal modal hidden">
+      <div class="post-view">
+        <p class="modal-text hidden"></p>
+        <img class="modal-image hidden" src="" alt="Modal Image">
+        <video class="modal-video hidden"
+          autoplay
+          controls
+          loop
+          poster="">
+        <!-- <div class="vid-container hidden show-controls"> 
+          <div class="wrapper">
+              <div class="video-timeline">
+                  <div class="progress-area">
+                      <span>00:00</span>
+                      <div class="progress-bar"></div>
+                  </div>
+              </div>
+              <ul class="video-controls">
+                  <li class="options left">
+                      <button class="volume"><i class="fa-solid fa-volume-high"></i></button>
+                      <input type="range" min="0" max="1" step="any">
+                      <div class="video-timer">
+                          <p class="current-time">00:00</p>
+                          <p class="separator"> / </p>
+                          <p class="video-duration">00:00</p>
+                      </div>
+                  </li>
+                  <li class="options center">
+                      <button class="skip-backward"><i class="fas fa-backward"></i></button>
+                      <button class="play-pause"><i class="fas fa-play"></i></button>
+                      <button class="skip-forward"><i class="fas fa-forward"></i></button>
+                  </li>
+                  <li class="options right">
+                      <div class="playback-content">
+                          <button class="playback-speed"><span class="material-symbols-rounded">slow_motion_video</span></button>
+                          <ul class="speed-options">
+                              <li data-speed="2">2x</li>
+                              <li data-speed="1.5">1.5x</li>
+                              <li data-speed="1" class="active">Normal</li>
+                              <li data-speed="0.75">0.75x</li>
+                              <li data-speed="0.5">0.5x</li>
+                          </ul>
+                      </div>
+                      <button class="pic-in-pic"><span class="material-icons">picture_in_picture_alt</span></button>
+                      <button class="fullscreen"><i class="fa-solid fa-expand"></i></button>
+                  </li>
+              </ul>
+          </div>
+          
+        </div> -->
+
+        <p class="modal-text hidden"></p>
+      </div>
+
+      <div class="right-side">
+        <!-- creator info -->
+        <div class="top-section">
+          <div class="image-text">
+            <a href="profilepage.html" id="prof-lnk">
+              <img src="/Images/ (1).jpg" alt="" />
+            </a>
+
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Alan Dalani</h3>
+              </a>
+              <p>12 days ago</p>
+            </div>
+          </div>
+          <button class="delete-btn">Delete</button>
+        </div>
+
+        <p class="caption">
+          Art is where it all starts. The goal is simple, be the best to do it.
+        </p>
+
+        <!-- <hr /> -->
+        <!-- comments -->
+        <!-- <div class="comments">
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (2).jpg" alt="" />
+            </a>
+
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Jenni Addo</h3>
+              </a>
+              <p>Im enthralled😍</p>
+            </div>
+          </div>
+
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (5).jpg" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Ronald the Conqueror</h3>
+              </a>
+              <p>Interesting, how much to conquer?</p>
+            </div>
+          </div>
+
+          <div class="image-text">
+            <a href="profilepage.html">
+              <img src="/Images/ (3).jpg" alt="" />
+            </a>
+            <div class="name-time">
+              <a href="profilepage.html">
+                <h3>Brago</h3>
+              </a>
+
+              <p>An amazing piece</p>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <hr /> -->
+
+        <!-- <div class="actions">
+          <div class="interactions">
+            <img src="/Icons/likeicon1.svg" class="like" alt="" />
+            <img src="/Icons/saveicon1.svg" class="fave" alt="" />
+          </div>
+
+          <p>Liked by <span>Jess Asante</span> and <span>23</span> others</p>
+        </div> -->
+
+        <!-- <hr /> -->
+
+        <!-- <div class="add-comment">
+          <input type="text" placeholder="Add comment.." />
+          <button type="submit">Post</button>
+        </div> -->
+      </div>
+
+      <hr />
+    </div>
+
+
 
 
 {% endblock %}
 
 {% block include_js %}
   <script>
-      const csrf_token = "{{ csrf_token }}";
-      const creatorName = "{{ request.user.creator_profile.id }}";
+      {% comment %} const csrf_token = "{{ csrf_token }}"; {% endcomment %}
+      {% comment %} const creatorName = "{{ request.user.creator_profile.id }}"; {% endcomment %}
   </script>
+  {{ request.user.username|json_script:"request-user"}}
+  {{ request.user.id|json_script:"request-user-id"}}
+  <script>
+    const requestUserId = JSON.parse(document.getElementById('request-user-id').textContent);
+  </script>
+    <script src="{% static 'js/sidebar.js' %}"></script>
   <script src="{% static 'js/dashboard/dashboard.js' %}"></script>
   <script src="{% static 'js/dashboard/createposts.js' %}"></script>
   <script src="{% static 'js/dashboard/listposts.js' %}"></script>
   <script src="{% static 'js/dashboard/listseries.js' %}"></script>
   <script src="{% static 'js/dashboard/listwrittenstories.js' %}"></script>
+{% endblock %}
+
+{% block domready %}
+
+
+
+/**
+ * 
+ * @param {String} content_type type of post object 
+ * @param {Number} object_id id of post object
+ */
+const getComments = async (content_type, object_id) => {
+  const url = `http://localhost:8000/comment/all/?content_type=${content_type}&object_id=${object_id}`;
+
+  try {
+    
+    const response = await fetch(url, {
+      header:{
+        "X-CSRFToken": csrf_token,
+      }
+    },)
+
+    if (!response.ok) {
+      console.log(response.status, response.statusText, response)
+      throw Error("An error occurred in comment async await")
+    }
+
+    const resJson = await response.json();
+    
+    // render comments
+    renderComments(resJson);
+    
+    return resJson;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+/**
+ * 
+ * @param {Array} data data to be rendered on the dom
+ */
+function renderComments(data){
+  const renderedCommentsHTML = data.length === 0 ? "<h2>Be the first to comment</h2>" : data.map((el) => {
+   
+    return    `<div class="image-text">
+            <a href="/${el.owner.id}/${requestUser}/">
+              <img src="${el.owner.creator_logo}" alt="${el.owner.company_name || el.user}" />
+            </a>
+            <div class="name-time">
+              <a href="/${el.owner.id}/${requestUser}/">
+                <h3>${el.owner.company_name || el.user}</h3>
+              </a>
+              <p>${el.text}</p>
+            </div>
+          </div>
+    `
+  }).join("");
+
+  commentContainerEl.innerHTML = "";
+  commentContainerEl.insertAdjacentHTML("beforeend", renderedCommentsHTML);
+}
+
+
+  /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const getLikeFavStatus = async (content_type, content_id) => {
+
+    const url = `http://localhost:8000/actions/check_fav_like_status/${content_type}/${content_id}/`
+
+    console.log(content_type)
+
+    console.log(url);
+    try {
+      
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+      })
+
+      if (!response.ok) {
+        console.log(response, response.status, response.statusText, "thuis us tge sdf");
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+const baseDetailURL = "http://localhost:8000/content";
+    /**
+     * 
+     * @param {String} baseURL base url to be used
+     * @param {Number} id id of the selected post element 
+     * @param {String} typoOfPost typeof of selected post
+     *  
+     */
+    const getDetailedPost = async (baseUrl, id, typoOfPost) => {
+        const url = `${baseUrl}/${typoOfPost}/${id}`;
+        console.log(url)
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok){
+                console.log(response.status, response.statusText);
+                throw Error("Something happened")
+            }
+
+            const resJon = await response.json();
+            {% comment %} console.log(resJon) {% endcomment %}
+            return resJon;
+            
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+
+
+function timeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const secondsAgo = Math.floor((now - date) / 1000);
+
+    const minutesAgo = Math.floor(secondsAgo / 60);
+    const hoursAgo = Math.floor(minutesAgo / 60);
+    const daysAgo = Math.floor(hoursAgo / 24);
+
+    if (daysAgo > 0) {
+        return daysAgo === 1 ? "1 day ago" : `${daysAgo} days ago`;
+    } else if (hoursAgo > 0) {
+        return hoursAgo === 1 ? "1 hour ago" : `${hoursAgo} hours ago`;
+    } else if (minutesAgo > 0) {
+        return minutesAgo === 1 ? "1 minute ago" : `${minutesAgo} minutes ago`;
+    } else {
+        return secondsAgo === 1 ? "1 second ago" : `${secondsAgo} seconds ago`;
+    }
+}
+
+
+  /**
+ * 
+ * @param {String} url url of the resource
+ * @returns 
+ */
+  const getRecentlyLikedUser = async (url) => {
+    
+    try {
+      const response = await fetch(url,  {
+        headers: {
+          "X-CSRFToken": csrf_token
+        },
+        credentials: "same-origin"
+      })
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error("Couldn't get the name of the latest liked user")
+      }
+
+      const resJon = await response.json();
+      const {owner} = resJon;
+
+      return owner;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+
+  /**
+   * 
+   * @param {Number} creator_id id of the creator to check status 
+   */
+const checkFollowStatus = async function(creator_id){
+  const url = `http://localhost:8000/actions/check_follow_status/${creator_id}/`;
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      ContentType: "application/json",
+      
+    },
+    credentials: "same-origin",
+    method: "POST"
+  })
+
+  if (!response.ok) {
+    console.log(response)
+    console.log(response.status, response.statusText)
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+
+  } catch (error) {
+    console.log(error);
+  }
+
+
+}
+
+
+
+      /**
+   * 
+   * @param {Number} creator_id id of the creator to be followed
+   * @pararm {String} action to be performed [POST, PUT]
+   */
+const followAndUnfollow = async function(creator_id, action="POST"){
+  const url = `http://localhost:8000/actions/follow/${creator_id}/`;
+
+  console.log(url)
+
+  try {
+      const response = await fetch(url, {
+    headers: {
+      "X-CSRFToken": csrf_token,
+      "Content-Type": "application/json"
+    },
+    credentails: "same-origin",
+    method: action
+  })
+
+  if (!response.ok) {
+    throw new Error("Could post data to follow endpoint")
+  }
+
+  const resJon = await response.json();
+  return resJon;
+  
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+  /**
+   * 
+   * @param {String} content_type content_type of the post
+   * @param {Number} content_id id of the post
+   */
+  const likeAndUnlike = async (content_type, content_id, content="like") => {
+    const url = content === "like" ? `http://localhost:8000/content/action/like/${content_type}/${content_id}/` : `http://localhost:8000/content/action/favorite/${content_type}/${content_id}/`;
+
+    try {
+      
+      const response = await fetch(url , {
+        headers: {
+          'X-CSRFToken': csrf_token,
+        },
+        method: "POST"
+      })
+
+      if (!response.ok) {
+        console.log(response, response.status, response.statusText);
+        throw new Error("Couldn't post data to the api")
+      }
+
+      const resJon = await response.json();
+      return resJon;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+// main page content tabs
+  const videoTab = document.querySelector(".videos-tab");
+  const storyTab = document.querySelector(".stories-tab");
+  const postTab = document.querySelector(".post-tab");
+  const seriesTab = document.querySelector(".series-tab");
+
+  const videoSection = document.querySelector(".videos-section");
+  const storySection = document.querySelector(".stories-section");
+  const postSection = document.querySelector(".post-section");
+  const seriesSection = document.querySelector(".series-section");
+
+    {% comment %} const commentContainerEl = document.querySelector("#comment-container") {% endcomment %}
+    const userComment = document.querySelector("#user-comment");
+    const submitCommentBtn = document.querySelector("#submit-btn");
+        const filter_content =  {
+        textcontent: "text",
+        designcontent: "design",
+        videocontent: "video",
+        anime: "anime",
+        writtenstory: "writtenstory"
+  }
+
+
+  function selectPageTab(tab, tabContent) {
+    tab.addEventListener("click", () => {
+      videoTab.classList.remove("current");
+      videoSection.classList.add("hidden");
+      storyTab.classList.remove("current");
+      storySection.classList.add("hidden");
+      postTab.classList.remove("current");
+      postSection.classList.add("hidden");
+      seriesTab.classList.remove("current");
+      seriesSection.classList.add("hidden");
+      tab.classList.add("current");
+      tabContent.classList.remove("hidden");
+    });
+  }
+
+  selectPageTab(videoTab, videoSection);
+  selectPageTab(storyTab, storySection);
+  selectPageTab(postTab, postSection);
+  selectPageTab(seriesTab, seriesSection);
+
+ // MODAL VARIABLES
+const cardModal = document.querySelector(".card-modal");
+const overlay1 = document.querySelector(".overlay");
+const btnOpenCardModal = document.querySelectorAll(".show-card");
+const modalImage = document.querySelector('.modal-image');
+const modalVideo = document.querySelector('.modal-video');
+const modalText = document.querySelector('.modal-text');
+
+// Other variables
+const profileLink = document.querySelector("#prof-lnk");  // update link to person profile and img
+const detailPostInfo = document.querySelector(".name-time");  // to update link to profile and name of post owner and date posted
+const followBtn = document.querySelector(".follow");
+const captionEl = document.querySelector(".caption")
+const likeBtn = document.querySelector(".like")
+const favoriteBtn = document.querySelector(".fave");
+
+const requestUser = JSON.parse(document.getElementById('request-user').textContent);
+
+    /**
+     * Set the like and fav buttons to their default values
+    */ 
+    const setDefaultValues = () => {
+      {% comment %} //  const likeButton = document.querySelector(".like"); {% endcomment %}
+      {% comment %} //   const faveButton = document.querySelector(".fave"); {% endcomment %}
+
+        {% comment %} document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+        document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}"); {% endcomment %}
+
+        // 
+
+        {% comment %} document.querySelector("#like-container").innerHTML = "<p>No likes yet </p>"; {% endcomment %}
+
+        const modalText = document.querySelector('.modal-text').textContent = "";
+
+    }
+
+
+// MODAL FUNCTIONS
+// ///////////////
+const openCardModal = function (i) {
+  return function() {
+    cardModal.classList.remove("hidden");
+    overlay1.classList.remove("hidden");
+
+    const objectPath = btnOpenCardModal[i].children[0];
+    const src = objectPath.getAttribute("src");
+
+    // console.log(objectPath.textContent)
+
+    if (objectPath.tagName === "IMG") {
+      // Handle image
+      modalImage.classList.remove("hidden");
+      modalVideo.classList.add("hidden");
+      modalText.classList.add("hidden");
+      modalImage.setAttribute("src", src);
+    } else if (objectPath.tagName === "VIDEO") {
+      // Handle video
+      modalImage.classList.add("hidden");
+      modalText.classList.add("hidden");
+      modalVideo.classList.remove("hidden");
+      modalVideo.setAttribute("src", src);
+      modalVideo.load(); // Ensure the video loads with the new source
+    } else
+     if (objectPath.tagName === "P") {
+      // Handle stories
+      modalImage.classList.add("hidden");
+      modalVideo.classList.add("hidden");
+      modalText.classList.remove("hidden");
+      modalText.textContent = objectPath.textContent
+    }
+  }
+};
+
+// Adding events to tabs
+const dashboardContainerEls = document.querySelectorAll(".postParentContainerEl");
+
+let selectedPostId;
+let selectedPostType;
+let SET_CREATOR = null;
+
+dashboardContainerEls.forEach((el) => {
+  el.addEventListener("click", async function(e){
+
+    console.log("I got clicked ")
+    // get the id and content type of the clicked element
+
+    const selectedElParent = e.target.parentElement;
+
+    console.log(selectedElParent.classList[1], selectedElParent)
+    console.log("this is the parent", selectedElParent.classList.contains("show-card"))
+
+    selectedPostId = selectedElParent.dataset.id;
+    selectedPostType = selectedElParent.dataset.posttype;
+
+    if (selectedElParent.classList.contains("show-card")){
+      cardModal.classList.remove("hidden")
+      overlay1.classList.remove("hidden")
+
+
+      // Determine the content type
+      const contentData = e.target.parentElement.dataset.posttype ;
+        const contentType = contentData == "anime" || contentData == "videocontent" ? "video" : contentData ===  "writtenstory"  ? "writtenstory" : "img";
+
+        console.log(contentData)
+        // <!-- get comments related to the post -->
+        {% comment %} await getComments(selectedPostType, selectedPostId); {% endcomment %}
+
+        // <!-- get like and favorite buttons status -->
+        {% comment %} console.log(selectedPostType, selectedPostId) {% endcomment %}
+        {% comment %} const likeFavResponse = await getLikeFavStatus(selectedPostType, selectedPostId);
+
+        const {liked, favorited} = likeFavResponse;
+
+        if (liked){
+          document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+        }
+
+        if (favorited) {
+          document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+        } {% endcomment %}
+
+        
+      if (contentType === "img"){
+        const selectedSrc = selectedElParent.querySelector("img").getAttribute("src");
+
+        // <!-- Call API to get detail information about selected element-->
+         // <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         // <!-- make request to the url to get the data -->
+
+         // get cursor on input field to active
+          {% comment %} userComment.focus() {% endcomment %}
+
+
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData) {
+
+            const data = detailData;
+
+            // making data a global variable
+            SET_CREATOR = data
+
+            cardModal.querySelector(".post-view").querySelector("img").classList.remove("hidden")
+            cardModal.querySelector(".post-view").querySelector("img").setAttribute("src", selectedSrc);
+
+             profileLink.setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent = data.username || data.owner.company_name;
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date || data.start_date);
+
+            // set link to profile
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // get the number of likes and recently liked people
+            {% comment %} if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              console.log(no_of_likes, "THe no of likes");
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            } {% endcomment %}
+
+            // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            {% comment %} const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            } {% endcomment %}
+
+            {% comment %} // add eventlistener to the follow btn {% endcomment %}
+            {% comment %} followBtn.addEventListener("click", async function(){ {% endcomment %}
+
+              {% comment %} const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT"; {% endcomment %}
+              
+              {% comment %} const result = await followAndUnfollow(data.creator || data.owner.id); {% endcomment %}
+
+              {% comment %} if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              } {% endcomment %}
+            {% comment %} } {% endcomment %}
+            
+            {% comment %} ) {% endcomment %}
+
+          }
+
+      } else if (contentType == "video" || contentType == "anime"){
+
+          <!-- Call API to get detail information about selected element-->
+         <!-- use the id and typeof dataset value to compose the url for the detail page-->
+         <!-- make request to the url to get the data -->
+          const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+          if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+            cardModal.querySelector('.post-view').querySelector('video').classList.remove('hidden')
+            cardModal.querySelector('.post-view').querySelector('video').setAttribute("poster", data.thumbnail)
+            cardModal.querySelector('.post-view').querySelector('video').setAttribute("src", data.video_file)
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            console.log("this should be the date", data.start_date)
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+
+            // get the number of likes and recently liked people
+            {% comment %} if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              console.log(no_of_likes, "THe no of likes");
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            } {% endcomment %}
+
+
+            {% comment %} // follow and unfollow
+            // check the if authenticated user is following the creator and change the button text to show the status
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            } {% endcomment %}
+
+            
+          }
+
+         }else if (contentType === "writtenstory"){
+
+            const detailData = await getDetailedPost(baseDetailURL, selectedPostId, selectedPostType);
+
+                if (detailData){
+
+            const data = detailData;
+            SET_CREATOR = data;
+
+            console.log(selectedPostId, selectedPostType, "from the writtenstory")
+
+          // const selectedSrc = selectedComponentEl // no src set on parentEl
+          console.log(cardModal.querySelector(".post-view"))
+            cardModal.querySelector('.post-view').querySelector('p').classList.remove('hidden')
+            cardModal.querySelector('.post-view').querySelector('p').textContent = data.content;
+             
+
+            // Update user information
+            profileLink.setAttribute("href", `/${data.owner.id}/${requestUser}/`)
+
+            // set profile image
+            profileLink.querySelector("img").setAttribute("src", data.owner.creator_logo);
+
+            // post detail
+            // name of the post owner
+            detailPostInfo.querySelector("h3").textContent =  data.owner.company_name;
+
+            // set creator profile link
+            detailPostInfo.querySelector("a").setAttribute("href", `/${data.owner.id}/${data.owner.slug}/`)
+
+            // set the date
+            detailPostInfo.querySelector("p").textContent = timeAgo(data.release_date || data.start_date);
+
+            // set the caption
+            captionEl.textContent = data.description;
+
+            // set the content
+            cardModal.querySelector(".modal-text").textContent = data.content
+
+
+            // get the number of likes and recently liked people
+            {% comment %} if (data.likes.length > 0) {
+
+              const no_of_likes = data.likes.length;
+
+              const recentUserURL = data.likes[data.likes.length - 1]
+
+              // get the latest like object and get the username of the person who liked it
+
+              const recentlyLikedUser = await getRecentlyLikedUser(recentUserURL);
+
+              // pluralize 
+              let pluralize;
+
+              if (no_of_likes === 0) {
+                pluralize = ""
+              }else if (no_of_likes > 1){
+                pluralize = "other"
+              } else {
+                pluralize = "others"
+              }
+
+              // update dom
+              no_of_likes <= 1 ? document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span>` :  document.querySelector("#like-container").innerHTML = `Liked by <span id="liked-user">${recentlyLikedUser}</span> and <span id="no-of-likes">${no_of_likes - 1}</span> ${pluralize }`;
+
+            } {% endcomment %}
+
+
+            // follow and unfollow
+            {% comment %} // check the if authenticated user is following the creator and change the button text to show the status
+
+
+
+            const followStatus = await checkFollowStatus(data.creator || data.owner.id );
+
+            if (followStatus.message){
+              followBtn.textContent = "Unfollow";
+              followBtn.dataset.status = "unfollow";
+            }else {
+              followBtn.textContent = "Follow";
+              followBtn.dataset.status = "follow"
+            } {% endcomment %}
+            
+          }
+
+    }
+
+          {% comment %} userComment.focus(); {% endcomment %}
+
+
+    } else {
+      console.log("no contentData")
+    }
+  })
+})
+
+
+
+    // LIKE BUTTON
+    // <!-- add eventlistener to like button -->
+    {% comment %} likeBtn.addEventListener("click", async function(e){
+      
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+      const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+      const result = await likeAndUnlike(filteredType, selectedPostId)
+      
+
+      // set the state of the like button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon2.svg' %}");
+      else  document.querySelector(".like").setAttribute("src", "{% static 'icons/likeicon1.svg' %}");
+    }) {% endcomment %}
+
+    // FAV BUTTON
+    // <!-- add eventlistener to the favorite button -->
+    {% comment %} favoriteBtn.addEventListener("click", async function(e){
+
+      // check for content_type and content_id
+      if (!selectedPostId || !selectedPostType) return;
+
+
+       const filteredType = filter_content[selectedPostType]
+
+      // post data to the api
+
+
+      const result = await likeAndUnlike(filteredType, selectedPostId, content="favorite");
+
+
+       // set the state of the favorite button
+      const {message} = result;
+
+      if (message)
+         document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon2.svg' %}");
+      else  document.querySelector(".fave").setAttribute("src", "{% static 'icons/saveicon1.svg' %}");
+    }) {% endcomment %}
+
+
+
+  // <!-- user add comment -->
+        {% comment %} submitCommentBtn.addEventListener("click", async function(e){
+
+          e.preventDefault();
+
+          if (!selectedPostId || !selectedPostType) return;
+
+            // get user input
+            const comment = userComment.value;
+            
+
+            // validate data and send it to the backend
+            if (comment) {
+              console.log("values before post is send", selectedPostType, selectedPostId)
+               const result = await postUserComment(selectedPostType, selectedPostId, comment);
+               userComment.value = ""
+            }
+        }) {% endcomment %}
+
+     // <!-- keyboard binding-->
+       {% comment %} submitCommentBtn.addEventListener("keypress", function(e){
+        if (e.key == "Enter"){
+          // cancel the default action if needed
+          e.preventDefault();
+          // trigger click event on button
+          submitCommentBtn.click();
+        }
+       }) {% endcomment %}
+
+       {% comment %} userComment.focus(); {% endcomment %}
+
+
+       // FOLLOW BUTTON
+       // <!-- add eventlistener to follow button -->
+            {% comment %} followBtn.addEventListener("click", async function(){
+
+              if (!SET_CREATOR.owner.id) return;
+
+              const followStatus = followBtn.dataset.status == "follow" ? "POST" : "PUT";
+              
+              const result = await followAndUnfollow(SET_CREATOR.owner.id);
+
+              if (result.message){
+                followBtn.textContent = "Unfollow";
+              }else if (!result.message){
+                followBtn.textContent = "Follow";
+              } else {
+                console.log(result)
+                return ;
+              }
+            }) {% endcomment %}
+
+
+    const closeCardModal = function () {
+  cardModal.classList.add("hidden");
+  overlay1.classList.add("hidden");
+
+  // Reset the modal content
+  modalImage.classList.add("hidden");
+  modalVideo.classList.add("hidden");
+  {% comment %} modalVideo.setAttribute("src", ""); // Clear the video src {% endcomment %}
+
+  setDefaultValues()
+};
+
+// Adding event listeners to each button
+{% comment %} btnOpenCardModal.forEach((button, i) => button.addEventListener("click", openCardModal(i))); {% endcomment %}
+
+overlay1.addEventListener("click", closeCardModal);
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !cardModal.classList.contains("hidden")) {
+    closeCardModal();
+  }
+});
+
+
+
+ const modal = document.querySelector(".modal");
+      const overlay = document.querySelector(".overlay");
+      const btnCloseModal = document.querySelector(".close-modal");
+      const btnOpenModal = document.querySelector(".show-modal");
+
+      // MODAL FUNCTIONS
+      // ///////////////
+      const openModal = function () {
+        modal.classList.remove("hidden");
+        overlay.classList.remove("hidden");
+      };
+
+      const closeModal = function () {
+        modal.classList.add("hidden");
+        overlay.classList.add("hidden");
+      }; 
+
+      btnOpenModal.addEventListener("click", openModal);
+
+      btnCloseModal.addEventListener("click", closeModal);
+
+      overlay.addEventListener("click", closeModal);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+          closeModal();
+        }
+      });
+
+
+ // Variables
+      const createTab = document.getElementById("create-tab");
+      const uploadTab = document.getElementById("upload-tab");
+
+      const right1 = document.querySelector(".right-side-1");
+      const right2 = document.querySelector(".right-side-2");
+
+      function selectTab(tab, side) {
+        tab.addEventListener("click", () => {
+          createTab.classList.remove("selected");
+          uploadTab.classList.remove("selected");
+          right1.classList.add("hidden");
+          right2.classList.add("hidden");
+          tab.classList.add("selected");
+          side.classList.remove("hidden");
+        });
+      }
+
+      selectTab(createTab, right1);
+      selectTab(uploadTab, right2);
+
+
+      // Form Tabs Variables
+      const postVideoTab = document.querySelector(".post-nav-video");
+      const postStoryTab = document.querySelector(".post-nav-story");
+      const postImageTab = document.querySelector(".post-nav-image");
+      const postPlaylistTab1 = document.querySelector(".post-nav-playlist1");
+      const postPlaylistTab2 = document.querySelector(".post-nav-playlist2");
+
+      const uploadVideoTab = document.querySelector(".upload-nav-video");
+      const uploadStoryTab = document.querySelector(".upload-nav-story");
+
+      // sections
+      const postVideoSection = document.querySelector('.create-video');
+      const postStorySection = document.querySelector(".create-story");
+      const postImageSection = document.querySelector(".create-image");
+      const postPlaylistSection1 = document.querySelector(".create-playlist1");
+      const postPlaylistSection2 = document.querySelector(".create-playlist2");
+
+      const uploadVideo = document.querySelector(".upload-video");
+      const uploadStory = document.querySelector(".upload-story");
+
+      
+      //Arrays
+      const createArrayTabs = [postImageTab, postVideoTab, postPlaylistTab1, postPlaylistTab2, postStoryTab]
+
+      const createArraySections = [postImageSection, postVideoSection, postPlaylistSection1, postPlaylistSection2, postStorySection]
+
+      const uploadArrayTabs = [uploadVideoTab, uploadStoryTab]
+
+      const uploadArraySections = [uploadVideo ,uploadStory]
+
+      // functions
+      const selectNavTab = (tab, section) => {
+        tab.addEventListener("click", () => {
+          createArrayTabs.forEach((a) =>{a.classList.remove("current")})
+          createArraySections.forEach((b) =>{b.classList.add("hidden")})
+          tab.classList.add("current");
+          section.classList.remove('hidden');
+        })
+      }
+
+      const selectNavTab2 = (tab, section) => {
+        tab.addEventListener("click", () => {
+          uploadArrayTabs.forEach((a) =>{a.classList.remove("current")})
+          uploadArraySections.forEach((b) =>{b.classList.add("hidden")})
+          tab.classList.add("current");
+          section.classList.remove('hidden');
+        })
+      }
+
+
+      selectNavTab(postVideoTab, postVideoSection);
+      selectNavTab(postStoryTab, postStorySection);
+      selectNavTab(postImageTab, postImageSection);
+      selectNavTab(postPlaylistTab1, postPlaylistSection1);
+      selectNavTab(postPlaylistTab2, postPlaylistSection2);
+
+      selectNavTab2(uploadVideoTab, uploadVideo);
+      selectNavTab2(uploadStoryTab, uploadStory);
+
+
 {% endblock %}

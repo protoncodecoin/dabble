@@ -18,13 +18,6 @@ const bannerEl = document.querySelector("#banner");
 const getPostData = async function (baseURL) {
   try {
     const url = baseURL;
-    // let access_token = window.localStorage.getItem("dabble_access");
-    // const data = await fetch(url, {
-    //   headers: {
-    //     "Content-type": "application/json",
-    //     AUthorization: `Bearer ${access_token}`,
-    //   },
-    // });
     const data = await fetch(url);
 
     if (!data.ok)
@@ -88,7 +81,6 @@ const renderUserFavorites = (favorites) => {
 
   const renderFavData = favorites
     .map((el) => {
-      // console.log(el, " from the favorites render function***/**/*");
       switch (el.typeof) {
         case "anime":
           return `               
@@ -100,18 +92,16 @@ const renderUserFavorites = (favorites) => {
               
               `;
 
-        // case "writtenstory":
-        //   return `<div class="book-card">
-        //         <img src="${el.thumbnail}" alt="${el.series_name} - ${
-        //     el.episode_title
-        //   }" />
-        //         <p>${el.episode_title}</p>
-        //         <p>${username}</p>
-        //       <button><a href="/${el.typeof}/${el.id || el.pk}/${
-        //     el.slug
-        //   }/">Read</a></button>
-        //     </div>
-        //     `;
+        case "writtenstory":
+          return `<div class="book-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}">
+                        <p class="hidden" id="story-content">${el.content}</p>
+                      
+                        <img src="${el.thumbnail}" alt="${el.series_name}" />
+                        <p>${el.episode_title}</p>
+                        <p>${el.series_name}</p>
+                        <button class="show-card">Read</button>
+            </div>
+            `;
             
         case "text":
         case "video":
@@ -199,6 +189,7 @@ const renderAllUserPosts = (postData) => {
 
   const renderedPostHtml = postData
     .map((el) => {
+      // console.log(el.typeof, "from all posts");
       switch (el.typeof) {
         case "anime":
           return ` 
@@ -208,18 +199,17 @@ const renderAllUserPosts = (postData) => {
                 <p>${el.series_name} | ${el.episode_title}</p>
               </div>
         `;
-        // case "writtenstory":
-        //   return `<div class="book-card">
-        //         <img src="${el.thumbnail}" alt="${el.series_name} - ${
-        //     el.episode_title
-        //   }" />
-        //         <p>${el.episode_title}</p>
-        //         <p>${username}</p>
-        //       <button><a href="/${el.typeof}/${el.id || el.pk}/${
-        //     el.slug
-        //   }/">Read</a></button>
-        //     </div>
-        //     `;
+        case "writtenstory":
+          return `
+           <div class="book-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}">
+                        <p class="hidden" id="story-content">${el.content}</p>
+                      
+                        <img src="${el.thumbnail}" alt="${el.series_name}" />
+                        <p>${el.episode_title}</p>
+                        <p>${el.series_name}</p>
+                        <button class="show-card">Read</button>
+            </div>
+            `;
         case "text":
         case "video":
         case "design":

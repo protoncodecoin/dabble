@@ -42,6 +42,7 @@ class Book(models.Model):
         CreatorProfile, related_name="favorited_books", blank=True
     )
     external_link = models.URLField(blank=True)
+    typeof = models.CharField(default="book", max_length=4)
 
     class Meta:
         verbose_name = "Book"

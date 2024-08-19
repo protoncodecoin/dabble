@@ -840,3 +840,63 @@ h4 {
 .hidden {
   display: none;
 }
+
+
+.book-card img {
+  object-fit: cover;
+  position: absolute;
+  width: 30%;
+  height: 120px;
+  top: -40px;
+  left: 40px; 
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.book-card p,
+.book-card button {
+  margin-left: 50%;
+  text-align: justify;
+  font-size: 0.8rem;
+  color: var(--card-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-card button {
+  padding: 2px 10px;
+  border-radius: 3px;
+  color: white;
+  background-color: #fd5050;
+  border: none;
+  transition: 0.3s;
+  width: fit-content;
+}
+
+.book-card a {
+  text-decoration: none;
+  color: white;
+}
+
+.book-card button:hover {
+  background-color: #242424;
+}
+
+
+.book-card {
+  margin-top: 50px;
+  height: 90px;
+  min-width: 32.5%;
+  background-color: var(--card-bg);
+  overflow: visible;
+  position: relative;
+  box-shadow: none;
+  padding: 10px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.book-card img:hover,
+.post-card img:hover{
+  transform: scale(1.1);
+}

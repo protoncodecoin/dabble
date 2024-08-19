@@ -267,3 +267,87 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+/* carousel css */
+
+.content-view {
+  position: relative;
+  height: 87vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  border-radius: 15px;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 40%;
+  /* transform: translateY(50%); */
+  border: none;
+  outline: none;
+  /* height: 20px;
+  width: 20px; */
+  transition: 0.3s;
+  z-index: 1;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+
+  background: none;
+  font-size: 4rem;
+  color: rgb(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.carousel-button:hover,
+.carousel-button:focus {
+  color: #fff;
+}
+
+.carousel-button:active {
+  margin-top: 5px;
+}
+
+.carousel-button:hover {
+  transform: scale(1.3);
+}
+
+.prev {
+  left: 1rem;
+}
+
+.next {
+  right: 1rem;
+}
+
+.carousel-inner{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.carousel-item {
+  min-width: 100%;
+  height: 100%;
+  transition: 0.2s opacity ease-in-out;
+  border-radius: 15px;
+  overflow: hidden;
+  transition-delay: 200ms;
+}
+
+.carousel-item video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  /* animation: fadeIn 0.4s linear; */
+  /* display: block; */
+  object-position: center;
+}

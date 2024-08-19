@@ -25,6 +25,7 @@ class BookSerializer(serializers.ModelSerializer):
             "pages",
             "author",
             "uploader",
+            "typeof",
             "added_by",
             "external_link",
         ]
@@ -72,6 +73,7 @@ class BookDetailSerializer(serializers.ModelSerializer):
             "author",
             "added_on",
             "updated_on",
+            "typeof",
             "book",
             "external_link",
         ]

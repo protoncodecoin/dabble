@@ -106,17 +106,14 @@ async function loadMorePosts() {
       const htmlData = results
         .map((el) => {
           return `
-              <div class="page-content-card">
-                <a href="postpage.html"
-                  ><img src="${el.illustration}" alt="${el.episode_title}" />
-                  <p>${el.title}</p></a
-                >
+              <div class="page-content-card show-modal" data-id="${el.id | el.pk}" data-posttype="${el.typeof}content" >
+                <img src="${el.illustration}" alt="${el.title}" />
+                 <p>${el.title}</p></a>
               </div>
         `;
         })
         .join("");
 
-      console.log(htmlData);
       postAnimationContainerEl.insertAdjacentHTML("beforeend", htmlData);
     }
 
